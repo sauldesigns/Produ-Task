@@ -1,4 +1,5 @@
 import 'package:book_read/ui/rounded_button.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,6 +48,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter email';
+                        } else if (EmailValidator.validate(value) == false) {
+                          return 'Not a valid email';
                         }
                       },
                     ),

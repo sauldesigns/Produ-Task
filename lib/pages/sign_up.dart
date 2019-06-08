@@ -1,5 +1,6 @@
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key}) : super(key: key);
@@ -65,6 +66,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter email';
+                        } else if (EmailValidator.validate(value) == false) {
+                          return 'Not a valid email';
                         }
                       },
                     ),
@@ -84,6 +87,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
                         }
                       },
                     ),
