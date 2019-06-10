@@ -1,9 +1,12 @@
+import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({Key key}) : super(key: key);
+  SignUpPage({Key key, this.auth}) : super(key: key);
+  final BaseAuth auth;
 
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -11,6 +14,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
+  String _email;
+  String _password;
+  String _username;
+  Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,12 +51,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     TextFormField(
                       textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter username';
                         }
                         return null;
                       },
+                      onSaved: (value) => _username = value,
                     ),
                     SizedBox(
                       height: 30,
@@ -63,6 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     TextFormField(
                       textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter email';
@@ -70,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           return 'Not a valid email';
                         }
                       },
+                      onSaved: (value) => _email = value,
                     ),
                     SizedBox(
                       height: 30,
@@ -91,13 +102,27 @@ class _SignUpPageState extends State<SignUpPage> {
                           return 'Password is too short';
                         }
                       },
+                      onSaved: (value) => _password = value,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: RoundedButton(
                         title: 'Sign up',
-                        onClick: () {
+                        onClick: () async {
                           if (_formkey.currentState.validate()) {
+                            _formkey.currentState.save();
+                            var userId =
+                                await widget.auth.signUp(_email, _password);
+                            var data = {
+                              'displayName': _username,
+                              'email': _email,
+                              'bio': '',
+                              'fname': '',
+                              'lname': '',
+                              'profile_pic': '',
+                              'uid': userId
+                            };
+                            db.collection('users').add(data);
                             Navigator.of(context).pushNamed('/');
                           } else {
                             setState(() {

@@ -34,11 +34,12 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "me.sauldesigns.book_read"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -59,3 +60,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,3 +1,5 @@
 enum AuthStatus {
-  LoggedIn, SignedOut
+  NOT_DETERMINED,
+  NOT_LOGGED_IN,
+  LOGGED_IN,
 }

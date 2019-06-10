@@ -1,16 +1,24 @@
+import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
-
+  LoginPage({Key key, this.auth}) : super(key: key);
+  final BaseAuth auth;
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
+  String _email;
+  String _password;
+
+  void _validateAndSubmit() async {
+    widget.auth.signIn(_email, _password);
+    Navigator.of(context).pushNamed('/');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -52,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                           return 'Not a valid email';
                         }
                       },
+                      onSaved: (value) => _email = value,
                     ),
                     SizedBox(
                       height: 30,
@@ -71,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                           return 'Please enter password';
                         }
                       },
+                      onSaved: (value) => _password = value,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
@@ -78,7 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                         title: 'Login',
                         onClick: () {
                           if (_formkey.currentState.validate()) {
-                            Navigator.of(context).pushNamed('/');
+                            _formkey.currentState.save();
+                            // auth.signInAnonymously();
+                            _validateAndSubmit();
                           } else {
                             setState(() {
                               _autoValidate = true;

@@ -1,9 +1,10 @@
+import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
-  LandingPage({Key key}) : super(key: key);
-
+  LandingPage({Key key, this.auth}) : super(key: key);
+  final BaseAuth auth;
   _LandingPageState createState() => _LandingPageState();
 }
 
