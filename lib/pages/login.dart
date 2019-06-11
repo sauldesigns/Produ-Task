@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _validateAndSubmit() async {
     widget.auth.signIn(_email, _password);
-    Navigator.of(context).pushNamed('/');
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
 
   @override
