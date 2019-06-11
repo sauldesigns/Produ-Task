@@ -1,8 +1,9 @@
+import 'package:book_read/home_tabs/books.dart';
 import 'package:book_read/home_tabs/home.dart';
+import 'package:book_read/home_tabs/profile.dart';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
     HomeTab(),
+    BooksTab(),
+    ProfileTab(),
+    SettingsTab(),
   ];
 
   void onTabTapped(int index) {
@@ -25,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
+    // var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
       appBar: AppBar(
         // elevation: 0.0,
@@ -36,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Colors.white,
       ),
-      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: Colors.black,
         inactiveIconColor: Colors.grey,

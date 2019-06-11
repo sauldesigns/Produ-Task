@@ -17,7 +17,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void _validateAndSubmit() async {
     widget.auth.signIn(_email, _password);
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
 
   @override
@@ -79,6 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
                         }
                       },
                       onSaved: (value) => _password = value,

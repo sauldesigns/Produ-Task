@@ -19,7 +19,8 @@ class _RootPageState extends State<RootPage> {
 
     if (loggedIn) {
       return HomePage(auth: new Auth());
-    } else {
+    } 
+    else {
       return LandingPage();
     }
   }
