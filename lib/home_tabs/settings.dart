@@ -1,5 +1,6 @@
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/ui/profile_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +15,6 @@ class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   final db = DatabaseService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,24 +33,15 @@ class _SettingsTabState extends State<SettingsTab> {
                 return Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(top: 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
-                            child: InkWell(
-                              enableFeedback: true,
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () {},
-                              child: CircleAvatar(
-                                radius: 60,
-                                backgroundImage: NetworkImage(
-                                    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png'),
-                              ),
-                            ),
+                          ProfilePicture(
+                            imgUrl: user.profilePic,
+                            size: 60,
+                            onTap: () {},
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 30.0),
@@ -68,10 +55,6 @@ class _SettingsTabState extends State<SettingsTab> {
                                     fontSize: 25,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(user.bio),
-                                )
                               ],
                             ),
                           ),
@@ -81,8 +64,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: ListTile(
-                        title: Text('Placeholder'),
-                        leading: Icon(Icons.check_box),
+                        title: Text('My e-mail'),
+                        subtitle: Text(user.email),
+                        leading: Icon(Icons.mail),
                         onTap: () {},
                       ),
                     ),
@@ -92,9 +76,26 @@ class _SettingsTabState extends State<SettingsTab> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: ListTile(
-                        title: Text('Placeholder'),
-                        leading: Icon(Icons.check_box),
+                        title: Text('Edit profile'),
+                        leading: Icon(Icons.person_pin),
                         onTap: () {},
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: ListTile(
+                        title: Text('Reset password'),
+                        leading: Icon(Icons.lock),
+                        onTap: () {
+                          auth.sendPasswordResetEmail(email: user.email);
+                          var snack = SnackBar(
+                            content: Text('Password reset e-mail sent'),
+                          );
+                          Scaffold.of(context).showSnackBar(snack);
+                        },
                       ),
                     ),
                     Divider(

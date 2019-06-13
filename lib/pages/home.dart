@@ -31,16 +31,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
-      appBar: AppBar(
-        // elevation: 0.0,
-        centerTitle: true,
-        title: Text(
-          'Rea:bor',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      // appBar: AppBar(
+      //   // elevation: 0.0,
+      //   centerTitle: true,
+      //   title: Text(
+      //     'Rea:bor',
+      //     style: TextStyle(color: Colors.black),
+      //   ),
+      //   backgroundColor: Colors.white,
+      // ),
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: Colors.black,
         inactiveIconColor: Colors.grey,
@@ -56,7 +55,8 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      body: _tabs[_currentIndex],
+      body: Padding(
+          padding: EdgeInsets.only(top: 50), child: _tabs[_currentIndex]),
     );
   }
 }

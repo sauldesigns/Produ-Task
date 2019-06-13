@@ -14,9 +14,16 @@ class _LoginPageState extends State<LoginPage> {
   bool _autoValidate = false;
   String _email;
   String _password;
+  bool isLoading = false;
 
   void _validateAndSubmit() async {
-    widget.auth.signIn(_email, _password);
+    setState(() {
+      isLoading = true;
+    });
+    await widget.auth.signIn(_email, _password);
+    setState(() {
+      isLoading = false;
+    });
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
@@ -88,20 +95,24 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: RoundedButton(
-                        title: 'Login',
-                        onClick: () {
-                          if (_formkey.currentState.validate()) {
-                            _formkey.currentState.save();
-                            // auth.signInAnonymously();
-                            _validateAndSubmit();
-                          } else {
-                            setState(() {
-                              _autoValidate = true;
-                            });
-                          }
-                        },
-                      ),
+                      child: isLoading == false
+                          ? RoundedButton(
+                              title: 'Login',
+                              onClick: () {
+                                if (_formkey.currentState.validate()) {
+                                  _formkey.currentState.save();
+                                  // auth.signInAnonymously();
+                                  _validateAndSubmit();
+                                } else {
+                                  setState(() {
+                                    _autoValidate = true;
+                                  });
+                                }
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
                     )
                   ],
                 ),

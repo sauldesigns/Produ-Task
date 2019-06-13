@@ -19,14 +19,16 @@ class MyApp extends StatelessWidget {
         StreamProvider<FirebaseUser>.value(
             value: FirebaseAuth.instance.onAuthStateChanged),
       ],
+      
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Book Read',
         // theme: ThemeData(
         //     textTheme: TextTheme(
         //   title: TextStyle(color: Colors.black),
         //   button: TextStyle(color: Colors.black),
         // )),
-        // initialRoute: '/',
+        initialRoute: '/',
         routes: {
           '/': (context) => RootPage(),
           '/landingpage': (context) => LandingPage(),
