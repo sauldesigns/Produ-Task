@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: Container(
         child: SingleChildScrollView(
           child: Form(
