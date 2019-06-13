@@ -1,7 +1,10 @@
+import 'package:book_read/home_tabs/books.dart';
+import 'package:book_read/home_tabs/home.dart';
+import 'package:book_read/home_tabs/profile.dart';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.auth}) : super(key: key);
@@ -10,29 +13,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+  final List<Widget> _tabs = [
+    HomeTab(),
+    BooksTab(),
+    ProfileTab(),
+    SettingsTab(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
+    // var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text('Rea:bor'),
-        backgroundColor: Colors.transparent,
+      // appBar: AppBar(
+      //   // elevation: 0.0,
+      //   centerTitle: true,
+      //   title: Text(
+      //     'Rea:bor',
+      //     style: TextStyle(color: Colors.black),
+      //   ),
+      //   backgroundColor: Colors.white,
+      // ),
+      bottomNavigationBar: FancyBottomNavigation(
+        circleColor: Colors.black,
+        inactiveIconColor: Colors.grey,
+        tabs: [
+          TabData(iconData: Icons.home, title: "Home"),
+          TabData(iconData: Icons.book, title: "Books"),
+          TabData(iconData: Icons.person, title: "Profile"),
+          TabData(iconData: Icons.settings, title: "Settings")
+        ],
+        onTabChangedListener: (position) {
+          setState(() {
+            _currentIndex = position;
+          });
+        },
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Text(user.uid),
-            RaisedButton(
-              child: Text('Signout'),
-              onPressed: () {
-                widget.auth.signOut();
-              },
-            ),
-          ],
-        ),
-      ),
+      body: Padding(
+          padding: EdgeInsets.only(top: 50), child: _tabs[_currentIndex]),
     );
   }
 }

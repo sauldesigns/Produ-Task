@@ -14,10 +14,18 @@ class _LoginPageState extends State<LoginPage> {
   bool _autoValidate = false;
   String _email;
   String _password;
+  bool isLoading = false;
 
   void _validateAndSubmit() async {
-    widget.auth.signIn(_email, _password);
-    Navigator.of(context).pushNamed('/');
+    setState(() {
+      isLoading = true;
+    });
+    await widget.auth.signIn(_email, _password);
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   }
 
   @override
@@ -30,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: Container(
         child: SingleChildScrollView(
           child: Form(
@@ -79,26 +87,32 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
                         }
                       },
                       onSaved: (value) => _password = value,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: RoundedButton(
-                        title: 'Login',
-                        onClick: () {
-                          if (_formkey.currentState.validate()) {
-                            _formkey.currentState.save();
-                            // auth.signInAnonymously();
-                            _validateAndSubmit();
-                          } else {
-                            setState(() {
-                              _autoValidate = true;
-                            });
-                          }
-                        },
-                      ),
+                      child: isLoading == false
+                          ? RoundedButton(
+                              title: 'Login',
+                              onClick: () {
+                                if (_formkey.currentState.validate()) {
+                                  _formkey.currentState.save();
+                                  // auth.signInAnonymously();
+                                  _validateAndSubmit();
+                                } else {
+                                  setState(() {
+                                    _autoValidate = true;
+                                  });
+                                }
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
                     )
                   ],
                 ),

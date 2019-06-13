@@ -17,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email;
   String _password;
   String _username;
+  bool isLoading = false;
   Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: Container(
         child: SingleChildScrollView(
           child: Form(
@@ -106,31 +107,45 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
-                      child: RoundedButton(
-                        title: 'Sign up',
-                        onClick: () async {
-                          if (_formkey.currentState.validate()) {
-                            _formkey.currentState.save();
-                            var userId =
-                                await widget.auth.signUp(_email, _password);
-                            var data = {
-                              'displayName': _username,
-                              'email': _email,
-                              'bio': '',
-                              'fname': '',
-                              'lname': '',
-                              'profile_pic': '',
-                              'uid': userId
-                            };
-                            db.collection('users').add(data);
-                            Navigator.of(context).pushNamed('/');
-                          } else {
-                            setState(() {
-                              _autoValidate = true;
-                            });
-                          }
-                        },
-                      ),
+                      child: isLoading == false
+                          ? RoundedButton(
+                              title: 'Sign up',
+                              onClick: () async {
+                                if (_formkey.currentState.validate()) {
+                                  _formkey.currentState.save();
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  var userId = await widget.auth
+                                      .signUp(_email, _password);
+                                  var data = {
+                                    'displayName': _username,
+                                    'email': _email,
+                                    'bio': '',
+                                    'fname': '',
+                                    'lname': '',
+                                    'profile_pic':
+                                        'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+                                    'uid': userId
+                                  };
+                                  db
+                                      .collection('users')
+                                      .document(userId)
+                                      .setData(data);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  Navigator.of(context).pushNamed('/');
+                                } else {
+                                  setState(() {
+                                    _autoValidate = true;
+                                  });
+                                }
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
                     )
                   ],
                 ),

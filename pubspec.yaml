@@ -24,6 +24,7 @@ dependencies:
   cloud_firestore: ^0.12.3
   firebase_core: ^0.4.0+3
   email_validator: ^1.0.0
+  fancy_bottom_navigation: ^0.3.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

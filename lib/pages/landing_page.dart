@@ -12,7 +12,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 218, 185, 1),
+      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
