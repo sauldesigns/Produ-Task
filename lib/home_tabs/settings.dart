@@ -41,10 +41,22 @@ class _SettingsTabState extends State<SettingsTab> {
                           ProfilePicture(
                             imgUrl: user.profilePic,
                             size: 60,
-                            onTap: () {},
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Text(
+                                          'Uploading...',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ));
+                              await db.uploadProfilePicture(user.uid);
+                              Navigator.of(context).pop();
+                            },
+                            isSettings: true,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 30.0),
+                            padding: EdgeInsets.only(left: 25.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
@@ -55,6 +67,10 @@ class _SettingsTabState extends State<SettingsTab> {
                                     fontSize: 25,
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Text("My Account")
                               ],
                             ),
                           ),
@@ -62,7 +78,13 @@ class _SettingsTabState extends State<SettingsTab> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 50.0),
+                      child: Divider(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0.0),
                       child: ListTile(
                         title: Text('My e-mail'),
                         subtitle: Text(user.email),
@@ -73,43 +95,37 @@ class _SettingsTabState extends State<SettingsTab> {
                     Divider(
                       color: Colors.black,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: ListTile(
-                        title: Text('Edit profile'),
-                        leading: Icon(Icons.person_pin),
-                        onTap: () {},
-                      ),
+                    ListTile(
+                      title: Text('Edit profile'),
+                      leading: Icon(Icons.person_pin),
+                      onTap: () {},
                     ),
                     Divider(
                       color: Colors.black,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: ListTile(
-                        title: Text('Reset password'),
-                        leading: Icon(Icons.lock),
-                        onTap: () {
-                          auth.sendPasswordResetEmail(email: user.email);
-                          var snack = SnackBar(
-                            content: Text('Password reset e-mail sent'),
-                          );
-                          Scaffold.of(context).showSnackBar(snack);
-                        },
-                      ),
+                    ListTile(
+                      title: Text('Reset password'),
+                      leading: Icon(Icons.lock),
+                      onTap: () {
+                        auth.sendPasswordResetEmail(email: user.email);
+                        var snack = SnackBar(
+                          content: Text('Password reset e-mail sent'),
+                        );
+                        Scaffold.of(context).showSnackBar(snack);
+                      },
                     ),
                     Divider(
                       color: Colors.black,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: ListTile(
-                        title: Text('Sign Out'),
-                        leading: Icon(Icons.exit_to_app),
-                        onTap: () {
-                          auth.signOut();
-                        },
-                      ),
+                    ListTile(
+                      title: Text('Sign Out'),
+                      leading: Icon(Icons.exit_to_app),
+                      onTap: () {
+                        auth.signOut();
+                      },
+                    ),
+                    Divider(
+                      color: Colors.black,
                     ),
                   ],
                 );

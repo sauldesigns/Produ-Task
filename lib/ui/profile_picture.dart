@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProfilePicture extends StatelessWidget {
-  const ProfilePicture({Key key, this.onTap, this.size, this.imgUrl})
+  const ProfilePicture(
+      {Key key, this.onTap, this.size, this.imgUrl, this.isSettings = false})
       : super(key: key);
   final VoidCallback onTap;
   final double size;
   final String imgUrl;
-
+  final bool isSettings;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -24,7 +25,17 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: size,
+          backgroundColor: Colors.white,
           backgroundImage: NetworkImage(imgUrl),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: isSettings == true
+                ? Container(
+                    height: 20,
+                    child: Text('Edit', style: TextStyle(color: Colors.white70)),
+                  )
+                : Container(),
+          ),
         ),
       ),
     );

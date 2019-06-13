@@ -96,6 +96,23 @@ class _ProfileTabState extends State<ProfileTab> {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
+                                        '43',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text('Posts'),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
                                         '434',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,

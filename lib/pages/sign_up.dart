@@ -17,6 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email;
   String _password;
   String _username;
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
   bool isLoading = false;
   Firestore db = Firestore.instance;
   @override
@@ -51,12 +53,17 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     TextFormField(
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
                       validator: (value) {
+                        Pattern pattern =
+                            r'^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
+                        RegExp regex = new RegExp(pattern);
+
                         if (value.isEmpty) {
                           return 'Please enter username';
-                        }
+                        } else if (!regex.hasMatch(value))
+                          return 'Not a valid username';
                         return null;
                       },
                       onSaved: (value) => _username = value,
@@ -72,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     TextFormField(
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -94,9 +101,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     TextFormField(
-                      obscureText: true,
-                      textInputAction: TextInputAction.next,
+                      obscureText: !_showPassword,
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
+                        _password = value;
+
                         if (value.isEmpty) {
                           return 'Please enter password';
                         } else if (value.length < 6) {
@@ -104,6 +113,29 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                       },
                       onSaved: (value) => _password = value,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      'Confirm Password',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      obscureText: !_showConfirmPassword,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
+                        } else if (value != _password) {
+                          return 'Passwords did not match';
+                        }
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
