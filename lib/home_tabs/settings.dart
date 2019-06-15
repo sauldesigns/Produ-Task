@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 class SettingsTab extends StatefulWidget {
   SettingsTab({Key key}) : super(key: key);
 
@@ -14,7 +14,8 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  
   final db = DatabaseService();
 
   @override
@@ -113,6 +114,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       onTap: () {
                         auth.sendPasswordResetEmail(email: user.email);
                         Flushbar(
+                          flushbarPosition: FlushbarPosition.TOP,
                           aroundPadding: EdgeInsets.all(8),
                           borderRadius: 10,
                           icon: Icon(Icons.check_circle, color: Colors.green),
@@ -129,6 +131,9 @@ class _SettingsTabState extends State<SettingsTab> {
                       leading: Icon(Icons.exit_to_app),
                       onTap: () {
                         auth.signOut();
+                        if(user.provider == 'google') {
+                          _googleSignIn.signOut();
+                        }
                       },
                     ),
                     Divider(

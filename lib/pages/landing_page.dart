@@ -1,5 +1,8 @@
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../pages/edit_profile.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -9,6 +12,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +64,28 @@ class _LandingPageState extends State<LandingPage> {
               child: RoundedButton(
                 icon: Icons.account_box,
                 title: 'Continue with Google',
-                onClick: () {},
+                onClick: () async {
+                  FirebaseUser user = await widget.auth.signInGoogle();
+                  DocumentSnapshot snap =
+                      await db.collection('users').document(user.uid).get();
+                  if (snap.data == null) {
+                    var data = {
+                      'displayName': '',
+                      'email': user.email,
+                      'bio': '',
+                      'fname': '',
+                      'lname': '',
+                      'provider': 'google',
+                      'profile_pic': user.photoUrl,
+                      'uid': user.uid
+                    };
+                    db.collection('users').document(user.uid).setData(data);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EditProfilePage(
+                              title: 'Update Account Details',
+                            )));
+                  }
+                },
               ),
             ),
             Padding(

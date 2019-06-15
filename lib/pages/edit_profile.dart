@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 
 class EditProfilePage extends StatefulWidget {
-  EditProfilePage({Key key}) : super(key: key);
-
+  EditProfilePage({Key key, this.title = 'Edit Profile'}) : super(key: key);
+  final String title;
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
@@ -33,7 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
         title: Text(
-          'Edit Profile',
+          widget.title,
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -186,35 +186,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       setState(() {
                                         isLoading = false;
                                       });
-                                      // var snack = SnackBar(
-                                      //   content: Row(
-                                      //     crossAxisAlignment:
-                                      //         CrossAxisAlignment.center,
-                                      //     children: <Widget>[
-                                      //       connectionStatus ==
-                                      //               ConnectivityStatus.Offline
-                                      //           ? Icon(
-                                      //               Icons.error,
-                                      //               color: Colors.red,
-                                      //             )
-                                      //           : Icon(
-                                      //               Icons.check_circle,
-                                      //               color: Colors.green,
-                                      //             ),
-                                      //       Padding(
-                                      //         padding: const EdgeInsets.only(
-                                      //             left: 10.0),
-                                      //         child: Text(connectionStatus ==
-                                      //                 ConnectivityStatus.Offline
-                                      //             ? 'Device is offline. Data will upload once device is back online'
-                                      //             : 'Successfully updated user account'),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // );
+
                                       if (connectionStatus ==
                                           ConnectivityStatus.Offline) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                '/home',
+                                                (Route<dynamic> route) =>
+                                                    false);
                                         Flushbar(
+                                          flushbarPosition:
+                                              FlushbarPosition.TOP,
                                           aroundPadding: EdgeInsets.all(8),
                                           borderRadius: 10,
                                           backgroundColor: Colors.red,
@@ -223,13 +205,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           icon: Icon(Icons.error,
                                               color: Colors.white),
                                         )..show(context);
-
-                                        // Scaffold.of(context)
-                                        //     .showSnackBar(snack);
                                       } else {
-                                        // Scaffold.of(context)
-                                        //     .showSnackBar(snack);
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                '/',
+                                                (Route<dynamic> route) =>
+                                                    false);
                                         Flushbar(
+                                          flushbarPosition:
+                                              FlushbarPosition.TOP,
                                           aroundPadding: EdgeInsets.all(8),
                                           borderRadius: 10,
                                           message:
@@ -238,7 +222,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             Icons.check_circle,
                                             color: Colors.green,
                                           ),
-                                          
                                         )..show(context);
                                       }
                                     } else {

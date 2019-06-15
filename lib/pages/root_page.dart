@@ -18,10 +18,13 @@ class _RootPageState extends State<RootPage> {
     bool loggedIn = user != null;
 
     if (loggedIn) {
-      return HomePage(auth: new Auth());
-    } 
-    else {
-      return LandingPage();
+      return HomePage(
+        auth: new Auth(),
+      );
+    } else {
+      return LandingPage(
+        auth: new Auth(),
+      );
     }
   }
 }
