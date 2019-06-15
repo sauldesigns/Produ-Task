@@ -19,6 +19,7 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 50),
       child: Center(
         child: StreamBuilder<User>(
             stream: db.streamHero(user.uid),
@@ -60,25 +61,13 @@ class _ProfileTabState extends State<ProfileTab> {
                                     top: 10.0, bottom: 25.0),
                                 child: Text(user.bio),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Status:',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                    'Available',
-                                    style: TextStyle(
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  )
-                                ],
-                              ),
+                              RaisedButton(
+                                  child: Text('Follow'),
+                                  textColor: Colors.white,
+                                  color: Colors.black,
+                                  onPressed: () {},
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))),
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: Divider(

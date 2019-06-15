@@ -1,9 +1,12 @@
+import 'package:book_read/enums/connectivity_status.dart';
+import 'package:book_read/pages/edit_profile.dart';
 import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';
 import 'package:book_read/pages/login.dart';
 import 'package:book_read/pages/root_page.dart';
 import 'package:book_read/pages/sign_up.dart';
 import 'package:book_read/services/auth.dart';
+import 'package:book_read/services/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,8 +21,11 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider<FirebaseUser>.value(
             value: FirebaseAuth.instance.onAuthStateChanged),
+        StreamProvider<ConnectivityStatus>.controller(
+          builder: (context) =>
+              ConnectivityService().connectionStatusController,
+        )
       ],
-      
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Book Read',
@@ -38,7 +44,8 @@ class MyApp extends StatelessWidget {
           '/signup': (context) => SignUpPage(auth: new Auth()),
           '/home': (context) => HomePage(
                 auth: new Auth(),
-              )
+              ),
+          '/editprofile': (context) => EditProfilePage()
         },
       ),
     );

@@ -20,7 +20,7 @@ class ProfilePicture extends StatelessWidget {
           borderRadius: BorderRadius.circular(60),
           boxShadow: [
             BoxShadow(
-                blurRadius: 10.0, color: Colors.black54, offset: Offset(0, 5)),
+                blurRadius: 10.0, color: Colors.grey, offset: Offset(0, 5)),
           ],
         ),
         child: CircleAvatar(
@@ -32,7 +32,8 @@ class ProfilePicture extends StatelessWidget {
             child: isSettings == true
                 ? Container(
                     height: 20,
-                    child: Text('Edit', style: TextStyle(color: Colors.white70)),
+                    child:
+                        Text('Edit', style: TextStyle(color: Colors.white70)),
                   )
                 : Container(),
           ),

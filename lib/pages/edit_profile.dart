@@ -1,17 +1,16 @@
-import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
 
-class SignUpPage extends StatefulWidget {
-  SignUpPage({Key key, this.auth}) : super(key: key);
-  final BaseAuth auth;
+class EditProfilePage extends StatefulWidget {
+  EditProfilePage({Key key}) : super(key: key);
 
-  _SignUpPageState createState() => _SignUpPageState();
+  _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   final _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
   String _email;
@@ -23,15 +22,17 @@ class _SignUpPageState extends State<SignUpPage> {
   Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text('Sign Up', style: TextStyle(color: Colors.black)),
         centerTitle: true,
-        elevation: 0.0,
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
       ),
-      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: SingleChildScrollView(
         child: Form(
           key: this._formkey,
@@ -45,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Username',
+                    'First Name',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -71,7 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 30,
                   ),
                   Text(
-                    'E-mail',
+                    'Last Name',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -83,8 +84,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Please enter email';
-                      } else if (EmailValidator.validate(value) == false) {
-                        return 'Not a valid email';
                       }
                     },
                     onSaved: (value) => _email = value,
@@ -147,8 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                var userId =
-                                    await widget.auth.signUp(_email, _password);
+
                                 var data = {
                                   'displayName': _username,
                                   'email': _email,
@@ -157,11 +155,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   'lname': '',
                                   'profile_pic':
                                       'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                  'uid': userId
+                                  'uid': user.uid
                                 };
                                 db
                                     .collection('users')
-                                    .document(userId)
+                                    .document(user.uid)
                                     .setData(data);
                                 setState(() {
                                   isLoading = false;

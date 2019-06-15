@@ -1,5 +1,6 @@
-import 'package:book_read/pages/book.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/ui/custom_card.dart';
+
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
@@ -13,28 +14,28 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        child: Text('get book'),
-        onPressed: () async {
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    content: Text(
-                      'Loading...',
-                      textAlign: TextAlign.center,
-                    ),
-                  ));
-          var _bookData = await db.getBookData('Lord of The Rings');
-          Navigator.of(context).pop();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => BookDataPage(
-                    bookData: _bookData,
-                  ),
-            ),
-          );
-        },
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 70),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Text('Le Book',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+              ),
+            ],
+          ),
+          Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: CustomCard(
+                onTap: () {},
+              ))
+        ],
       ),
     );
   }

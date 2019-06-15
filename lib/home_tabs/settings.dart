@@ -20,6 +20,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 50.0),
       child: Center(
         child: StreamBuilder<User>(
             stream: db.streamHero(user.uid),
@@ -98,7 +99,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     ListTile(
                       title: Text('Edit profile'),
                       leading: Icon(Icons.person_pin),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/editprofile');
+                      },
                     ),
                     Divider(
                       color: Colors.black,
