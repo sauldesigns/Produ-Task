@@ -1,8 +1,12 @@
+import 'package:book_read/enums/connectivity_status.dart';
+import 'package:book_read/models/user.dart';
+import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flushbar/flushbar.dart';
 
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({Key key}) : super(key: key);
@@ -13,16 +17,17 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  String _email;
-  String _password;
-  String _username;
-  bool _showPassword = false;
-  bool _showConfirmPassword = false;
+  String _fname = '';
+  String _lname = '';
+  String _username = '';
+  String _bio = '';
   bool isLoading = false;
   Firestore db = Firestore.instance;
+  final _dbServ = DatabaseService();
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -33,154 +38,228 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: this._formkey,
-          autovalidate: _autoValidate,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.only(top: 70),
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'First Name',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextFormField(
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      Pattern pattern =
-                          r'^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
-                      RegExp regex = new RegExp(pattern);
-
-                      if (value.isEmpty) {
-                        return 'Please enter username';
-                      } else if (!regex.hasMatch(value))
-                        return 'Not a valid username';
-                      return null;
-                    },
-                    onSaved: (value) => _username = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Last Name',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextFormField(
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter email';
-                      }
-                    },
-                    onSaved: (value) => _email = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextFormField(
-                    obscureText: !_showPassword,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      _password = value;
-
-                      if (value.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 6) {
-                        return 'Password is too short';
-                      }
-                    },
-                    onSaved: (value) => _password = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Confirm Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  TextFormField(
-                    obscureText: !_showConfirmPassword,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 6) {
-                        return 'Password is too short';
-                      } else if (value != _password) {
-                        return 'Passwords did not match';
-                      }
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: isLoading == false
-                        ? RoundedButton(
-                            title: 'Sign up',
-                            onClick: () async {
-                              if (_formkey.currentState.validate()) {
-                                _formkey.currentState.save();
-                                setState(() {
-                                  isLoading = true;
-                                });
-
-                                var data = {
-                                  'displayName': _username,
-                                  'email': _email,
-                                  'bio': '',
-                                  'fname': '',
-                                  'lname': '',
-                                  'profile_pic':
-                                      'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                  'uid': user.uid
-                                };
-                                db
-                                    .collection('users')
-                                    .document(user.uid)
-                                    .setData(data);
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Navigator.of(context).pushNamed('/');
-                              } else {
-                                setState(() {
-                                  _autoValidate = true;
-                                });
-                              }
-                            },
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(),
+      body: StreamBuilder<User>(
+        stream: _dbServ.streamHero(user.uid),
+        builder: (context, snapshot) {
+          var userData = snapshot.data;
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return SingleChildScrollView(
+              child: Form(
+                key: this._formkey,
+                autovalidate: _autoValidate,
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 70),
+                    width: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Username',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
                           ),
-                  )
-                ],
+                        ),
+                        TextFormField(
+                          initialValue: userData.username,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            Pattern pattern =
+                                r'^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
+                            RegExp regex = new RegExp(pattern);
+                            if (value.isEmpty) {
+                              return 'Please enter username';
+                            } else if (!regex.hasMatch(value))
+                              return 'Not a valid username';
+                            return null;
+                          },
+                          onSaved: (value) => _username = value,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'First Name',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        TextFormField(
+                          initialValue: userData.fname,
+                          textCapitalization: TextCapitalization.words,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            Pattern pattern =
+                                r'^(?=.{1,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
+                            RegExp regex = new RegExp(pattern);
+
+                            if (value.isEmpty) {
+                              return 'Please enter first name';
+                            } else if (!regex.hasMatch(value))
+                              return 'Invalid format';
+                            return null;
+                          },
+                          onSaved: (value) => _fname = value,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'Last Name',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        TextFormField(
+                          initialValue: userData.lname,
+                          textCapitalization: TextCapitalization.words,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            Pattern pattern =
+                                r'^(?=.{1,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
+                            RegExp regex = new RegExp(pattern);
+
+                            if (value.isEmpty) {
+                              return 'Please enter last name';
+                            } else if (!regex.hasMatch(value))
+                              return 'Invalid format';
+                            return null;
+                          },
+                          onSaved: (value) => _lname = value,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'Bio',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        TextFormField(
+                          initialValue: userData.bio,
+                          minLines: 4,
+                          maxLines: 8,
+                          textCapitalization: TextCapitalization.sentences,
+                          maxLength: 160,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            return null;
+                          },
+                          onSaved: (value) => _bio = value,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: isLoading == false
+                              ? RoundedButton(
+                                  title: 'Submit',
+                                  onClick: () async {
+                                    if (_formkey.currentState.validate()) {
+                                      _formkey.currentState.save();
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+
+                                      var data = {
+                                        'displayName': _username,
+                                        'bio': _bio,
+                                        'fname': _fname,
+                                        'lname': _lname,
+                                      };
+                                      db
+                                          .collection('users')
+                                          .document(user.uid)
+                                          .updateData(data);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      // var snack = SnackBar(
+                                      //   content: Row(
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.center,
+                                      //     children: <Widget>[
+                                      //       connectionStatus ==
+                                      //               ConnectivityStatus.Offline
+                                      //           ? Icon(
+                                      //               Icons.error,
+                                      //               color: Colors.red,
+                                      //             )
+                                      //           : Icon(
+                                      //               Icons.check_circle,
+                                      //               color: Colors.green,
+                                      //             ),
+                                      //       Padding(
+                                      //         padding: const EdgeInsets.only(
+                                      //             left: 10.0),
+                                      //         child: Text(connectionStatus ==
+                                      //                 ConnectivityStatus.Offline
+                                      //             ? 'Device is offline. Data will upload once device is back online'
+                                      //             : 'Successfully updated user account'),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // );
+                                      if (connectionStatus ==
+                                          ConnectivityStatus.Offline) {
+                                        Flushbar(
+                                          aroundPadding: EdgeInsets.all(8),
+                                          borderRadius: 10,
+                                          backgroundColor: Colors.red,
+                                          message:
+                                              'Device is offline. Data will upload once device is back online',
+                                          icon: Icon(Icons.error,
+                                              color: Colors.white),
+                                        )..show(context);
+
+                                        // Scaffold.of(context)
+                                        //     .showSnackBar(snack);
+                                      } else {
+                                        // Scaffold.of(context)
+                                        //     .showSnackBar(snack);
+                                        Flushbar(
+                                          aroundPadding: EdgeInsets.all(8),
+                                          borderRadius: 10,
+                                          message:
+                                              'Successfully updated user account',
+                                          icon: Icon(
+                                            Icons.check_circle,
+                                            color: Colors.green,
+                                          ),
+                                          
+                                        )..show(context);
+                                      }
+                                    } else {
+                                      setState(() {
+                                        _autoValidate = true;
+                                      });
+                                    }
+                                  },
+                                )
+                              : Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
+            );
+          }
+        },
       ),
     );
   }

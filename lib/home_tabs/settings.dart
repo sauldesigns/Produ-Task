@@ -4,6 +4,7 @@ import 'package:book_read/ui/profile_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flushbar/flushbar.dart';
 
 class SettingsTab extends StatefulWidget {
   SettingsTab({Key key}) : super(key: key);
@@ -111,10 +112,13 @@ class _SettingsTabState extends State<SettingsTab> {
                       leading: Icon(Icons.lock),
                       onTap: () {
                         auth.sendPasswordResetEmail(email: user.email);
-                        var snack = SnackBar(
-                          content: Text('Password reset e-mail sent'),
-                        );
-                        Scaffold.of(context).showSnackBar(snack);
+                        Flushbar(
+                          aroundPadding: EdgeInsets.all(8),
+                          borderRadius: 10,
+                          icon: Icon(Icons.check_circle, color: Colors.green),
+                          message:
+                              'Password reset email will be sent. Check inbox or spam mail.',
+                        )..show(context);
                       },
                     ),
                     Divider(
