@@ -58,7 +58,10 @@ class _ProfileTabState extends State<ProfileTab> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 10.0, bottom: 25.0),
+                                    top: 10.0,
+                                    left: 50,
+                                    right: 50,
+                                    bottom: 25.0),
                                 child: Text(user.bio),
                               ),
                               RaisedButton(
