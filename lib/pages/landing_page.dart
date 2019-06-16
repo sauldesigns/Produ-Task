@@ -2,7 +2,6 @@ import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../pages/edit_profile.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -70,7 +69,7 @@ class _LandingPageState extends State<LandingPage> {
                       await db.collection('users').document(user.uid).get();
                   if (snap.data == null) {
                     var data = {
-                      'displayName': '',
+                      'displayName': user.displayName.replaceAll(' ', ''),
                       'email': user.email,
                       'bio': '',
                       'fname': '',
@@ -80,10 +79,6 @@ class _LandingPageState extends State<LandingPage> {
                       'uid': user.uid
                     };
                     db.collection('users').document(user.uid).setData(data);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EditProfilePage(
-                              title: 'Update Account Details',
-                            )));
                   }
                 },
               ),

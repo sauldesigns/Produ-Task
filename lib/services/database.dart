@@ -41,6 +41,10 @@ class DatabaseService {
     return bookData;
   }
 
+  Future<void> deleteUser(String uid) async {
+    _db.collection('users').document(uid).delete();
+  }
+
   Future<void> uploadProfilePicture(String uid) async {
     File _image = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);

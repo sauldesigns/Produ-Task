@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 class SettingsTab extends StatefulWidget {
   SettingsTab({Key key}) : super(key: key);
 
@@ -15,7 +16,7 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
-  
+
   final db = DatabaseService();
 
   @override
@@ -131,7 +132,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       leading: Icon(Icons.exit_to_app),
                       onTap: () {
                         auth.signOut();
-                        if(user.provider == 'google') {
+                        if (user.provider == 'google') {
                           _googleSignIn.signOut();
                         }
                       },
@@ -139,6 +140,47 @@ class _SettingsTabState extends State<SettingsTab> {
                     Divider(
                       color: Colors.black,
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: RaisedButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('Delete'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Delete account'),
+                                  content: Text(
+                                      'Are you sure you want to delete this account. All content will be deleted and cannot be retrieved once deleted.'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Delete'),
+                                      onPressed: () async {
+                                        db.deleteUser(user.uid);
+                                        FirebaseUser _user =
+                                            await auth.currentUser();
+                                        _user.delete();
+                                        if (user.provider == 'google') {
+                                          _googleSignIn.signOut();
+                                        }
+                                      },
+                                    ),
+                                    FlatButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                  ],
+                                );
+                              });
+                        },
+                      ),
+                    )
                   ],
                 );
               }

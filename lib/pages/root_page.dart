@@ -1,6 +1,7 @@
 import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';
 import 'package:book_read/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
+  Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
