@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         inactiveIconColor: Colors.grey,
         tabs: [
           TabData(iconData: Icons.home, title: "Home"),
-          TabData(iconData: Icons.book, title: "Books"),
+          TabData(iconData: Icons.search, title: "Search"),
           TabData(iconData: Icons.person, title: "Profile"),
           TabData(iconData: Icons.settings, title: "Settings")
         ],

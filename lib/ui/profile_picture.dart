@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture(
@@ -26,7 +27,13 @@ class ProfilePicture extends StatelessWidget {
         child: CircleAvatar(
           radius: size,
           backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(imgUrl),
+          backgroundImage: imgUrl == null
+              ? null
+              : AdvancedNetworkImage(
+                  imgUrl,
+                  useDiskCache: true,
+                  cacheRule: CacheRule(maxAge: const Duration(days: 7)),
+                ),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: isSettings == true
