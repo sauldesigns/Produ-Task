@@ -1,3 +1,4 @@
+import 'package:book_read/ui/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 
 class BooksTab extends StatefulWidget {
@@ -9,9 +10,28 @@ class BooksTab extends StatefulWidget {
 class _BooksTabState extends State<BooksTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Books'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Search',
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(),
+              );
+            },
+          )
+        ],
       ),
     );
   }
