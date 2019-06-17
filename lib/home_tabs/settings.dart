@@ -169,6 +169,9 @@ class _SettingsTabState extends State<SettingsTab> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                                 title: Text('Delete account'),
                                 content: Text(
                                     'Are you sure you want to delete this account. All content will be deleted and cannot be retrieved once deleted.'),

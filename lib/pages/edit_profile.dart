@@ -197,7 +197,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           borderRadius: 10,
                                           backgroundColor: Colors.red,
                                           message:
-                                              'Device is offline. Data will upload once device is back online',
+                                              'Device is offline. Data will uploaded once device is back online',
                                           icon: Icon(Icons.error,
                                               color: Colors.white),
                                         )..show(context);
