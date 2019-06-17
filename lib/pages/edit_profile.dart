@@ -189,11 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                                       if (connectionStatus ==
                                           ConnectivityStatus.Offline) {
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                '/home',
-                                                (Route<dynamic> route) =>
-                                                    false);
+                                        Navigator.of(context).pop();
                                         Flushbar(
                                           flushbarPosition:
                                               FlushbarPosition.TOP,
@@ -206,11 +202,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               color: Colors.white),
                                         )..show(context);
                                       } else {
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                '/',
-                                                (Route<dynamic> route) =>
-                                                    false);
+                                        Navigator.of(context).pop();
                                         Flushbar(
                                           flushbarPosition:
                                               FlushbarPosition.TOP,
