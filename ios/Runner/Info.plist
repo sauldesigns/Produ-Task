@@ -41,6 +41,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To be able to upload profile picture, or edit it.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To be able to upload profile picture, or edit it.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To be able to upload profile picture, or edit it.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -48,10 +54,9 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				
-				<string>com.googleusercontent.apps.986755834918-0qs0bpqkk2c9kmjl887fm2iq9qsufrl2</string>
+				<string>com.googleusercontent.apps.986755834918-m79on1tlhn5kdl4b3jpqs8a5levichpj</string>
 			</array>
 		</dict>
-</array>
+	</array>
 </dict>
 </plist>
