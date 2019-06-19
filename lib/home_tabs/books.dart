@@ -12,6 +12,7 @@ class _BooksTabState extends State<BooksTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(

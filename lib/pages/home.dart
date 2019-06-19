@@ -10,6 +10,7 @@ import 'package:book_read/ui/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 // import 'package:provider/provider.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
@@ -39,6 +40,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     // var user = Provider.of<FirebaseUser>(context);
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       // appBar: AppBar(
       //   // elevation: 0.0,
