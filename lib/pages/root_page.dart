@@ -28,6 +28,7 @@ class _RootPageState extends State<RootPage> {
     if (loggedIn) {
       return StreamProvider<User>.value(
           value: _db.streamHero(user.uid),
+          initialData: User.initialData(),
           child: HomePage(
             auth: new Auth(),
           ));

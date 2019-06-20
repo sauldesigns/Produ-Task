@@ -1,7 +1,9 @@
+import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/custom_card.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
   HomeTab({Key key}) : super(key: key);
@@ -14,6 +16,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    var _userDb = Provider.of<User>(context);
     return SingleChildScrollView(
       padding: EdgeInsets.only(top: 70),
       child: Column(
@@ -33,6 +36,7 @@ class _HomeTabState extends State<HomeTab> {
           Padding(
               padding: const EdgeInsets.all(20.0),
               child: CustomCard(
+                backgroundImage: _userDb.profilePic,
                 onTap: () {},
               ))
         ],

@@ -30,7 +30,10 @@ class CustomCard extends StatelessWidget {
           color: color,
           image: backgroundImage == null
               ? null
-              : DecorationImage(image: NetworkImage(backgroundImage)),
+              : DecorationImage(
+                  image: NetworkImage(backgroundImage),
+                  fit: BoxFit.cover,
+                ),
           borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: [
             BoxShadow(
@@ -39,6 +42,13 @@ class CustomCard extends StatelessWidget {
               offset: Offset(0, 5),
             )
           ]),
+      child: Container(
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+      ),
     );
   }
 }

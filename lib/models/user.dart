@@ -36,4 +36,16 @@ class User {
       bio: data['bio'] ?? 'Bio',
     );
   }
+  factory User.initialData() {
+    return User(
+        uid: null,
+        username: '',
+        fname: '',
+        lname: '',
+        email: '',
+        provider: '',
+        profilePic:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png',
+        bio: '');
+  }
 }
