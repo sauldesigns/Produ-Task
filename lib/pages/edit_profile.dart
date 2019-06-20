@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter/services.dart';
 
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({Key key, this.title = 'Edit Profile'}) : super(key: key);
@@ -29,11 +28,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+    
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
+        brightness: Brightness.light,
         centerTitle: true,
         title: Text(
           widget.title,

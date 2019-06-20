@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         StreamProvider<ConnectivityStatus>.controller(
           builder: (context) =>
               ConnectivityService().connectionStatusController,
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
