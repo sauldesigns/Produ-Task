@@ -1,6 +1,9 @@
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth}) : super(key: key);
@@ -9,8 +12,11 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: SingleChildScrollView(
@@ -60,7 +66,24 @@ class _LandingPageState extends State<LandingPage> {
               child: RoundedButton(
                 icon: Icons.account_box,
                 title: 'Continue with Google',
-                onClick: () {},
+                onClick: () async {
+                  FirebaseUser user = await widget.auth.signInGoogle();
+                  DocumentSnapshot snap =
+                      await db.collection('users').document(user.uid).get();
+                  if (snap.data == null) {
+                    var data = {
+                      'displayName': user.displayName.replaceAll(' ', ''),
+                      'email': user.email,
+                      'bio': '',
+                      'fname': '',
+                      'lname': '',
+                      'provider': 'google',
+                      'profile_pic': user.photoUrl,
+                      'uid': user.uid
+                    };
+                    db.collection('users').document(user.uid).setData(data);
+                  }
+                },
               ),
             ),
             Padding(

@@ -2,6 +2,7 @@ import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.auth}) : super(key: key);
@@ -30,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
@@ -10,6 +11,8 @@ abstract class BaseAuth {
   Future<FirebaseUser> getCurrentUser();
 
   Future<void> sendEmailVerification();
+
+  Future<FirebaseUser> signInGoogle();
 
   Future<void> signOut();
 
@@ -21,6 +24,7 @@ abstract class BaseAuth {
 class Auth implements BaseAuth {
   Firestore db = Firestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<String> signIn(String email, String password) async {
     // var user = Provider.of<FirebaseUser>(context);
@@ -47,6 +51,18 @@ class Auth implements BaseAuth {
   Future<void> sendEmailVerification() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.sendEmailVerification();
+  }
+
+  Future<FirebaseUser> signInGoogle() async {
+    GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    GoogleSignInAuthentication auth = await googleSignInAccount.authentication;
+
+    FirebaseUser user = await _firebaseAuth.signInWithCredential(
+      GoogleAuthProvider.getCredential(
+          accessToken: auth.accessToken, idToken: auth.idToken),
+    );
+
+    return user;
   }
 
   Future<bool> isEmailVerified() async {
