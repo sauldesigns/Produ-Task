@@ -26,14 +26,14 @@ class User {
 
     return User(
       uid: doc.documentID,
-      username: data['displayName'] ?? 'johnsmith',
-      fname: data['fname'] ?? 'John',
-      lname: data['lname'] ?? 'Smith',
-      email: data['email'] ?? 'johnsmith@email.com',
+      username: data['displayName'] ?? 'loading...',
+      fname: data['fname'] ?? '...',
+      lname: data['lname'] ?? '...',
+      email: data['email'] ?? '...',
       provider: data['provider'] ?? 'email',
       profilePic: data['profile_pic'] ??
           'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png',
-      bio: data['bio'] ?? 'Bio',
+      bio: data['bio'] ?? 'loading...',
     );
   }
   factory User.initialData() {
@@ -45,7 +45,7 @@ class User {
         email: '',
         provider: '',
         profilePic:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png',
+            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
         bio: '');
   }
 }
