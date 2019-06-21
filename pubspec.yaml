@@ -31,6 +31,8 @@ dependencies:
   connectivity: ^0.4.3+2
   flushbar: ^1.7.0
   google_sign_in: ^4.0.2
+  intl: any
+
   # flutter_advanced_networkimage: ^0.4.15
 
   # The following adds the Cupertino Icons font to your application.

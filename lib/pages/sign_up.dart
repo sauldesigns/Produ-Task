@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.auth}) : super(key: key);
@@ -36,8 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
     if (user != null) {
       Navigator.of(context).pop();
     }
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

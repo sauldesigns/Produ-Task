@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:book_read/models/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import '../models/user.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +18,15 @@ class DatabaseService {
     var ref = _db.collection('users').document(uid);
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
+
+  Stream<List<Book>> streamWeapons(FirebaseUser user) {
+    var ref = _db.collection('users').document(user.uid).collection('books').orderBy('created_at', descending: true);
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Book.fromFirestore(doc)).toList());
+    
+  }
+
 
   Future getBookData(String query) async {
     var response = await http.get(

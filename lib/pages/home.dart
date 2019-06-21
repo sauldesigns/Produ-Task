@@ -3,6 +3,7 @@ import 'package:book_read/home_tabs/books.dart';
 import 'package:book_read/home_tabs/home.dart';
 import 'package:book_read/home_tabs/profile.dart';
 import 'package:book_read/home_tabs/settings.dart';
+import 'package:book_read/models/book.dart';
 // import 'package:book_read/models/user.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/database.dart';
@@ -10,9 +11,9 @@ import 'package:book_read/ui/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 // import 'package:provider/provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.auth}) : super(key: key);
@@ -39,9 +40,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    // var user = Provider.of<FirebaseUser>(context);
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+    var user = Provider.of<FirebaseUser>(context);
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       // appBar: AppBar(
       //   // elevation: 0.0,
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> {
       //     }),
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: Colors.black,
+        textColor: Colors.black,
         inactiveIconColor: Colors.grey,
         tabs: [
           TabData(iconData: Icons.home, title: "Home"),
@@ -98,7 +100,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: connectionStatus == ConnectivityStatus.Offline
           ? OfflineMessage()
-          : _tabs[_currentIndex],
+          : StreamProvider<List<Book>>.value( 
+            value: db.streamWeapons(user),
+            child: _tabs[_currentIndex],)
     );
   }
 }
