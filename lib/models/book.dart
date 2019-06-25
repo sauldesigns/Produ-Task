@@ -13,8 +13,8 @@ class Book {
     
     return Book(
       id: doc.documentID,
-      title: data['title'] ?? '',
-      createdAt: data['created_at'],
+      title: data['content'] ?? '',
+      createdAt: data['createdat'],
       coverImg: data['cover_img'] ?? ''
     );
   }

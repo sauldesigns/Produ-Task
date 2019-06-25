@@ -1,8 +1,8 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatelessWidget {
-  const CustomCard(
+class AddCard extends StatelessWidget {
+  const AddCard(
       {Key key,
       this.backgroundImage,
       this.onTap,
@@ -48,22 +48,15 @@ class CustomCard extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 blurRadius: blurRadius,
-                color: Colors.grey[300],
+                color: Colors.grey,
                 offset: Offset(0, 5),
               )
             ]),
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: title,
-                ),
-              ],
-            ),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 60,
           ),
         ),
       ),

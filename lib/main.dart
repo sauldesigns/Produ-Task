@@ -3,6 +3,7 @@ import 'package:book_read/pages/edit_profile.dart';
 import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';
 import 'package:book_read/pages/login.dart';
+import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/pages/root_page.dart';
 import 'package:book_read/pages/sign_up.dart';
 import 'package:book_read/services/auth.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomePage(
                 auth: new Auth(),
               ),
-          '/editprofile': (context) => EditProfilePage()
+          '/editprofile': (context) => EditProfilePage(),
+          '/new_task': (context) => NewTaskPage(),
         },
       ),
     );
