@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:book_read/models/book.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
+import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +21,16 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final db = DatabaseService();
   final Firestore database = Firestore.instance;
-
+  List listColors = [
+    Colors.blue,
+    Colors.purple,
+    Colors.green,
+    Colors.red,
+    Colors.orange,
+    Colors.blueGrey,
+    Colors.amber,
+    Colors.indigo,
+  ];
   @override
   Widget build(BuildContext context) {
     var _userDb = Provider.of<User>(context);
@@ -93,35 +105,112 @@ class _HomeTabState extends State<HomeTab> {
                     blurRadius: 10,
                     color: Colors.blue,
                     onTap: () {
-                      Navigator.of(context).pushNamed('/new_task');
-                      // var data = {
-                      //   'title': 'Book',
-                      //   'uid': _userDb.uid,
-                      //   'created_at': DateTime.now(),
-                      //   'cover_img': '',
-                      // };
-
-                      // database
-                      //     .collection('users')
-                      //     .document(_userDb.uid)
-                      //     .collection('books')
-                      //     .add(data);
+                      var data = {
+                        'content': '',
+                        'color': Random().nextInt(7),
+                        'createdat': DateTime.now(),
+                        'done': false,
+                        'uid': _userDb.uid,
+                      };
+                      database.collection('category').add(data);
                     },
                   );
                 } else {
+                  Book book = _books[index - 1];
                   return CustomCard(
                     blurRadius: 10,
+                    color: listColors[book.color],
                     date: DateFormat('dd MMMM, yyyy')
                         .format(_books[index - 1].createdAt.toDate()),
                     numPages: 2,
-                    title: Text(
-                      _books[index - 1].title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
+                    title: book.done == false
+                        ? TaskTextField(
+                            doc: book,
+                            type: 'category',
+                            content: book.title,
+                          )
+                        : Text(
+                            _books[index - 1].title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
                     onTap: () {},
+                    onLongPress: () {
+                      showBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15, bottom: 5),
+                                  child: Text('Change Color'),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                                  child: Container(
+                                    height: 40,
+                                    child: ListView.builder(
+                                      itemCount: listColors.length,
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.only(left: 10),
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            database
+                                                .collection('category')
+                                                .document(book.id)
+                                                .updateData({'color': index});
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.only(right: 15),
+                                            child: CircleAvatar(
+                                              backgroundColor:
+                                                  listColors[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.create),
+                                  title: Text('Edit'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    database
+                                        .collection('category')
+                                        .document(book.id)
+                                        .updateData({'done': !book.done});
+                                  },
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.delete),
+                                  title: Text('Delete'),
+                                  onTap: () {
+                                    database
+                                        .collection('category')
+                                        .document(book.id)
+                                        .delete();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                   );
                 }
               },

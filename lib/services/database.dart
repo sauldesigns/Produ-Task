@@ -20,7 +20,7 @@ class DatabaseService {
   }
 
   Stream<List<Book>> streamWeapons(FirebaseUser user) {
-    var ref = _db.collection('category').where('uid', isEqualTo: user.uid);
+    var ref = _db.collection('category').where('uid', isEqualTo: user.uid).orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Book.fromFirestore(doc)).toList());

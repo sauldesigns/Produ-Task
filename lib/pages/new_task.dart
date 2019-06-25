@@ -60,8 +60,10 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   padding: EdgeInsets.only(top: 30),
                   child: RoundedButton(
                     title: 'Submit',
-                    onClick: () {
+                    onClick: ()  {
+                      _formkey.currentState.save();
                       if (_formkey.currentState.validate()) {
+                        
                         var data = {
                           'content': _task,
                           'color': Random().nextInt(7),
@@ -70,6 +72,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           'uid': _user.uid,
                         };
                         _db.collection('category').add(data);
+                        Navigator.of(context).pop();
                       } else {
                         setState(() {
                           _autoValidate = true;

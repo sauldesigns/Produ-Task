@@ -11,6 +11,7 @@ class CustomCard extends StatelessWidget {
       this.title,
       this.date,
       this.numPages,
+      this.onLongPress,
       this.content,
       this.height = 250,
       this.width = 200,
@@ -18,11 +19,12 @@ class CustomCard extends StatelessWidget {
       this.color = Colors.white})
       : super(key: key);
   final String backgroundImage;
-  final Text title;
+  final Widget title;
   final String content;
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
   final String date;
   final int numPages;
   final double blurRadius;
@@ -33,7 +35,9 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
+      onLongPress: onLongPress,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
         height: height,
         width: width,
         decoration: BoxDecoration(
