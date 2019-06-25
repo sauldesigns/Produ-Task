@@ -18,7 +18,6 @@ class _LandingPageState extends State<LandingPage> {
     // SystemChrome.setSystemUIOverlayStyle(
     //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
-    
       // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: SingleChildScrollView(
         child: Column(
@@ -29,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      'Rea:bor',
+                      'Produ:Task',
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w500,
@@ -37,9 +36,9 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 15.0, left: 50, right: 50),
                         child: Text(
-                            'Share your favorite books and inspiration with your neighbors')),
+                            'Create personal tasks, or share them with others.')),
                   ],
                 ),
               ),
