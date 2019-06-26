@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:book_read/models/book.dart';
+import 'package:book_read/models/category.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -19,11 +19,11 @@ class DatabaseService {
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
-  Stream<List<Book>> streamWeapons(FirebaseUser user) {
+  Stream<List<Category>> streamWeapons(FirebaseUser user) {
     var ref = _db.collection('category').where('uid', isEqualTo: user.uid).orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Book.fromFirestore(doc)).toList());
+        list.documents.map((doc) => Category.fromFirestore(doc)).toList());
     
   }
 

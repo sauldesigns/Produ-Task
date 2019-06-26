@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:book_read/models/book.dart';
+import 'package:book_read/models/category.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
@@ -34,7 +33,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     var _userDb = Provider.of<User>(context);
-    var _books = Provider.of<List<Book>>(context);
+    var _category = Provider.of<List<Category>>(context);
     return Scaffold(
       // appBar: AppBar(
 
@@ -95,7 +94,7 @@ class _HomeTabState extends State<HomeTab> {
                 physics: ScrollPhysics(),
                 padding:
                     EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 45),
-                itemCount: _books == null ? 1 : _books.length + 1,
+                itemCount: _category == null ? 1 : _category.length + 1,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 20,
@@ -118,12 +117,12 @@ class _HomeTabState extends State<HomeTab> {
                       },
                     );
                   } else {
-                    Book book = _books[index - 1];
+                    Category book = _category[index - 1];
                     return CustomCard(
                       blurRadius: 10,
                       color: listColors[book.color],
                       date: DateFormat('dd MMMM, yyyy')
-                          .format(_books[index - 1].createdAt.toDate()),
+                          .format(_category[index - 1].createdAt.toDate()),
                       numPages: 2,
                       title: book.done == false
                           ? TaskTextField(
@@ -132,7 +131,7 @@ class _HomeTabState extends State<HomeTab> {
                               content: book.title,
                             )
                           : Text(
-                              _books[index - 1].title,
+                              _category[index - 1].title,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20,
@@ -182,6 +181,14 @@ class _HomeTabState extends State<HomeTab> {
                                         },
                                       ),
                                     ),
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.share),
+                                    title: Text('Share'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      
+                                    },
                                   ),
                                   ListTile(
                                     leading: Icon(Icons.create),

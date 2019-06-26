@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Book {
+class Category {
   final String id;
   final String title;
   final Timestamp createdAt;
@@ -8,12 +8,12 @@ class Book {
   final bool done;
   final int color;
 
-  Book({ this.id, this.title, this.color, this.createdAt, this.coverImg, this.done});
+  Category({ this.id, this.title, this.color, this.createdAt, this.coverImg, this.done});
 
-  factory Book.fromFirestore(DocumentSnapshot doc) {
+  factory Category.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
     
-    return Book(
+    return Category(
       id: doc.documentID,
       title: data['content'] ?? '',
       createdAt: data['createdat'],

@@ -1,4 +1,4 @@
-import 'package:book_read/models/book.dart';
+import 'package:book_read/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -6,7 +6,7 @@ class TaskTextField extends StatefulWidget {
   TaskTextField({Key key, this.doc, this.content = '', this.type})
       : super(key: key);
   final String type;
-  final Book doc;
+  final Category doc;
   final String content;
   @override
   State<StatefulWidget> createState() {

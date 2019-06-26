@@ -3,7 +3,7 @@ import 'package:book_read/home_tabs/books.dart';
 import 'package:book_read/home_tabs/home.dart';
 import 'package:book_read/home_tabs/profile.dart';
 import 'package:book_read/home_tabs/settings.dart';
-import 'package:book_read/models/book.dart';
+import 'package:book_read/models/category.dart';
 // import 'package:book_read/models/user.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/database.dart';
@@ -44,44 +44,7 @@ class _HomePageState extends State<HomePage> {
     // SystemChrome.setSystemUIOverlayStyle(
     //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
-      // appBar: AppBar(
-      //   // elevation: 0.0,
-      //   centerTitle: true,
-      //   title: Text(
-      //     'Rea:bor',
-      //     style: TextStyle(color: Colors.black),
-      //   ),
-      //   backgroundColor: Colors.white,
-      // ),
-      // drawer: StreamBuilder<User>(
-      //     stream: db.streamHero(user.uid),
-      //     builder: (context, snapshot) {
-      //       var userData = snapshot.data;
-      //       return Drawer(
-      //         child: Column(
-      //           children: <Widget>[
-      //             UserAccountsDrawerHeader(
-      //               accountEmail: Text(userData.email),
-      //               accountName: Text(userData.username),
-      //               currentAccountPicture: CircleAvatar(
-      //                 backgroundImage: NetworkImage(userData.profilePic),
-      //               ),
-      //             ),
-      //             ListView(
-      //               shrinkWrap: true,
-      //               padding: EdgeInsets.all(0),
-      //               children: <Widget>[
-      //                 ListTile(
-      //                   leading: Icon(Icons.home),
-      //                   title: Text('Home'),
-      //                   onTap: () {},
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //       );
-      //     }),
+     
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: Colors.black,
         textColor: Colors.black,
@@ -100,7 +63,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: connectionStatus == ConnectivityStatus.Offline
           ? OfflineMessage()
-          : StreamProvider<List<Book>>.value( 
+          : StreamProvider<List<Category>>.value( 
             value: db.streamWeapons(user),
             child: _tabs[_currentIndex],)
     );
