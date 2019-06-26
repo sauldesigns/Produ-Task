@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
         title: 'Book Read',
         theme: ThemeData(
           brightness: Brightness.light,
-          
         ),
         initialRoute: '/',
         routes: {
