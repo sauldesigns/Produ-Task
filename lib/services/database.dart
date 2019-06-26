@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:book_read/models/category.dart';
+import 'package:book_read/models/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -17,6 +18,14 @@ class DatabaseService {
   Stream<User> streamHero(String uid) {
     var ref = _db.collection('users').document(uid);
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
+  }
+
+  Stream<List<Task>> categoryTasks(FirebaseUser user, Category cat) {
+    var ref = _db.collection('tasks').where('uid', isEqualTo: user.uid).where('cat_uid', isEqualTo: cat.id).orderBy('createdat', descending: true);
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+    
   }
 
   Stream<List<Category>> streamWeapons(FirebaseUser user) {

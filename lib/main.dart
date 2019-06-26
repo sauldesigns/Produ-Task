@@ -6,6 +6,7 @@ import 'package:book_read/pages/login.dart';
 import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/pages/root_page.dart';
 import 'package:book_read/pages/sign_up.dart';
+import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
               ),
           '/editprofile': (context) => EditProfilePage(),
           '/new_task': (context) => NewTaskPage(),
+          '/tasks_page': (context) => TasksPage(),
         },
       ),
     );

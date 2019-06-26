@@ -1,12 +1,17 @@
 import 'dart:math';
 import 'package:book_read/models/category.dart';
+// import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
+import 'package:book_read/pages/tasks_page.dart';
+// import 'package:book_read/pages/tasks_page.dart';
+// import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
 import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,27 +37,10 @@ class _HomeTabState extends State<HomeTab> {
   ];
   @override
   Widget build(BuildContext context) {
+    // var _user = Provider.of<FirebaseUser>(context);
     var _userDb = Provider.of<User>(context);
     var _category = Provider.of<List<Category>>(context);
     return Scaffold(
-      // appBar: AppBar(
-
-      //   title: Text(
-      //     'Le Book',
-      //     style: TextStyle(
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      //   actions: <Widget>[
-      //     ProfilePicture(
-      //       imgUrl: _userDb.profilePic,
-      //       size: 25,
-      //     )
-      //   ],
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0.0,
-      //   centerTitle: true,
-      // ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +126,16 @@ class _HomeTabState extends State<HomeTab> {
                                 color: Colors.white,
                               ),
                             ),
-                      onTap: () {},
+                      onTap: () {
+                        // Navigator.of(context).pushNamed('/tasks_page');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TasksPage(
+                                  category: book,
+                                ),
+                          ),
+                        );
+                      },
                       onLongPress: () {
                         showBottomSheet(
                           shape: RoundedRectangleBorder(
@@ -151,11 +148,13 @@ class _HomeTabState extends State<HomeTab> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(top: 15, bottom: 5),
+                                    padding:
+                                        EdgeInsets.only(top: 15, bottom: 5),
                                     child: Text('Change Color'),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 15, bottom: 15),
+                                    padding:
+                                        EdgeInsets.only(top: 15, bottom: 15),
                                     child: Container(
                                       height: 40,
                                       child: ListView.builder(
@@ -171,7 +170,8 @@ class _HomeTabState extends State<HomeTab> {
                                                   .updateData({'color': index});
                                             },
                                             child: Padding(
-                                              padding: EdgeInsets.only(right: 15),
+                                              padding:
+                                                  EdgeInsets.only(right: 15),
                                               child: CircleAvatar(
                                                 backgroundColor:
                                                     listColors[index],
@@ -187,7 +187,6 @@ class _HomeTabState extends State<HomeTab> {
                                     title: Text('Share'),
                                     onTap: () {
                                       Navigator.pop(context);
-                                      
                                     },
                                   ),
                                   ListTile(
@@ -229,17 +228,6 @@ class _HomeTabState extends State<HomeTab> {
           ],
         ),
       ),
-
-      // child: Column(
-      //   children: <Widget>[
-      //     Padding(
-      //         padding: const EdgeInsets.all(20.0),
-      //         child: CustomCard(
-      //           title: 'Song of Storms',
-      //           onTap: () {},
-      //         ))
-      //   ],
-      // ),
     );
   }
 }

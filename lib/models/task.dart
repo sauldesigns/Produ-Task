@@ -1,0 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Task {
+  final String id;
+  final String title;
+  final Timestamp createdAt;
+  final String coverImg;
+  final String catUid;
+  final bool complete;
+  final bool done;
+  final int color;
+
+  Task(
+      {this.id,
+      this.title,
+      this.catUid,
+      this.complete,
+      this.color,
+      this.createdAt,
+      this.coverImg,
+      this.done});
+
+  factory Task.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data;
+
+    return Task(
+        id: doc.documentID,
+        title: data['content'] ?? '',
+        createdAt: data['createdat'],
+        coverImg: data['cover_img'] ?? '',
+        done: data['done'],
+        complete: data['complete'],
+        catUid: data['cat_uid'],
+        color: data['color']);
+  }
+}

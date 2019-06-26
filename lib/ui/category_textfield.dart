@@ -32,8 +32,15 @@ class _TaskTextFieldState extends State<TaskTextField> {
     return TextField(
       controller: _textEditingController,
       autofocus: true,
-      cursorColor: Colors.black,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),
+      cursorColor: Colors.white,
+      maxLines: 4,
       textCapitalization: TextCapitalization.sentences,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: InputBorder.none,
           hasFloatingPlaceholder: false,
