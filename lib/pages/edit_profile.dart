@@ -31,6 +31,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         // brightness: Brightness.light,
         centerTitle: true,

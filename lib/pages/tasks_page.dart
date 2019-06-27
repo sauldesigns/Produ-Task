@@ -9,6 +9,7 @@ import 'package:book_read/ui/task_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class TasksPage extends StatefulWidget {
@@ -36,8 +37,9 @@ class _TasksPageState extends State<TasksPage> {
     // var _category = Provider.of<List<Category>>(context);
     return Scaffold(
       body: StreamProvider<List<Task>>.value(
-        value: db.categoryTasks(_user,widget.category.uid, widget.category, newDate),
-        child: StreamBuilder<Object>(
+        value: db.categoryTasks(
+            _user, widget.category.uid, widget.category, newDate),
+        child: StreamBuilder<User>(
             stream: db.streamHero(_user.uid),
             builder: (context, snapshot) {
               User _userDb = snapshot.data;
@@ -123,6 +125,7 @@ class _TasksPageState extends State<TasksPage> {
                                   'createdat': DateTime.now(),
                                   'uid': _userDb.uid,
                                   'cat_uid': widget.category.id,
+                                  'createdby': _userDb.fname,
                                   'color': Random().nextInt(7),
                                 };
                                 _db.collection('tasks').add(data);
@@ -132,90 +135,84 @@ class _TasksPageState extends State<TasksPage> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 20, top: 10),
-                        itemCount: task == null ? 0 : task.length,
-                        physics: ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          Task taskData = task[index];
-                          return ListTile(
-                            leading: IconButton(
-                              icon: Icon(
-                                taskData.complete == true
-                                    ? Icons.check_circle
-                                    : Icons.check_circle_outline,
-                                color: Colors.black,
+                    ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 20, top: 10),
+                      itemCount: task == null ? 0 : task.length,
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        Task taskData = task[index];
+                        return Slidable(
+                          actionPane: SlidableDrawerActionPane(),
+                          actionExtentRatio: 0.25,
+                          child: new Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20.0, left: 20.0),
+                              child: ListTile(
+                                leading: IconButton(
+                                  icon: Icon(
+                                    taskData.complete == true
+                                        ? Icons.check_circle
+                                        : Icons.check_circle_outline,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    _db
+                                        .collection('tasks')
+                                        .document(taskData.id)
+                                        .updateData(
+                                            {'complete': !taskData.complete});
+                                  },
+                                ),
+                                title: taskData.done == false
+                                    ? TaskTextField(
+                                        doc: taskData,
+                                        type: 'tasks',
+                                        content: taskData.title,
+                                      )
+                                    : Text(
+                                        taskData.title,
+                                        style: TextStyle(
+                                            decoration: taskData.complete ==
+                                                    false
+                                                ? null
+                                                : TextDecoration.lineThrough),
+                                      ),
+                                subtitle: taskData.done == false
+                                    ? null
+                                    : Text('Created by ${taskData.createdBy}'),
                               ),
-                              onPressed: () {
+                            ),
+                          ),
+                          actions: <Widget>[
+                            new IconSlideAction(
+                              caption: 'Edit',
+                              color: Colors.blue,
+                              icon: Icons.edit,
+                              onTap: () {
                                 _db
                                     .collection('tasks')
                                     .document(taskData.id)
-                                    .updateData(
-                                        {'complete': !taskData.complete});
+                                    .updateData({'done': !taskData.done});
                               },
                             ),
-                            title: taskData.done == false
-                                ? TaskTextField(
-                                    doc: taskData,
-                                    type: 'tasks',
-                                    content: taskData.title,
-                                  )
-                                : Text(
-                                    taskData.title,
-                                    style: TextStyle(
-                                        decoration: taskData.complete == false
-                                            ? null
-                                            : TextDecoration.lineThrough),
-                                  ),
-                            onLongPress: () {
-                              showBottomSheet(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(bottom: 10.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        ListTile(
-                                          leading: Icon(Icons.create),
-                                          title: Text('Edit'),
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            _db
-                                                .collection('tasks')
-                                                .document(taskData.id)
-                                                .updateData(
-                                                    {'done': !taskData.done});
-                                          },
-                                        ),
-                                        ListTile(
-                                          leading: Icon(Icons.delete),
-                                          title: Text('Delete'),
-                                          onTap: () {
-                                            _db
-                                                .collection('tasks')
-                                                .document(taskData.id)
-                                                .delete();
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
+                          ],
+                          secondaryActions: <Widget>[
+                            new IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () {
+                                _db
+                                    .collection('tasks')
+                                    .document(taskData.id)
+                                    .delete();
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),

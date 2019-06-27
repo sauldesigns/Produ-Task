@@ -9,6 +9,7 @@ class Task {
   final bool complete;
   final bool done;
   final int color;
+  final String createdBy;
 
   Task(
       {this.id,
@@ -18,6 +19,7 @@ class Task {
       this.color,
       this.createdAt,
       this.coverImg,
+      this.createdBy,
       this.done});
 
   factory Task.fromFirestore(DocumentSnapshot doc) {
@@ -25,11 +27,12 @@ class Task {
 
     return Task(
         id: doc.documentID,
-        title: data['content'] ?? '',
+        title: data['content'] ?? '...',
         createdAt: data['createdat'],
         coverImg: data['cover_img'] ?? '',
         done: data['done'],
-        complete: data['complete'],
+        createdBy: data['createdby'] ?? '...',
+        complete: data['complete'] ?? false,
         catUid: data['cat_uid'],
         color: data['color']);
   }

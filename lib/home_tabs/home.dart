@@ -188,6 +188,20 @@ class _HomeTabState extends State<HomeTab> {
                                     title: Text('Share'),
                                     onTap: () {
                                       Navigator.pop(context);
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('Share'),
+                                            content: SingleChildScrollView(
+                                              physics: ScrollPhysics(),
+                                              child: Column(
+                                                children: <Widget>[],
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      );
                                     },
                                   ),
                                   ListTile(

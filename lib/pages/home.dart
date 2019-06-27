@@ -44,28 +44,28 @@ class _HomePageState extends State<HomePage> {
     // SystemChrome.setSystemUIOverlayStyle(
     //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
-     
-      bottomNavigationBar: FancyBottomNavigation(
-        circleColor: Colors.black,
-        textColor: Colors.black,
-        inactiveIconColor: Colors.grey,
-        tabs: [
-          TabData(iconData: Icons.home, title: "Home"),
-          TabData(iconData: Icons.search, title: "Search"),
-          TabData(iconData: Icons.person, title: "Profile"),
-          TabData(iconData: Icons.settings, title: "Settings")
-        ],
-        onTabChangedListener: (position) {
-          setState(() {
-            _currentIndex = position;
-          });
-        },
-      ),
-      body: connectionStatus == ConnectivityStatus.Offline
-          ? OfflineMessage()
-          : StreamProvider<List<Category>>.value( 
-            value: db.streamWeapons(user),
-            child: _tabs[_currentIndex],)
-    );
+        
+        bottomNavigationBar: FancyBottomNavigation(
+          circleColor: Colors.black,
+          textColor: Colors.black,
+          inactiveIconColor: Colors.grey,
+          tabs: [
+            TabData(iconData: Icons.home, title: "Home"),
+            TabData(iconData: Icons.search, title: "Search"),
+            TabData(iconData: Icons.person, title: "Profile"),
+            TabData(iconData: Icons.settings, title: "Settings")
+          ],
+          onTabChangedListener: (position) {
+            setState(() {
+              _currentIndex = position;
+            });
+          },
+        ),
+        body: connectionStatus == ConnectivityStatus.Offline
+            ? OfflineMessage()
+            : StreamProvider<List<Category>>.value(
+                value: db.streamWeapons(user),
+                child: _tabs[_currentIndex],
+              ));
   }
 }

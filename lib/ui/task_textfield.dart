@@ -31,7 +31,7 @@ class _TaskTextFieldState extends State<TaskTextField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _textEditingController,
-      autofocus: true,
+      autofocus: false,
       style: TextStyle(
         color: Colors.black,
       ),
