@@ -100,6 +100,7 @@ class _HomeTabState extends State<HomeTab> {
                           'createdat': DateTime.now(),
                           'done': false,
                           'uid': _userDb.uid,
+                          'uids': [_userDb.uid]
                         };
                         database.collection('category').add(data);
                       },
@@ -113,7 +114,7 @@ class _HomeTabState extends State<HomeTab> {
                           .format(_category[index - 1].createdAt.toDate()),
                       numPages: 2,
                       title: book.done == false
-                          ? TaskTextField(
+                          ? CategoryTextField(
                               doc: book,
                               type: 'category',
                               content: book.title,

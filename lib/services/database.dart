@@ -20,22 +20,26 @@ class DatabaseService {
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
-  Stream<List<Task>> categoryTasks(FirebaseUser user, Category cat) {
-    var ref = _db.collection('tasks').where('uid', isEqualTo: user.uid).where('cat_uid', isEqualTo: cat.id).orderBy('createdat', descending: true);
+  Stream<List<Task>> categoryTasks(FirebaseUser user, String origuser, Category cat, [date]) {
+    var ref = _db
+        .collection('tasks')
+        .where('cat_uid', isEqualTo: cat.id)
+        .where('createdat', isGreaterThanOrEqualTo: date)
+        .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
-    
   }
 
   Stream<List<Category>> streamWeapons(FirebaseUser user) {
-    var ref = _db.collection('category').where('uid', isEqualTo: user.uid).orderBy('createdat', descending: true);
+    var ref = _db
+        .collection('category')
+        .where('uids', arrayContains: user.uid)
+        .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
-    
   }
-
 
   Future getBookData(String query) async {
     var response = await http.get(

@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NewTaskPage extends StatefulWidget {
-  NewTaskPage({Key key}) : super(key: key);
+  NewTaskPage({Key key, this.catUid}) : super(key: key);
+  final String catUid;
 
   _NewTaskPageState createState() => _NewTaskPageState();
 }
@@ -68,10 +69,12 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           'content': _task,
                           'color': Random().nextInt(7),
                           'createdat': DateTime.now(),
+                          'complete': false,
+                          'cat_uid': widget.catUid,
                           'done': true,
                           'uid': _user.uid,
                         };
-                        _db.collection('category').add(data);
+                        _db.collection('tasks').add(data);
                         Navigator.of(context).pop();
                       } else {
                         setState(() {
