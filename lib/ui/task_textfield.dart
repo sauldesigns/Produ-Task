@@ -40,7 +40,8 @@ class _TaskTextFieldState extends State<TaskTextField> {
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: InputBorder.none,
-          hasFloatingPlaceholder: false,
+          hasFloatingPlaceholder: true,
+          labelText: 'Click to edit task',
           hintText: 'Enter Task Here'),
       onSubmitted: (String value) {
         if (value == '') {
