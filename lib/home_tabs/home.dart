@@ -1,17 +1,13 @@
 import 'dart:math';
 import 'package:book_read/models/category.dart';
-// import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/tasks_page.dart';
-// import 'package:book_read/pages/tasks_page.dart';
-// import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
 import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,11 +31,13 @@ class _HomeTabState extends State<HomeTab> {
     Colors.amber,
     Colors.indigo,
   ];
+  
   @override
   Widget build(BuildContext context) {
-    // var _user = Provider.of<FirebaseUser>(context);
     var _userDb = Provider.of<User>(context);
     var _category = Provider.of<List<Category>>(context);
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+  var useMobileLayout = shortestSide < 600;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -84,7 +82,7 @@ class _HomeTabState extends State<HomeTab> {
                     EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 45),
                 itemCount: _category == null ? 1 : _category.length + 1,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount: useMobileLayout == true ? 2 : 4,
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20,
                     childAspectRatio: 1),

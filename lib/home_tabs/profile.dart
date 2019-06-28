@@ -1,7 +1,6 @@
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/profile_picture.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

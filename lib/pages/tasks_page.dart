@@ -32,9 +32,7 @@ class _TasksPageState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var _userDb = Provider.of<User>(context);
-    var _user = Provider.of<FirebaseUser>(context);
-    // var _category = Provider.of<List<Category>>(context);
+    var _user = Provider.of<FirebaseUser>(context);  
     return Scaffold(
       body: StreamProvider<List<Task>>.value(
         value: db.categoryTasks(

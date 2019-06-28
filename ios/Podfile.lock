@@ -137,6 +137,9 @@ PODS:
   - GTMSessionFetcher/Core (1.2.2)
   - image_picker (0.0.1):
     - Flutter
+  - keyboard_visibility (0.5.0):
+    - Flutter
+    - Reachability
   - leveldb-library (1.20)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
@@ -155,6 +158,7 @@ DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios-release`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -196,6 +200,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  keyboard_visibility:
+    :path: ".symlinks/plugins/keyboard_visibility/ios"
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -222,6 +228,7 @@ SPEC CHECKSUMS:
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
+  keyboard_visibility: 96a24de806fe6823c3ad956c01ba2ec6d056616f
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
