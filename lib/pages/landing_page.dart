@@ -3,7 +3,6 @@ import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.auth}) : super(key: key);
@@ -15,10 +14,7 @@ class _LandingPageState extends State<LandingPage> {
   final Firestore db = Firestore.instance;
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
-      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -28,7 +24,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      'Rea:bor',
+                      'Produ:Task',
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w500,
@@ -36,9 +32,10 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(
+                            top: 15.0, left: 50, right: 50),
                         child: Text(
-                            'Share your favorite books and inspiration with your neighbors')),
+                            'Create personal tasks, or share them with others.')),
                   ],
                 ),
               ),

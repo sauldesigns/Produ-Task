@@ -2,7 +2,6 @@ import 'package:book_read/services/auth.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.auth}) : super(key: key);
@@ -31,8 +30,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -41,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
       body: Container(
         child: SingleChildScrollView(
           child: Form(
@@ -104,7 +100,6 @@ class _LoginPageState extends State<LoginPage> {
                               onClick: () {
                                 if (_formkey.currentState.validate()) {
                                   _formkey.currentState.save();
-                                  // auth.signInAnonymously();
                                   _validateAndSubmit();
                                 } else {
                                   setState(() {

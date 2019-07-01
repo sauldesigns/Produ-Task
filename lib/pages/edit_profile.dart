@@ -28,11 +28,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
         brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        // brightness: Brightness.light,
         centerTitle: true,
         title: Text(
           widget.title,

@@ -1,8 +1,8 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatelessWidget {
-  const CustomCard(
+class AddCard extends StatelessWidget {
+  const AddCard(
       {Key key,
       this.backgroundImage,
       this.onTap,
@@ -11,7 +11,6 @@ class CustomCard extends StatelessWidget {
       this.title,
       this.date,
       this.numPages,
-      this.onLongPress,
       this.content,
       this.height = 250,
       this.width = 200,
@@ -19,12 +18,11 @@ class CustomCard extends StatelessWidget {
       this.color = Colors.white})
       : super(key: key);
   final String backgroundImage;
-  final Widget title;
+  final Text title;
   final String content;
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
-  final VoidCallback onLongPress;
   final String date;
   final int numPages;
   final double blurRadius;
@@ -35,9 +33,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      onLongPress: onLongPress,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+      child: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
@@ -57,17 +53,10 @@ class CustomCard extends StatelessWidget {
               )
             ]),
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: title,
-                ),
-              ],
-            ),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 60,
           ),
         ),
       ),

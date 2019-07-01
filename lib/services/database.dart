@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:book_read/models/category.dart';
+import 'package:book_read/models/task.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import '../models/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'dart:convert';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
@@ -17,29 +19,50 @@ class DatabaseService {
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
-  Future getBookData(String query) async {
-    var response = await http.get(
-        Uri.encodeFull('http://openlibrary.org/search.json?title=' + query),
-        headers: {
-          'Accept': 'application/json',
-        });
+  Stream<List<Task>> categoryTasks(FirebaseUser user, String origuser, Category cat, [date]) {
+    var ref = _db
+        .collection('tasks')
+        .where('cat_uid', isEqualTo: cat.id)
+        .where('createdat', isGreaterThanOrEqualTo: date)
+        .orderBy('createdat', descending: true);
 
-    var localData = json.decode(response.body);
-
-    var bookData = [];
-    var newDat;
-
-    for (int i = 0; i < localData['docs'].length; ++i) {
-      if (localData['docs'][i] != null) {
-        newDat = localData['docs'][i];
-        print(newDat);
-        bookData.add(newDat);
-      }
-      print(bookData);
-    }
-
-    return bookData;
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
+
+  Stream<List<Category>> streamWeapons(FirebaseUser user) {
+    var ref = _db
+        .collection('category')
+        .where('uids', arrayContains: user.uid)
+        .orderBy('createdat', descending: true);
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Category.fromFirestore(doc)).toList());
+  }
+
+  // Future getBookData(String query) async {
+  //   var response = await http.get(
+  //       Uri.encodeFull('http://openlibrary.org/search.json?title=' + query),
+  //       headers: {
+  //         'Accept': 'application/json',
+  //       });
+
+  //   var localData = json.decode(response.body);
+
+  //   var bookData = [];
+  //   var newDat;
+
+  //   for (int i = 0; i < localData['docs'].length; ++i) {
+  //     if (localData['docs'][i] != null) {
+  //       newDat = localData['docs'][i];
+  //       print(newDat);
+  //       bookData.add(newDat);
+  //     }
+  //     print(bookData);
+  //   }
+
+  //   return bookData;
+  // }
 
   Future<void> deleteUser(String uid) async {
     _db.collection('users').document(uid).delete();
