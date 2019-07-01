@@ -27,7 +27,6 @@ dependencies:
   fancy_bottom_navigation: ^0.3.2
   image_picker: ^0.6.0+9
   firebase_storage: ^3.0.2
-  http: ^0.12.0+2
   connectivity: ^0.4.3+2
   flushbar: ^1.7.0
   google_sign_in: ^4.0.2

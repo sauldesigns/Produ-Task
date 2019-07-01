@@ -7,8 +7,7 @@ import 'dart:async';
 import '../models/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'dart:convert';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
@@ -41,29 +40,29 @@ class DatabaseService {
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
   }
 
-  Future getBookData(String query) async {
-    var response = await http.get(
-        Uri.encodeFull('http://openlibrary.org/search.json?title=' + query),
-        headers: {
-          'Accept': 'application/json',
-        });
+  // Future getBookData(String query) async {
+  //   var response = await http.get(
+  //       Uri.encodeFull('http://openlibrary.org/search.json?title=' + query),
+  //       headers: {
+  //         'Accept': 'application/json',
+  //       });
 
-    var localData = json.decode(response.body);
+  //   var localData = json.decode(response.body);
 
-    var bookData = [];
-    var newDat;
+  //   var bookData = [];
+  //   var newDat;
 
-    for (int i = 0; i < localData['docs'].length; ++i) {
-      if (localData['docs'][i] != null) {
-        newDat = localData['docs'][i];
-        print(newDat);
-        bookData.add(newDat);
-      }
-      print(bookData);
-    }
+  //   for (int i = 0; i < localData['docs'].length; ++i) {
+  //     if (localData['docs'][i] != null) {
+  //       newDat = localData['docs'][i];
+  //       print(newDat);
+  //       bookData.add(newDat);
+  //     }
+  //     print(bookData);
+  //   }
 
-    return bookData;
-  }
+  //   return bookData;
+  // }
 
   Future<void> deleteUser(String uid) async {
     _db.collection('users').document(uid).delete();

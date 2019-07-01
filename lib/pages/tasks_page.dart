@@ -32,7 +32,7 @@ class _TasksPageState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    var _user = Provider.of<FirebaseUser>(context);  
+    var _user = Provider.of<FirebaseUser>(context);
     return Scaffold(
       body: StreamProvider<List<Task>>.value(
         value: db.categoryTasks(
@@ -95,7 +95,7 @@ class _TasksPageState extends State<TasksPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 40.0, right: 40.0, top: 50.0, bottom: 0.0),
+                          left: 40.0, right: 20.0, top: 50.0, bottom: 0.0),
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -108,27 +108,21 @@ class _TasksPageState extends State<TasksPage> {
                           Expanded(
                             child: Container(),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                var data = {
-                                  'complete': false,
-                                  'done': false,
-                                  'content': '',
-                                  'createdat': DateTime.now(),
-                                  'uid': _userDb.uid,
-                                  'cat_uid': widget.category.id,
-                                  'createdby': _userDb.fname,
-                                  'color': Random().nextInt(7),
-                                };
-                                _db.collection('tasks').add(data);
-                              },
-                            ),
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              var data = {
+                                'complete': false,
+                                'done': false,
+                                'content': '',
+                                'createdat': DateTime.now(),
+                                'uid': _userDb.uid,
+                                'cat_uid': widget.category.id,
+                                'createdby': _userDb.fname,
+                                'color': Random().nextInt(7),
+                              };
+                              _db.collection('tasks').add(data);
+                            },
                           ),
                         ],
                       ),
