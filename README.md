@@ -1,5 +1,7 @@
 # Produ:Task
 
+[![Codemagic build status](https://api.codemagic.io/apps/5d04d10185769144bd77e750/5d04d10185769144bd77e74f/status_badge.svg)](https://codemagic.io/apps/5d04d10185769144bd77e750/5d04d10185769144bd77e74f/latest_build)
+
 Produ:Task is a cross-platform cloud-enabled mobile application powered by Flutter Framework and Google Firebase.
 
 The application was built with simplicity in mind so that users are able to focus on completing their tasks. 
