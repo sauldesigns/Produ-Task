@@ -67,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                         } else if (EmailValidator.validate(value) == false) {
                           return 'Not a valid email';
                         }
+                        return null;
                       },
                       onSaved: (value) => _email = value,
                     ),
@@ -89,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                         } else if (value.length < 6) {
                           return 'Password is too short';
                         }
+                        return null;
                       },
                       onSaved: (value) => _password = value,
                     ),
