@@ -6,9 +6,17 @@ The application was built with simplicity in mind so that users are able to focu
 
 The app uses an easy to use UI so that only necessary information is only displayed. Making it easier for one to stay productive. 
 
-<!--| Tags | Articles |-->
-<!--| ------ | ------ |-->
-<!--|<img src="http://sauldesigns.me/img/IMG_2370.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/IMG_2372.PNG" width="400" height="760">|-->
+| Landing Page | Sign Up |
+| ------ | ------ |
+|<img src="http://sauldesigns.me/img/produtask/landingpage.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/signup.PNG" width="400" height="760">|
+
+| Home Tab | Tasks |
+| ------ | ------ |
+|<img src="http://sauldesigns.me/img/produtask/hometab.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/tasks.PNG" width="400" height="760">|
+
+| Settings | Edit Profile |
+| ------ | ------ |
+|<img src="http://sauldesigns.me/img/produtask/settings.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/editprofile.PNG" width="400" height="760">|
 
 ### Authenthication Methods
 - [x] Google Sign In
