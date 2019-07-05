@@ -37,6 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
         title: Text('Sign Up', style: TextStyle(color: Colors.black)),
