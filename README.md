@@ -8,15 +8,15 @@ The app uses an easy to use UI so that only necessary information is only displa
 
 | Landing Page | Sign Up |
 | ------ | ------ |
-|<img src="http://sauldesigns.me/img/produtask/landingpage.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/signup.PNG" width="400" height="760">|
+|<img src="http://sauldesigns.me/img/produtask/landingpage.PNG" width="400" height="800">| <img src="http://sauldesigns.me/img/produtask/signup.PNG" width="400" height="800">|
 
 | Home Tab | Tasks |
 | ------ | ------ |
-|<img src="http://sauldesigns.me/img/produtask/hometab.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/tasks.PNG" width="400" height="760">|
+|<img src="http://sauldesigns.me/img/produtask/hometab.PNG" width="400" height="800">| <img src="http://sauldesigns.me/img/produtask/tasks.PNG" width="400" height="800">|
 
 | Settings | Edit Profile |
 | ------ | ------ |
-|<img src="http://sauldesigns.me/img/produtask/settings.PNG" width="400" height="760">| <img src="http://sauldesigns.me/img/produtask/editprofile.PNG" width="400" height="760">|
+|<img src="http://sauldesigns.me/img/produtask/settings.PNG" width="400" height="800">| <img src="http://sauldesigns.me/img/produtask/editprofile.PNG" width="400" height="800">|
 
 ### Authenthication Methods
 - [x] Google Sign In
