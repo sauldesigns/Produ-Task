@@ -97,6 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       } else if (EmailValidator.validate(value) == false) {
                         return 'Not a valid email';
                       }
+                      return null;
                     },
                     onSaved: (value) => _email = value,
                   ),
@@ -121,6 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       } else if (value.length < 6) {
                         return 'Password is too short';
                       }
+                      return null;
                     },
                     onSaved: (value) => _password = value,
                   ),
@@ -145,6 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       } else if (value != _password) {
                         return 'Passwords did not match';
                       }
+                      return null;
                     },
                   ),
                   Padding(

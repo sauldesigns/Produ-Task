@@ -53,6 +53,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     if (value.isEmpty) {
                       return 'Must enter some text';
                     }
+                    return null;
                   },
                   onSaved: (value) => _task = value,
                 ),
