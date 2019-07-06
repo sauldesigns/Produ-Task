@@ -20,14 +20,10 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage> {
   final db = DatabaseService();
-  final date = DateTime.now();
-  var newDate;
   final Firestore _db = Firestore.instance;
-
   @override
   void initState() {
     super.initState();
-    newDate = DateTime.utc(date.year, date.month, date.day);
   }
 
   @override
@@ -36,7 +32,7 @@ class _TasksPageState extends State<TasksPage> {
     return Scaffold(
       body: StreamProvider<List<Task>>.value(
         value: db.categoryTasks(
-            _user, widget.category.uid, widget.category, newDate),
+            _user, widget.category.uid, widget.category),
         child: StreamBuilder<User>(
             stream: db.streamHero(_user.uid),
             builder: (context, snapshot) {
@@ -206,6 +202,116 @@ class _TasksPageState extends State<TasksPage> {
                         );
                       },
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 40.0, right: 20.0, top: 50.0, bottom: 0.0),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'Incomplete',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    StreamBuilder<List<Task>>(
+                        stream: db.incompleteTasks(_user, widget.category.uid,
+                            widget.category),
+                        builder: (context, snapshot) {
+                          List data = snapshot.data;
+                         
+                            
+                          
+                          return ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 20, top: 10),
+                            itemCount: data == null ? 0 : data.length,
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              Task taskData = data[index];
+                              
+                              return Slidable(
+                                actionPane: SlidableDrawerActionPane(),
+                                actionExtentRatio: 0.25,
+                                child: new Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 20.0, left: 20.0),
+                                    child: ListTile(
+                                      leading: IconButton(
+                                        icon: Icon(
+                                          taskData.complete == true
+                                              ? Icons.check_circle
+                                              : Icons.check_circle_outline,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          _db
+                                              .collection('tasks')
+                                              .document(taskData.id)
+                                              .updateData({
+                                            'complete': !taskData.complete
+                                          });
+                                        },
+                                      ),
+                                      title: taskData.done == false
+                                          ? TaskTextField(
+                                              doc: taskData,
+                                              type: 'tasks',
+                                              content: taskData.title,
+                                            )
+                                          : Text(
+                                              taskData.title,
+                                              style: TextStyle(
+                                                  decoration:
+                                                      taskData.complete == false
+                                                          ? null
+                                                          : TextDecoration
+                                                              .lineThrough),
+                                            ),
+                                      subtitle: taskData.done == false
+                                          ? null
+                                          : Text(
+                                              'Created by ${taskData.createdBy}'),
+                                    ),
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  new IconSlideAction(
+                                    caption: 'Edit',
+                                    color: Colors.blue,
+                                    icon: Icons.edit,
+                                    onTap: () {
+                                      _db
+                                          .collection('tasks')
+                                          .document(taskData.id)
+                                          .updateData({'done': !taskData.done});
+                                    },
+                                  ),
+                                ],
+                                secondaryActions: <Widget>[
+                                  new IconSlideAction(
+                                    caption: 'Delete',
+                                    color: Colors.red,
+                                    icon: Icons.delete,
+                                    onTap: () {
+                                      _db
+                                          .collection('tasks')
+                                          .document(taskData.id)
+                                          .delete();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
                   ],
                 ),
               );
