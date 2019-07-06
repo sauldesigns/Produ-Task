@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/user.dart';
+import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
@@ -31,15 +32,16 @@ class _HomeTabState extends State<HomeTab> {
     Colors.amber,
     Colors.indigo,
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     var _userDb = Provider.of<User>(context);
     var _category = Provider.of<List<Category>>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
-  var useMobileLayout = shortestSide < 600;
+    var useMobileLayout = shortestSide < 600;
     return Scaffold(
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -104,18 +106,18 @@ class _HomeTabState extends State<HomeTab> {
                       },
                     );
                   } else {
-                    Category book = _category[index - 1];
+                    Category category = _category[index - 1];
                     return CustomCard(
                       blurRadius: 10,
-                      color: listColors[book.color],
+                      color: listColors[category.color],
                       date: DateFormat('dd MMMM, yyyy')
                           .format(_category[index - 1].createdAt.toDate()),
                       numPages: 2,
-                      title: book.done == false
+                      title: category.done == false
                           ? CategoryTextField(
-                              doc: book,
+                              doc: category,
                               type: 'category',
-                              content: book.title,
+                              content: category.title,
                             )
                           : Text(
                               _category[index - 1].title,
@@ -130,8 +132,8 @@ class _HomeTabState extends State<HomeTab> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => TasksPage(
-                                  category: book,
-                                ),
+                              category: category,
+                            ),
                           ),
                         );
                       },
@@ -165,7 +167,7 @@ class _HomeTabState extends State<HomeTab> {
                                             onTap: () {
                                               database
                                                   .collection('category')
-                                                  .document(book.id)
+                                                  .document(category.id)
                                                   .updateData({'color': index});
                                             },
                                             child: Padding(
@@ -185,19 +187,14 @@ class _HomeTabState extends State<HomeTab> {
                                     leading: Icon(Icons.share),
                                     title: Text('Share'),
                                     onTap: () {
-                                      Navigator.pop(context);
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text('Share'),
-                                              content: SingleChildScrollView(
-                                                child: Column(
-                                                  children: <Widget>[],
-                                                ),
-                                              ),
-                                            );
-                                          });
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => SharePage(
+                                            category: category,
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                   ListTile(
@@ -207,8 +204,8 @@ class _HomeTabState extends State<HomeTab> {
                                       Navigator.pop(context);
                                       database
                                           .collection('category')
-                                          .document(book.id)
-                                          .updateData({'done': !book.done});
+                                          .document(category.id)
+                                          .updateData({'done': !category.done});
                                     },
                                   ),
                                   ListTile(
@@ -217,7 +214,7 @@ class _HomeTabState extends State<HomeTab> {
                                     onTap: () {
                                       database
                                           .collection('category')
-                                          .document(book.id)
+                                          .document(category.id)
                                           .delete();
                                       Navigator.pop(context);
                                     },
