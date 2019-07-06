@@ -1,13 +1,13 @@
 import 'package:book_read/ui/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 
-class BooksTab extends StatefulWidget {
-  BooksTab({Key key}) : super(key: key);
+class SearchTab extends StatefulWidget {
+  SearchTab({Key key}) : super(key: key);
 
-  _BooksTabState createState() => _BooksTabState();
+  _SearchTabState createState() => _SearchTabState();
 }
 
-class _BooksTabState extends State<BooksTab> {
+class _SearchTabState extends State<SearchTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
