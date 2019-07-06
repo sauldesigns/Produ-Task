@@ -1,4 +1,5 @@
 import 'package:book_read/enums/connectivity_status.dart';
+import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/edit_profile.dart';
 import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';
@@ -9,6 +10,7 @@ import 'package:book_read/pages/sign_up.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
+import 'package:book_read/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +19,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final db = DatabaseService();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,9 @@ class MyApp extends StatelessWidget {
           builder: (context) =>
               ConnectivityService().connectionStatusController,
         ),
+        StreamProvider<List<User>>.value(
+          value: db.streamUsers(''),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

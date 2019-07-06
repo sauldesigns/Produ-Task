@@ -1,5 +1,9 @@
 import 'package:book_read/models/category.dart';
+import 'package:book_read/models/user.dart';
+import 'package:book_read/ui/custome_share_search.dart';
+import 'package:book_read/ui/profile_picture.dart';
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 
 class SharePage extends StatefulWidget {
   SharePage({Key key, this.category}) : super(key: key);
@@ -8,46 +12,48 @@ class SharePage extends StatefulWidget {
 }
 
 class _SharePageState extends State<SharePage> {
+  List<User> usersadded = [];
   @override
   Widget build(BuildContext context) {
+    // List<User> users = Provider.of<List<User>>(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
+        brightness: Brightness.light,
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
         title: Text(
           'Share',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: Colors.black),
         ),
-        centerTitle: true,
-        brightness: Brightness.light,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomShareDelegate(),
+              );
+            },
+          )
+        ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 40, left: 40, right: 40),
-              child: Text(
-                'Add people to ${widget.category.title}',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17),
-              ),
+      body: usersadded.length != 0 ? ListView.builder(
+        itemCount: usersadded.length,
+        itemBuilder: (context, index) {
+          User userData = usersadded[index];
+          return ListTile(
+            leading: ProfilePicture(
+              imgUrl: userData.profilePic,
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 50, right: 60, left: 60,),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Enter username here'
-                ),
-              ),
-            ),
-            
-          ],
-        ),
+            title: Text('${userData.username}'),
+          );
+        } ,
+      ) : Center(
+        child: Text('  No users have been added.\nClick search icon to add users'),
       ),
     );
   }

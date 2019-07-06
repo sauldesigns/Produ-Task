@@ -1,10 +1,16 @@
+import 'package:book_read/models/category.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/profile_picture.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CustomSearchDelegate extends SearchDelegate {
+class CustomShareDelegate extends SearchDelegate {
+  CustomShareDelegate({Key key, this.category});
+  Category category;
   final db = DatabaseService();
+  Firestore _db = Firestore.instance;
+  List<User> _listUsers = [];
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -34,26 +40,36 @@ class CustomSearchDelegate extends SearchDelegate {
       ),
       title: Text(user.username),
       onTap: () {
-        Navigator.of(context).pop();
+        if(!_listUsers.contains(user)) {
+          // _db.collection('category').document(category.id).updateData({'uids': _listUsers});
+          _listUsers.add(user);
+        }
       },
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder(
-      stream: db.streamUsers(query),
-      builder: (context, snapshot) {
-        List data = snapshot.data;
-        return ListView.builder(
-          itemCount: data == null ? 0 : data.length,
-          itemBuilder: (context, index) {
-            User user = data[index];
-            return userData(user, context);
-          },
-        );
-      },
-    );
+    return _listUsers.length == 0
+        ? Center(
+            child: Text('Not sharing with anyone'),
+          )
+        : SingleChildScrollView(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: _listUsers.length,
+              itemBuilder: (context, index) {
+                User userData = _listUsers[index];
+                return ListTile(
+                  title: Text('${userData.username}'),
+                  leading: ProfilePicture(
+                    imgUrl: userData.profilePic,
+                  ),
+                );
+              },
+            ),
+          );
   }
 
   @override
