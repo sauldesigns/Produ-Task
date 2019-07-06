@@ -48,6 +48,16 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
+  Stream<List<User>> streamUsers(String query) {
+    var ref = _db
+        .collection('users')
+        .orderBy('displayName', descending: false)
+        .startAt([query]).limit(20);
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => User.fromFirestore(doc)).toList());
+  }
+
   Stream<List<Category>> streamWeapons(FirebaseUser user) {
     var ref = _db
         .collection('category')
