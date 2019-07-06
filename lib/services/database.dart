@@ -19,11 +19,29 @@ class DatabaseService {
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
-  Stream<List<Task>> categoryTasks(FirebaseUser user, String origuser, Category cat, [date]) {
+  Stream<List<Task>> categoryTasks(
+      FirebaseUser user, String origuser, Category cat) {
+    DateTime date = new DateTime.now();
     var ref = _db
         .collection('tasks')
         .where('cat_uid', isEqualTo: cat.id)
-        .where('createdat', isGreaterThanOrEqualTo: date)
+        .where('createdat',
+            isGreaterThanOrEqualTo: DateTime(date.year, date.month, date.day))
+        .orderBy('createdat', descending: true);
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+  }
+
+  Stream<List<Task>> incompleteTasks(
+      FirebaseUser user, String origuser, Category cat) {
+    DateTime date = new DateTime.now();
+    var ref = _db
+        .collection('tasks')
+        .where('cat_uid', isEqualTo: cat.id)
+        .where('complete', isEqualTo: false)
+        .where('createdat',
+            isLessThan: DateTime(date.year, date.month, date.day))
         .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
