@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
   HomeTab({Key key}) : super(key: key);
-  
+
   _HomeTabState createState() => _HomeTabState();
 }
 
@@ -69,13 +69,33 @@ class _HomeTabState extends State<HomeTab> {
               ),
               Padding(
                 padding: const EdgeInsets.all(40.0),
-                child: Text(
-                  'Hey ${_userDb.fname},\nthis is your to-do list.',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: RichText(
+                  text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Hello ${_userDb.fname},',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '\nthis is your to-do list.',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ]),
                 ),
+                // child: Text(
+                //   'Hey ${_userDb.fname},\nthis is your to-do list.',
+                //   style: TextStyle(
+                //     fontSize: 25,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
