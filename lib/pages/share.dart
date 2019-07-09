@@ -1,7 +1,7 @@
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/ui/custome_share_search.dart';
-import 'package:book_read/ui/profile_picture.dart';
+
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 
@@ -35,25 +35,17 @@ class _SharePageState extends State<SharePage> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: CustomShareDelegate(),
+                delegate: CustomShareDelegate(category: widget.category),
               );
             },
           )
         ],
       ),
-      body: usersadded.length != 0 ? ListView.builder(
-        itemCount: usersadded.length,
-        itemBuilder: (context, index) {
-          User userData = usersadded[index];
-          return ListTile(
-            leading: ProfilePicture(
-              imgUrl: userData.profilePic,
-            ),
-            title: Text('${userData.username}'),
-          );
-        } ,
-      ) : Center(
-        child: Text('  No users have been added.\nClick search icon to add users'),
+      body: Center(
+        child:
+            Text('Click search icon to add users', style: TextStyle(
+              fontSize: 25
+            ),),
       ),
     );
   }

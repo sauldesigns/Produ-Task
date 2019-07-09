@@ -102,7 +102,8 @@ class _HomeTabState extends State<HomeTab> {
                             'createdat': DateTime.now(),
                             'done': false,
                             'uid': _userDb.uid,
-                            'uids': [_userDb.uid]
+                            'uids': [_userDb.uid],
+                            'users': []
                           };
                           database.collection('category').add(data);
                         },

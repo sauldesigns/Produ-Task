@@ -40,10 +40,9 @@ class CustomShareDelegate extends SearchDelegate {
       ),
       title: Text(user.username),
       onTap: () {
-        if(!_listUsers.contains(user)) {
-          // _db.collection('category').document(category.id).updateData({'uids': _listUsers});
-          _listUsers.add(user);
-        }
+        _db.collection('category').document(category.id).updateData({
+          'uids': FieldValue.arrayUnion([user.uid]),
+        });
       },
     );
   }
