@@ -88,29 +88,31 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 30),
-                    child: RoundedButton(
-                      title: 'Submit',
-                      onClick: () {
-                        _formkey.currentState.save();
-                        if (_formkey.currentState.validate()) {
-                          var data = {
-                            'complete': false,
-                            'done': true,
-                            'content': _task,
-                            'createdat': DateTime.now(),
-                            'uid': _userDb.uid,
-                            'cat_uid': widget.category.id,
-                            'createdby': _userDb.fname,
-                            'color': Random().nextInt(7),
-                          };
-                          _db.collection('tasks').add(data);
-                          Navigator.of(context).pop();
-                        } else {
-                          setState(() {
-                            _autoValidate = true;
-                          });
-                        }
-                      },
+                    child: Center(
+                      child: RoundedButton(
+                        title: 'Create Task',
+                        onClick: () {
+                          _formkey.currentState.save();
+                          if (_formkey.currentState.validate()) {
+                            var data = {
+                              'complete': false,
+                              'done': true,
+                              'content': _task,
+                              'createdat': DateTime.now(),
+                              'uid': _userDb.uid,
+                              'cat_uid': widget.category.id,
+                              'createdby': _userDb.fname,
+                              'color': Random().nextInt(7),
+                            };
+                            _db.collection('tasks').add(data);
+                            Navigator.of(context).pop();
+                          } else {
+                            setState(() {
+                              _autoValidate = true;
+                            });
+                          }
+                        },
+                      ),
                     ),
                   )
                 ],
