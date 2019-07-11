@@ -98,7 +98,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             'content': _task,
                             'createdat': DateTime.now(),
                             'uid': _userDb.uid,
-                            'cat_uid': widget.category.uid,
+                            'cat_uid': widget.category.id,
                             'createdby': _userDb.fname,
                             'color': Random().nextInt(7),
                           };
