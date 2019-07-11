@@ -149,6 +149,8 @@ class _TasksPageState extends State<TasksPage> {
                             ),
                             onPressed: () {
                               _db
+                                  .collection('category')
+                                  .document(category.id)
                                   .collection('tasks')
                                   .document(taskData.id)
                                   .updateData({'complete': !taskData.complete});
@@ -159,6 +161,7 @@ class _TasksPageState extends State<TasksPage> {
                                   doc: taskData,
                                   type: 'tasks',
                                   content: taskData.title,
+                                  cat: category,
                                 )
                               : Text(
                                   taskData.title,
@@ -180,6 +183,8 @@ class _TasksPageState extends State<TasksPage> {
                         icon: Icons.edit,
                         onTap: () {
                           _db
+                              .collection('category')
+                              .document(category.id)
                               .collection('tasks')
                               .document(taskData.id)
                               .updateData({'done': !taskData.done});
@@ -193,6 +198,8 @@ class _TasksPageState extends State<TasksPage> {
                         icon: Icons.delete,
                         onTap: () {
                           _db
+                              .collection('category')
+                              .document(category.id)
                               .collection('tasks')
                               .document(taskData.id)
                               .delete();
@@ -250,6 +257,8 @@ class _TasksPageState extends State<TasksPage> {
                                   ),
                                   onPressed: () {
                                     _db
+                                        .collection('category')
+                                        .document(category.id)
                                         .collection('tasks')
                                         .document(taskData.id)
                                         .updateData(
@@ -261,6 +270,7 @@ class _TasksPageState extends State<TasksPage> {
                                         doc: taskData,
                                         type: 'tasks',
                                         content: taskData.title,
+                                        cat: category,
                                       )
                                     : Text(
                                         taskData.title,
@@ -283,6 +293,8 @@ class _TasksPageState extends State<TasksPage> {
                               icon: Icons.edit,
                               onTap: () {
                                 _db
+                                    .collection('category')
+                                    .document(category.id)
                                     .collection('tasks')
                                     .document(taskData.id)
                                     .updateData({'done': !taskData.done});
@@ -296,6 +308,8 @@ class _TasksPageState extends State<TasksPage> {
                               icon: Icons.delete,
                               onTap: () {
                                 _db
+                                    .collection('category')
+                                    .document(category.id)
                                     .collection('tasks')
                                     .document(taskData.id)
                                     .delete();

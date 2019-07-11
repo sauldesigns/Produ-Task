@@ -104,7 +104,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                               'createdby': _userDb.fname,
                               'color': Random().nextInt(7),
                             };
-                            _db.collection('tasks').add(data);
+                            _db.collection('category').document(widget.category.id).collection('tasks').add(data);
                             Navigator.of(context).pop();
                           } else {
                             setState(() {

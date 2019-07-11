@@ -1,12 +1,14 @@
+import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TaskTextField extends StatefulWidget {
-  TaskTextField({Key key, this.doc, this.content = '', this.type})
+  TaskTextField({Key key, this.doc, this.cat, this.content = '', this.type})
       : super(key: key);
   final String type;
   final Task doc;
+  final Category cat;
   final String content;
   @override
   State<StatefulWidget> createState() {
@@ -48,7 +50,12 @@ class _TaskTextFieldState extends State<TaskTextField> {
           db.collection(widget.type).document(widget.doc.id).delete();
         } else {
           var data = {'done': true, 'content': value};
-          db.collection(widget.type).document(widget.doc.id).updateData(data);
+          db
+              .collection('category')
+              .document(widget.cat.id)
+              .collection('tasks')
+              .document(widget.doc.id)
+              .updateData(data);
         }
       },
     );
