@@ -30,6 +30,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
+        brightness: Brightness.light,
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
