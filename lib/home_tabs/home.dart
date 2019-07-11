@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:book_read/models/category.dart';
+import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
@@ -154,8 +155,15 @@ class _HomeTabState extends State<HomeTab> {
                           // Navigator.of(context).pushNamed('/tasks_page');
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => TasksPage(
-                                category: category,
+                              builder: (context) =>
+                                  StreamProvider<List<Task>>.value(
+                                value: db.categoryTasks(
+                                    _userDb, category.uid, category),
+                                child: TasksPage(
+                                  category: category,
+                                  user: _userDb,
+                                  
+                                ),
                               ),
                             ),
                           );

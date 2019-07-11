@@ -20,7 +20,7 @@ class DatabaseService {
   }
 
   Stream<List<Task>> categoryTasks(
-      FirebaseUser user, String origuser, Category cat) {
+      User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
         .collection('tasks')
@@ -34,7 +34,7 @@ class DatabaseService {
   }
 
   Stream<List<Task>> incompleteTasks(
-      FirebaseUser user, String origuser, Category cat) {
+      User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
         .collection('tasks')
