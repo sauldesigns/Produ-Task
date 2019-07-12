@@ -104,9 +104,6 @@ class _TasksPageState extends State<TasksPage> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        if (hasVibration) {
-                          Vibration.vibrate(duration: 200);
-                        }
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => NewTaskPage(

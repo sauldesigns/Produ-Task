@@ -158,9 +158,6 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                               ),
                         onTap: () {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
                           // Navigator.of(context).pushNamed('/tasks_page');
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -234,9 +231,6 @@ class _HomeTabState extends State<HomeTab> {
                                       leading: Icon(Icons.share),
                                       title: Text('Share'),
                                       onTap: () {
-                                        if (hasVibration) {
-                                          Vibration.vibrate(duration: 200);
-                                        }
                                         Navigator.of(context).pop();
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -251,9 +245,6 @@ class _HomeTabState extends State<HomeTab> {
                                       leading: Icon(Icons.create),
                                       title: Text('Edit'),
                                       onTap: () {
-                                        if (hasVibration) {
-                                          Vibration.vibrate(duration: 200);
-                                        }
                                         Navigator.pop(context);
                                         database
                                             .collection('category')
@@ -269,11 +260,46 @@ class _HomeTabState extends State<HomeTab> {
                                         if (hasVibration) {
                                           Vibration.vibrate(duration: 200);
                                         }
-                                        database
-                                            .collection('category')
-                                            .document(category.id)
-                                            .delete();
-                                        Navigator.pop(context);
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                title: Text('Delete account'),
+                                                content: Text(
+                                                    'Are you sure you want to delete this category. All tasks will be deleted and cannot be retrieved once deleted.'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Delete'),
+                                                    onPressed: () async {
+                                                      if (hasVibration) {
+                                                        Vibration.vibrate(
+                                                            duration: 200);
+                                                      }
+                                                      database
+                                                          .collection(
+                                                              'category')
+                                                          .document(category.id)
+                                                          .delete();
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                      child: Text('Cancel'),
+                                                      onPressed: () {
+                                                        if (hasVibration) {
+                                                          Vibration.vibrate(
+                                                              duration: 200);
+                                                        }
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      }),
+                                                ],
+                                              );
+                                            });
                                       },
                                     ),
                                     SizedBox(
