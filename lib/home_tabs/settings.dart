@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:vibration/vibration.dart';
 
 class SettingsTab extends StatefulWidget {
   SettingsTab({Key key}) : super(key: key);
@@ -23,6 +24,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     var _userDb = Provider.of<User>(context);
+    bool hasVibration = Provider.of<dynamic>(context);
     return Container(
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
@@ -43,6 +45,9 @@ class _SettingsTabState extends State<SettingsTab> {
                         imgUrl: _userDb.profilePic,
                         size: 60,
                         onTap: () async {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
@@ -91,7 +96,11 @@ class _SettingsTabState extends State<SettingsTab> {
                   title: Text('My e-mail'),
                   subtitle: Text(_userDb.email),
                   leading: Icon(Icons.mail),
-                  onTap: () {},
+                  onTap: () {
+                    if (hasVibration) {
+                      Vibration.vibrate(duration: 200);
+                    }
+                  },
                 ),
               ),
               Divider(
@@ -101,6 +110,9 @@ class _SettingsTabState extends State<SettingsTab> {
                 title: Text('Edit profile'),
                 leading: Icon(Icons.person_pin),
                 onTap: () {
+                  if (hasVibration) {
+                    Vibration.vibrate(duration: 200);
+                  }
                   Navigator.of(context).pushNamed('/editprofile');
                 },
               ),
@@ -111,11 +123,15 @@ class _SettingsTabState extends State<SettingsTab> {
                 title: Text('Reset password'),
                 leading: Icon(Icons.lock),
                 onTap: () {
+                  if (hasVibration) {
+                    Vibration.vibrate(duration: 200);
+                  }
                   auth.sendPasswordResetEmail(email: user.email);
                   Flushbar(
                     flushbarPosition: FlushbarPosition.TOP,
                     aroundPadding: EdgeInsets.all(8),
                     borderRadius: 10,
+                    duration: Duration(seconds: 3),
                     icon: Icon(Icons.check_circle, color: Colors.green),
                     message:
                         'Password reset email will be sent. Check inbox or spam mail.',
@@ -129,6 +145,9 @@ class _SettingsTabState extends State<SettingsTab> {
                 title: Text('Sign Out'),
                 leading: Icon(Icons.exit_to_app),
                 onTap: () {
+                  if (hasVibration) {
+                    Vibration.vibrate(duration: 200);
+                  }
                   auth.signOut();
                   if (_userDb.provider == 'google') {
                     _googleSignIn.signOut();
@@ -148,6 +167,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () async {
+                    if (hasVibration) {
+                      Vibration.vibrate(duration: 200);
+                    }
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -162,6 +184,9 @@ class _SettingsTabState extends State<SettingsTab> {
                               FlatButton(
                                 child: Text('Delete'),
                                 onPressed: () async {
+                                  if (hasVibration) {
+                                    Vibration.vibrate(duration: 200);
+                                  }
                                   db.deleteUser(user.uid);
                                   FirebaseUser _user = await auth.currentUser();
                                   _user.delete();
@@ -173,6 +198,9 @@ class _SettingsTabState extends State<SettingsTab> {
                               FlatButton(
                                   child: Text('Cancel'),
                                   onPressed: () {
+                                    if (hasVibration) {
+                                      Vibration.vibrate(duration: 200);
+                                    }
                                     Navigator.of(context).pop();
                                   }),
                             ],

@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class TasksPage extends StatefulWidget {
   TasksPage({Key key, this.category, this.user}) : super(key: key);
@@ -29,6 +30,7 @@ class _TasksPageState extends State<TasksPage> {
     var category = widget.category;
     _userDb = widget.user;
     List<Task> task = Provider.of<List<Task>>(context);
+    bool hasVibration = Provider.of<dynamic>(context);
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -102,6 +104,9 @@ class _TasksPageState extends State<TasksPage> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
+                        if (hasVibration) {
+                          Vibration.vibrate(duration: 200);
+                        }
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => NewTaskPage(
@@ -148,6 +153,9 @@ class _TasksPageState extends State<TasksPage> {
                               color: Colors.black,
                             ),
                             onPressed: () {
+                              if (hasVibration) {
+                                Vibration.vibrate(duration: 200);
+                              }
                               _db
                                   .collection('category')
                                   .document(category.id)
@@ -182,6 +190,9 @@ class _TasksPageState extends State<TasksPage> {
                         color: Colors.blue,
                         icon: Icons.edit,
                         onTap: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           _db
                               .collection('category')
                               .document(category.id)
@@ -197,6 +208,9 @@ class _TasksPageState extends State<TasksPage> {
                         color: Colors.red,
                         icon: Icons.delete,
                         onTap: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           _db
                               .collection('category')
                               .document(category.id)
@@ -256,6 +270,9 @@ class _TasksPageState extends State<TasksPage> {
                                     color: Colors.black,
                                   ),
                                   onPressed: () {
+                                    if (hasVibration) {
+                                      Vibration.vibrate(duration: 200);
+                                    }
                                     _db
                                         .collection('category')
                                         .document(category.id)
@@ -292,6 +309,9 @@ class _TasksPageState extends State<TasksPage> {
                               color: Colors.blue,
                               icon: Icons.edit,
                               onTap: () {
+                                if (hasVibration) {
+                                  Vibration.vibrate(duration: 200);
+                                }
                                 _db
                                     .collection('category')
                                     .document(category.id)
@@ -307,6 +327,9 @@ class _TasksPageState extends State<TasksPage> {
                               color: Colors.red,
                               icon: Icons.delete,
                               onTap: () {
+                                if (hasVibration) {
+                                  Vibration.vibrate(duration: 200);
+                                }
                                 _db
                                     .collection('category')
                                     .document(category.id)

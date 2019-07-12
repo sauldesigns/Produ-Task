@@ -4,6 +4,8 @@ import 'package:book_read/models/user.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class NewTaskPage extends StatefulWidget {
   NewTaskPage({Key key, this.category, this.user}) : super(key: key);
@@ -24,6 +26,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
   Widget build(BuildContext context) {
     // var _user = Provider.of<FirebaseUser>(context);
     var _userDb = widget.user;
+    bool hasVibration = Provider.of<dynamic>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -92,6 +95,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
                       child: RoundedButton(
                         title: 'Create Task',
                         onClick: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           _formkey.currentState.save();
                           if (_formkey.currentState.validate()) {
                             var data = {
@@ -104,7 +110,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
                               'createdby': _userDb.fname,
                               'color': Random().nextInt(7),
                             };
-                            _db.collection('category').document(widget.category.id).collection('tasks').add(data);
+                            _db
+                                .collection('category')
+                                .document(widget.category.id)
+                                .collection('tasks')
+                                .add(data);
                             Navigator.of(context).pop();
                           } else {
                             setState(() {

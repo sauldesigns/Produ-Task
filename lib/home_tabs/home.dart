@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class HomeTab extends StatefulWidget {
   HomeTab({Key key}) : super(key: key);
@@ -23,6 +24,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final db = DatabaseService();
   final Firestore database = Firestore.instance;
+  bool hasVibration;
   List listColors = [
     Colors.blue,
     Colors.purple,
@@ -36,6 +38,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    hasVibration = Provider.of<dynamic>(context);
     var _userDb = Provider.of<User>(context);
     var _category = Provider.of<List<Category>>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -117,6 +120,9 @@ class _HomeTabState extends State<HomeTab> {
                         blurRadius: 10,
                         color: Colors.blue,
                         onTap: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           var data = {
                             'content': '',
                             'color': Random().nextInt(7),
@@ -152,6 +158,9 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                               ),
                         onTap: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           // Navigator.of(context).pushNamed('/tasks_page');
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -162,13 +171,15 @@ class _HomeTabState extends State<HomeTab> {
                                 child: TasksPage(
                                   category: category,
                                   user: _userDb,
-                                  
                                 ),
                               ),
                             ),
                           );
                         },
                         onLongPress: () {
+                          if (hasVibration) {
+                            Vibration.vibrate(duration: 200);
+                          }
                           showBottomSheet(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
@@ -196,6 +207,10 @@ class _HomeTabState extends State<HomeTab> {
                                           itemBuilder: (context, index) {
                                             return InkWell(
                                               onTap: () {
+                                                if (hasVibration) {
+                                                  Vibration.vibrate(
+                                                      duration: 200);
+                                                }
                                                 database
                                                     .collection('category')
                                                     .document(category.id)
@@ -219,6 +234,9 @@ class _HomeTabState extends State<HomeTab> {
                                       leading: Icon(Icons.share),
                                       title: Text('Share'),
                                       onTap: () {
+                                        if (hasVibration) {
+                                          Vibration.vibrate(duration: 200);
+                                        }
                                         Navigator.of(context).pop();
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -233,6 +251,9 @@ class _HomeTabState extends State<HomeTab> {
                                       leading: Icon(Icons.create),
                                       title: Text('Edit'),
                                       onTap: () {
+                                        if (hasVibration) {
+                                          Vibration.vibrate(duration: 200);
+                                        }
                                         Navigator.pop(context);
                                         database
                                             .collection('category')
@@ -245,6 +266,9 @@ class _HomeTabState extends State<HomeTab> {
                                       leading: Icon(Icons.delete),
                                       title: Text('Delete'),
                                       onTap: () {
+                                        if (hasVibration) {
+                                          Vibration.vibrate(duration: 200);
+                                        }
                                         database
                                             .collection('category')
                                             .document(category.id)

@@ -14,6 +14,7 @@ import 'package:book_read/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vibration/vibration.dart';
 // import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
@@ -35,6 +36,10 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider<List<User>>.value(
           value: db.streamUsers(''),
+        ),
+        FutureProvider<dynamic>.value(
+          value: Vibration.hasVibrator()
+         
         )
       ],
       child: MaterialApp(

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:vibration/vibration.dart';
 
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({Key key, this.title = 'Edit Profile'}) : super(key: key);
@@ -28,7 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
+    bool hasVibration = Provider.of<dynamic>(context);
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -173,6 +174,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 ? RoundedButton(
                                     title: 'Submit',
                                     onClick: () async {
+                                      if (hasVibration) {
+                                        Vibration.vibrate(duration: 200);
+                                      }
                                       if (_formkey.currentState.validate()) {
                                         _formkey.currentState.save();
                                         setState(() {
@@ -202,6 +206,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             aroundPadding: EdgeInsets.all(8),
                                             borderRadius: 10,
                                             backgroundColor: Colors.red,
+                                            duration: Duration(seconds: 3),
                                             message:
                                                 'Device is offline. Data will uploaded once device is back online',
                                             icon: Icon(Icons.error,
@@ -214,6 +219,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                 FlushbarPosition.TOP,
                                             aroundPadding: EdgeInsets.all(8),
                                             borderRadius: 10,
+                                            duration: Duration(seconds: 3),
                                             message:
                                                 'Successfully updated user account',
                                             icon: Icon(
