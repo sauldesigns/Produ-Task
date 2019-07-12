@@ -19,10 +19,11 @@ class DatabaseService {
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
-  Stream<List<Task>> categoryTasks(
-      FirebaseUser user, String origuser, Category cat) {
+  Stream<List<Task>> categoryTasks(User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
+        .collection('category')
+        .document(cat.id)
         .collection('tasks')
         .where('cat_uid', isEqualTo: cat.id)
         .where('createdat',
@@ -33,10 +34,11 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Stream<List<Task>> incompleteTasks(
-      FirebaseUser user, String origuser, Category cat) {
+  Stream<List<Task>> incompleteTasks(User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
+        .collection('category')
+        .document(cat.id)
         .collection('tasks')
         .where('cat_uid', isEqualTo: cat.id)
         .where('complete', isEqualTo: false)

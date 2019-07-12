@@ -45,152 +45,156 @@ class _SignUpPageState extends State<SignUpPage> {
         elevation: 0.0,
       ),
       // backgroundColor: Color.fromRGBO(255, 218, 185, 1),
-      body: SingleChildScrollView(
-        child: Form(
-          key: this._formkey,
-          autovalidate: _autoValidate,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.only(top: 70),
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Username',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Form(
+            key: this._formkey,
+            autovalidate: _autoValidate,
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.only(top: 70),
+                width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Username',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  TextFormField(
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      Pattern pattern =
-                          r'^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
-                      RegExp regex = new RegExp(pattern);
-                      if (value.isEmpty) {
-                        return 'Please enter username';
-                      } else if (!regex.hasMatch(value))
-                        return 'Not a valid username';
-                      return null;
-                    },
-                    onSaved: (value) => _username = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'E-mail',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                    TextFormField(
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                      validator: (value) {
+                        Pattern pattern =
+                            r'^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
+                        RegExp regex = new RegExp(pattern);
+                        if (value.isEmpty) {
+                          return 'Please enter username';
+                        } else if (!regex.hasMatch(value))
+                          return 'Not a valid username';
+                        return null;
+                      },
+                      onSaved: (value) => _username = value,
                     ),
-                  ),
-                  TextFormField(
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter email';
-                      } else if (EmailValidator.validate(value) == false) {
-                        return 'Not a valid email';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => _email = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                    SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  TextFormField(
-                    obscureText: !_showPassword,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      _password = value;
+                    Text(
+                      'E-mail',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter email';
+                        } else if (EmailValidator.validate(value) == false) {
+                          return 'Not a valid email';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _email = value,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      'Password',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      obscureText: !_showPassword,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        _password = value;
 
-                      if (value.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 6) {
-                        return 'Password is too short';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => _password = value,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Confirm Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                        if (value.isEmpty) {
+                          return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _password = value,
                     ),
-                  ),
-                  TextFormField(
-                    obscureText: !_showConfirmPassword,
-                    textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 6) {
-                        return 'Password is too short';
-                      } else if (value != _password) {
-                        return 'Passwords did not match';
-                      }
-                      return null;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: isLoading == false
-                        ? RoundedButton(
-                            title: 'Sign up',
-                            onClick: () async {
-                              if (_formkey.currentState.validate()) {
-                                _formkey.currentState.save();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                var userId =
-                                    await widget.auth.signUp(_email, _password);
-                                var data = {
-                                  'displayName': _username,
-                                  'email': _email,
-                                  'bio': '',
-                                  'fname': '',
-                                  'lname': '',
-                                  'provider': 'email',
-                                  'profile_pic':
-                                      'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                  'uid': userId
-                                };
-                                db
-                                    .collection('users')
-                                    .document(userId)
-                                    .setData(data);
-                              } else {
-                                setState(() {
-                                  _autoValidate = true;
-                                });
-                              }
-                            },
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                  )
-                ],
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      'Confirm Password',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
+                      obscureText: !_showConfirmPassword,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter password';
+                        } else if (value.length < 6) {
+                          return 'Password is too short';
+                        } else if (value != _password) {
+                          return 'Passwords did not match';
+                        }
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: isLoading == false
+                          ? RoundedButton(
+                              title: 'Sign up',
+                              onClick: () async {
+                                if (_formkey.currentState.validate()) {
+                                  _formkey.currentState.save();
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  var userId = await widget.auth
+                                      .signUp(_email, _password);
+                                  var data = {
+                                    'displayName': _username,
+                                    'email': _email,
+                                    'bio': '',
+                                    'fname': '',
+                                    'lname': '',
+                                    'provider': 'email',
+                                    'profile_pic':
+                                        'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+                                    'uid': userId
+                                  };
+                                  db
+                                      .collection('users')
+                                      .document(userId)
+                                      .setData(data);
+                                } else {
+                                  setState(() {
+                                    _autoValidate = true;
+                                  });
+                                }
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -33,6 +33,7 @@ dependencies:
   intl: ^0.15.8
   flutter_slidable: ^0.5.3
   search_widget: ^0.2.0
+  vibration: ^1.1.0
 
   # flutter_advanced_networkimage: ^0.4.15
 

@@ -40,7 +40,9 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0.0,
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Form(
             key: this._formkey,
             autovalidate: _autoValidate,

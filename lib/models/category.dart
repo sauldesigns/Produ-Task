@@ -7,9 +7,11 @@ class Category {
   final String coverImg;
   final bool done;
   final String uid;
+  final List<dynamic> shareList;
+  // final List<dynamic> shareUsers;
   final int color;
 
-  Category({ this.id, this.uid, this.title, this.color, this.createdAt, this.coverImg, this.done});
+  Category({ this.id, this.uid, this.shareList, this.title, this.color, this.createdAt, this.coverImg, this.done});
 
   factory Category.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
@@ -21,7 +23,9 @@ class Category {
       createdAt: data['createdat'],
       coverImg: data['cover_img'] ?? '',
       done: data['done'],
-      color: data['color']
+      color: data['color'],
+      shareList: data['uids'],
+      // shareUsers: data['users']
     );
   }
 

@@ -1,5 +1,5 @@
 import 'package:book_read/enums/connectivity_status.dart';
-import 'package:book_read/home_tabs/books.dart';
+import 'package:book_read/home_tabs/search.dart';
 import 'package:book_read/home_tabs/home.dart';
 import 'package:book_read/home_tabs/profile.dart';
 import 'package:book_read/home_tabs/settings.dart';
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   final db = DatabaseService();
   final List<Widget> _tabs = [
     HomeTab(),
-    BooksTab(),
+    SearchTab(),
     ProfileTab(),
     SettingsTab(),
   ];
@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var user = Provider.of<FirebaseUser>(context);
+    // _tabs[0] = HomeTab(context: context,);
     return Scaffold(
       bottomNavigationBar: FancyBottomNavigation(
         circleColor: Colors.black,
