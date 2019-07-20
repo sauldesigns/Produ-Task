@@ -1,4 +1,5 @@
 // import 'package:book_read/models/category.dart';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
@@ -61,6 +62,17 @@ class _TasksPageState extends State<TasksPage> {
                     ProfilePicture(
                       size: 25,
                       imgUrl: _userDb == null ? null : _userDb.profilePic,
+                      onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => StreamProvider<User>.value(
+                                value: db.streamHero(_userDb.uid),
+                                initialData: User.initialData(),
+                                child: SettingsTab(),
+                              ),
+                            ),
+                          );
+                        },
                     )
                   ],
                 ),

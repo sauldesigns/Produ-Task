@@ -203,7 +203,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                            aroundPadding: EdgeInsets.all(8),
+                                             margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             backgroundColor: Colors.red,
                                             duration: Duration(seconds: 3),
@@ -217,7 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                            aroundPadding: EdgeInsets.all(8),
+                                             margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             duration: Duration(seconds: 3),
                                             message:

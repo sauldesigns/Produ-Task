@@ -1,4 +1,6 @@
+// import 'package:book_read/enums/auth.dart';
 import 'package:book_read/enums/connectivity_status.dart';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/edit_profile.dart';
 import 'package:book_read/pages/home.dart';
@@ -37,10 +39,7 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<User>>.value(
           value: db.streamUsers(''),
         ),
-        FutureProvider<dynamic>.value(
-          value: Vibration.hasVibrator()
-         
-        )
+        FutureProvider<dynamic>.value(value: Vibration.hasVibrator())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,6 +63,7 @@ class MyApp extends StatelessWidget {
           '/editprofile': (context) => EditProfilePage(),
           '/new_task': (context) => NewTaskPage(),
           '/tasks_page': (context) => TasksPage(),
+          '/settings': (context) => SettingsTab(),
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
@@ -64,9 +65,23 @@ class _HomeTabState extends State<HomeTab> {
                     Expanded(
                       child: Container(),
                     ),
-                    ProfilePicture(
-                      size: 25,
-                      imgUrl: _userDb.profilePic,
+                    Hero(
+                      tag: 'profile_pic',
+                      child: ProfilePicture(
+                        size: 25,
+                        imgUrl: _userDb.profilePic,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => StreamProvider<User>.value(
+                                value: db.streamHero(_userDb.uid),
+                                initialData: User.initialData(),
+                                child: SettingsTab(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     )
                   ],
                 ),
@@ -85,7 +100,7 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nthis is your to-do list.',
+                          text: '\nthis is your task list.',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w300,
@@ -158,9 +173,6 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                               ),
                         onTap: () {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
                           // Navigator.of(context).pushNamed('/tasks_page');
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -206,6 +218,9 @@ class _HomeTabState extends State<HomeTab> {
                                           padding: EdgeInsets.only(left: 10),
                                           itemBuilder: (context, index) {
                                             return InkWell(
+                                              splashColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
                                               onTap: () {
                                                 if (hasVibration) {
                                                   Vibration.vibrate(
