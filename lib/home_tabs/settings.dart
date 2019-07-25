@@ -42,7 +42,7 @@ class _SettingsTabState extends State<SettingsTab> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           padding: EdgeInsets.only(top: 10.0),
           child: Center(
             child: Column(

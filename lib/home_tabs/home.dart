@@ -48,7 +48,7 @@ class _HomeTabState extends State<HomeTab> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -167,15 +167,12 @@ class _HomeTabState extends State<HomeTab> {
                                 type: 'category',
                                 content: category.title,
                               )
-                            : Hero(
-                                tag: _category[index - 1].title,
-                                child: Text(
-                                  _category[index - 1].title,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
+                            : Text(
+                                _category[index - 1].title,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
                                 ),
                               ),
                         onTap: () {

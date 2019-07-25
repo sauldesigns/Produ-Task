@@ -36,7 +36,7 @@ class _TasksPageState extends State<TasksPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -59,35 +59,38 @@ class _TasksPageState extends State<TasksPage> {
                     Expanded(
                       child: Container(),
                     ),
-                    ProfilePicture(
-                      size: 25,
-                      imgUrl: _userDb == null ? null : _userDb.profilePic,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => StreamProvider<User>.value(
-                              value: db.streamHero(_userDb.uid),
-                              initialData: User.initialData(),
-                              child: SettingsTab(),
-                            ),
-                          ),
-                        );
-                      },
+                    Hero(
+                      tag: 'hero',
+                      child: Material(
+                        child: ProfilePicture(
+                          size: 25,
+                          imgUrl: _userDb == null ? null : _userDb.profilePic,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    StreamProvider<User>.value(
+                                  value: db.streamHero(_userDb.uid),
+                                  initialData: User.initialData(),
+                                  child: SettingsTab(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
-              Hero(
-                tag: category.title,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 40.0, left: 40.0, right: 40.0),
-                  child: Text(
-                    '${category.title}',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
-                    ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 40.0, left: 40.0, right: 40.0),
+                child: Text(
+                  '${category.title}',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
