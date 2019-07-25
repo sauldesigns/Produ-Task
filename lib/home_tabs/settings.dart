@@ -53,25 +53,30 @@ class _SettingsTabState extends State<SettingsTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      ProfilePicture(
-                        imgUrl: _userDb.profilePic,
-                        size: 60,
-                        onTap: () async {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
-                          showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                    content: Text(
-                                      'Uploading...',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ));
-                          await db.uploadProfilePicture(user.uid);
-                          Navigator.of(context).pop();
-                        },
-                        isSettings: true,
+                      Hero(
+                        tag: 'hero',
+                        child: Material(
+                          child: ProfilePicture(
+                            imgUrl: _userDb.profilePic,
+                            size: 60,
+                            onTap: () async {
+                              if (hasVibration) {
+                                Vibration.vibrate(duration: 200);
+                              }
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        content: Text(
+                                          'Uploading...',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ));
+                              await db.uploadProfilePicture(user.uid);
+                              Navigator.of(context).pop();
+                            },
+                            isSettings: true,
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 25.0),
@@ -140,7 +145,6 @@ class _SettingsTabState extends State<SettingsTab> {
                     auth.sendPasswordResetEmail(email: user.email);
                     Flushbar(
                       flushbarPosition: FlushbarPosition.TOP,
-                      
                       margin: EdgeInsets.all(8.0),
                       borderRadius: 10,
                       duration: Duration(seconds: 3),

@@ -66,21 +66,24 @@ class _HomeTabState extends State<HomeTab> {
                       child: Container(),
                     ),
                     Hero(
-                      tag: 'profile_pic',
-                      child: ProfilePicture(
-                        size: 25,
-                        imgUrl: _userDb.profilePic,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => StreamProvider<User>.value(
-                                value: db.streamHero(_userDb.uid),
-                                initialData: User.initialData(),
-                                child: SettingsTab(),
+                      tag: 'hero',
+                      child: Material(
+                        child: ProfilePicture(
+                          size: 25,
+                          imgUrl: _userDb.profilePic,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    StreamProvider<User>.value(
+                                  value: db.streamHero(_userDb.uid),
+                                  initialData: User.initialData(),
+                                  child: SettingsTab(),
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     )
                   ],
@@ -164,12 +167,15 @@ class _HomeTabState extends State<HomeTab> {
                                 type: 'category',
                                 content: category.title,
                               )
-                            : Text(
-                                _category[index - 1].title,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
+                            : Hero(
+                                tag: _category[index - 1].title,
+                                child: Text(
+                                  _category[index - 1].title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                         onTap: () {
