@@ -104,7 +104,7 @@ class DatabaseService {
 
   Future<void> uploadProfilePicture(String uid) async {
     File _image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
+        source: ImageSource.gallery);
 
     if (_image != null) {
       var imagePath = _image.path;

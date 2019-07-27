@@ -164,9 +164,6 @@ class _NewCategoryState extends State<NewCategory> {
                           ? 'Create Category'
                           : 'Update Category',
                       onClick: () {
-                        if (hasVibration) {
-                          Vibration.vibrate(duration: 200);
-                        }
                         _formkey.currentState.save();
                         if (_formkey.currentState.validate()) {
                           var data = {

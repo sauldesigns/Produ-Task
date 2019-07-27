@@ -95,9 +95,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
                       child: RoundedButton(
                         title: 'Create Task',
                         onClick: () {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
                           _formkey.currentState.save();
                           if (_formkey.currentState.validate()) {
                             var data = {

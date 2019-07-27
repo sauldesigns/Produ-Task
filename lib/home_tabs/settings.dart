@@ -60,9 +60,6 @@ class _SettingsTabState extends State<SettingsTab> {
                             imgUrl: _userDb.profilePic,
                             size: 60,
                             onTap: () async {
-                              if (hasVibration) {
-                                Vibration.vibrate(duration: 200);
-                              }
                               showDialog(
                                   context: context,
                                   builder: (_) => AlertDialog(
