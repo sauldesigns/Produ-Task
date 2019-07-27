@@ -143,25 +143,16 @@ class _HomeTabState extends State<HomeTab> {
                             Vibration.vibrate(duration: 200);
                           }
                           int index = Random().nextInt(7);
-                          var data = {
-                            'content': '',
-                            'color': index,
-                            'createdat': DateTime.now(),
-                            'done': false,
-                            'uid': _userDb.uid,
-                            'uids': [_userDb.uid],
-                            'users': []
-                          };
-                          database.collection('category').add(data).then((doc) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NewCategory(
-                                      catID: doc.documentID,
-                                      user: _userDb,
-                                      initialText: '',
-                                      listColors: listColors,
-                                      colorIndex: index,
-                                    )));
-                          });
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NewCategory(
+                                user: _userDb,
+                                initialText: '',
+                                listColors: listColors,
+                                colorIndex: index,
+                              ),
+                            ),
+                          );
                         },
                       );
                     } else {
@@ -293,7 +284,8 @@ class _HomeTabState extends State<HomeTab> {
                                                 builder: (context) =>
                                                     NewCategory(
                                                         catID: category.id,
-                                                        initialText: category.title,
+                                                        initialText:
+                                                            category.title,
                                                         user: _userDb,
                                                         update: true,
                                                         listColors: listColors,

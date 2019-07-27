@@ -4,11 +4,10 @@ import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 class NewCategory extends StatefulWidget {
   NewCategory(
       {Key key,
-      this.catID,
+      this.catID = 'new_category',
       this.user,
       this.listColors,
       this.update = false,
@@ -164,15 +163,29 @@ class _NewCategoryState extends State<NewCategory> {
                       onClick: () {
                         _formkey.currentState.save();
                         if (_formkey.currentState.validate()) {
-                          var data = {
-                            'content': _category,
-                            'color': _colorIndex,
-                            'done': true,
-                          };
-                          _db
-                              .collection('category')
-                              .document(widget.catID)
-                              .updateData(data);
+                          if (widget.update == false) {
+                            var data = {
+                              'content': _category,
+                              'color': _colorIndex,
+                              'createdat': DateTime.now(),
+                              'done': true,
+                              'uid': widget.user.uid,
+                              'uids': [widget.user.uid],
+                              'users': []
+                            };
+                            _db.collection('category').add(data);
+                          } else {
+                            var data = {
+                              'content': _category,
+                              'color': _colorIndex,
+                              'done': true,
+                            };
+                            _db
+                                .collection('category')
+                                .document(widget.catID)
+                                .updateData(data);
+                          }
+
                           Navigator.of(context).pop();
                         } else {
                           setState(() {

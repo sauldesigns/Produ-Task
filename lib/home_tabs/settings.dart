@@ -165,6 +165,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     if (_userDb.provider == 'google') {
                       _googleSignIn.signOut();
                     }
+                    Navigator.of(context).pop();
                   },
                 ),
                 Divider(

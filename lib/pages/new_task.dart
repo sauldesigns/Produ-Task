@@ -4,7 +4,6 @@ import 'package:book_read/models/user.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NewTaskPage extends StatefulWidget {
   NewTaskPage({Key key, this.category, this.user}) : super(key: key);
