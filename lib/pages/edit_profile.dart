@@ -131,7 +131,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             initialValue: userData.lname,
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               Pattern pattern =
                                   r'^(?=.{1,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
@@ -162,7 +162,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             textCapitalization: TextCapitalization.sentences,
                             maxLength: 160,
                             textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               return null;
                             },
@@ -203,7 +203,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                             margin: EdgeInsets.all(8.0),
+                                            margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             backgroundColor: Colors.red,
                                             duration: Duration(seconds: 3),
@@ -217,7 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                             margin: EdgeInsets.all(8.0),
+                                            margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             duration: Duration(seconds: 3),
                                             message:
