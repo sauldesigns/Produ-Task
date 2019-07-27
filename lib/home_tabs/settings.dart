@@ -113,9 +113,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     subtitle: Text(_userDb.email),
                     leading: Icon(Icons.mail),
                     onTap: () {
-                      if (hasVibration) {
-                        Vibration.vibrate(duration: 200);
-                      }
+                      // if (hasVibration) {
+                      //   Vibration.vibrate(duration: 200);
+                      // }
                     },
                   ),
                 ),
@@ -126,9 +126,9 @@ class _SettingsTabState extends State<SettingsTab> {
                   title: Text('Edit profile'),
                   leading: Icon(Icons.person_pin),
                   onTap: () {
-                    if (hasVibration) {
-                      Vibration.vibrate(duration: 200);
-                    }
+                    // if (hasVibration) {
+                    //   Vibration.vibrate(duration: 200);
+                    // }
                     Navigator.of(context).pushNamed('/editprofile');
                   },
                 ),

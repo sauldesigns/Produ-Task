@@ -1,4 +1,3 @@
-// import 'package:book_read/enums/auth.dart';
 import 'package:book_read/enums/connectivity_status.dart';
 import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/user.dart';
@@ -17,18 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vibration/vibration.dart';
-// import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final db = DatabaseService();
-  // This widget is the root of your application.
-
+ 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(

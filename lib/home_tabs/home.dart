@@ -3,11 +3,12 @@ import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
+import 'package:book_read/pages/new_category.dart';
 import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
-import 'package:book_read/ui/category_textfield.dart';
+// import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +27,7 @@ class _HomeTabState extends State<HomeTab> {
   final db = DatabaseService();
   final Firestore database = Firestore.instance;
   bool hasVibration;
-  List listColors = [
+  List<Color> listColors = [
     Colors.blue,
     Colors.purple,
     Colors.green,
@@ -48,7 +49,7 @@ class _HomeTabState extends State<HomeTab> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -141,168 +142,192 @@ class _HomeTabState extends State<HomeTab> {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
                           }
+                          int index = Random().nextInt(7);
                           var data = {
                             'content': '',
-                            'color': Random().nextInt(7),
+                            'color': index,
                             'createdat': DateTime.now(),
                             'done': false,
                             'uid': _userDb.uid,
                             'uids': [_userDb.uid],
                             'users': []
                           };
-                          database.collection('category').add(data);
+                          database.collection('category').add(data).then((doc) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NewCategory(
+                                      catID: doc.documentID,
+                                      user: _userDb,
+                                      initialText: '',
+                                      listColors: listColors,
+                                      colorIndex: index,
+                                    )));
+                          });
                         },
                       );
                     } else {
                       Category category = _category[index - 1];
-                      return CustomCard(
-                        blurRadius: 10,
-                        color: listColors[category.color],
-                        date: DateFormat('dd MMMM, yyyy')
-                            .format(_category[index - 1].createdAt.toDate()),
-                        numPages: 2,
-                        title: category.done == false
-                            ? CategoryTextField(
-                                doc: category,
-                                type: 'category',
-                                content: category.title,
-                              )
-                            : Text(
-                                _category[index - 1].title,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                        onTap: () {
-                          // Navigator.of(context).pushNamed('/tasks_page');
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  StreamProvider<List<Task>>.value(
-                                value: db.categoryTasks(
-                                    _userDb, category.uid, category),
-                                child: TasksPage(
-                                  category: category,
-                                  user: _userDb,
-                                ),
+                      return Hero(
+                        tag: category.id,
+                        child: Material(
+                          child: CustomCard(
+                            blurRadius: 10,
+                            color: listColors[category.color],
+                            date: DateFormat('dd MMMM, yyyy').format(
+                                _category[index - 1].createdAt.toDate()),
+                            numPages: 2,
+                            // title: category.done == false
+                            //     ? CategoryTextField(
+                            //         doc: category,
+                            //         type: 'category',
+                            //         content: category.title,
+                            //       )
+                            title: Text(
+                              _category[index - 1].title,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
                               ),
                             ),
-                          );
-                        },
-                        onLongPress: () {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
-                          showBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            context: context,
-                            builder: (context) {
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: 10.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, bottom: 5),
-                                      child: Text('Change Color'),
+                            onTap: () {
+                              // Navigator.of(context).pushNamed('/tasks_page');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      StreamProvider<List<Task>>.value(
+                                    value: db.categoryTasks(
+                                        _userDb, category.uid, category),
+                                    child: TasksPage(
+                                      category: category,
+                                      user: _userDb,
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, bottom: 15),
-                                      child: Container(
-                                        height: 40,
-                                        child: ListView.builder(
-                                          itemCount: listColors.length,
-                                          scrollDirection: Axis.horizontal,
-                                          padding: EdgeInsets.only(left: 10),
-                                          itemBuilder: (context, index) {
-                                            return InkWell(
-                                              splashColor: Colors.transparent,
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              onTap: () {
-                                                if (hasVibration) {
-                                                  Vibration.vibrate(
-                                                      duration: 200);
-                                                }
-                                                database
-                                                    .collection('category')
-                                                    .document(category.id)
-                                                    .updateData(
-                                                        {'color': index});
+                                  ),
+                                ),
+                              );
+                            },
+                            onLongPress: () {
+                              if (hasVibration) {
+                                Vibration.vibrate(duration: 200);
+                              }
+                              showBottomSheet(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 10.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 15, bottom: 5),
+                                          child: Text('Change Color'),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 15, bottom: 15),
+                                          child: Container(
+                                            height: 40,
+                                            child: ListView.builder(
+                                              itemCount: listColors.length,
+                                              scrollDirection: Axis.horizontal,
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
+                                              itemBuilder: (context, index) {
+                                                return InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  onTap: () {
+                                                    // if (hasVibration) {
+                                                    //   Vibration.vibrate(
+                                                    //       duration: 200);
+                                                    // }
+                                                    db.updateDocument(
+                                                        collection: 'category',
+                                                        docID: category.id,
+                                                        data: {'color': index});
+                                                  },
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 15),
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          listColors[index],
+                                                    ),
+                                                  ),
+                                                );
                                               },
-                                              child: Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 15),
-                                                child: CircleAvatar(
-                                                  backgroundColor:
-                                                      listColors[index],
+                                            ),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          leading: Icon(Icons.share),
+                                          title: Text('Share'),
+                                          onTap: () {
+                                            // if (hasVibration) {
+                                            //   Vibration.vibrate(duration: 200);
+                                            // }
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => SharePage(
+                                                  category: category,
                                                 ),
                                               ),
                                             );
                                           },
                                         ),
-                                      ),
+                                        ListTile(
+                                          leading: Icon(Icons.create),
+                                          title: Text('Edit'),
+                                          onTap: () {
+                                            // if (hasVibration) {
+                                            //   Vibration.vibrate(duration: 200);
+                                            // }
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewCategory(
+                                                        catID: category.id,
+                                                        initialText: category.title,
+                                                        user: _userDb,
+                                                        update: true,
+                                                        listColors: listColors,
+                                                        colorIndex:
+                                                            category.color),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: Icon(Icons.delete),
+                                          title: Text('Delete'),
+                                          onTap: () {
+                                            if (hasVibration) {
+                                              Vibration.vibrate(duration: 200);
+                                            }
+                                            database
+                                                .collection('category')
+                                                .document(category.id)
+                                                .delete();
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
                                     ),
-                                    ListTile(
-                                      leading: Icon(Icons.share),
-                                      title: Text('Share'),
-                                      onTap: () {
-                                        if (hasVibration) {
-                                          Vibration.vibrate(duration: 200);
-                                        }
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => SharePage(
-                                              category: category,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: Icon(Icons.create),
-                                      title: Text('Edit'),
-                                      onTap: () {
-                                        if (hasVibration) {
-                                          Vibration.vibrate(duration: 200);
-                                        }
-                                        Navigator.pop(context);
-                                        database
-                                            .collection('category')
-                                            .document(category.id)
-                                            .updateData(
-                                                {'done': !category.done});
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: Icon(Icons.delete),
-                                      title: Text('Delete'),
-                                      onTap: () {
-                                        if (hasVibration) {
-                                          Vibration.vibrate(duration: 200);
-                                        }
-                                        database
-                                            .collection('category')
-                                            .document(category.id)
-                                            .delete();
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                  ],
-                                ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
+                          ),
+                        ),
                       );
                     }
                   },

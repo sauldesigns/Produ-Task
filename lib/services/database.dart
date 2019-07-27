@@ -70,6 +70,10 @@ class DatabaseService {
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
   }
 
+  void updateDocument({String collection, String docID, Map<String, dynamic> data}) {
+    _db.collection(collection).document(docID).updateData(data);
+  }
+
   // Future getBookData(String query) async {
   //   var response = await http.get(
   //       Uri.encodeFull('http://openlibrary.org/search.json?title=' + query),
