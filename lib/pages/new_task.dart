@@ -5,7 +5,6 @@ import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 
 class NewTaskPage extends StatefulWidget {
   NewTaskPage({Key key, this.category, this.user}) : super(key: key);
@@ -24,10 +23,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var _user = Provider.of<FirebaseUser>(context);
     var _userDb = widget.user;
-    bool hasVibration = Provider.of<dynamic>(context);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
