@@ -19,6 +19,9 @@ class DeleteAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       title: Text('Delete item'),
       content: Text('Are you sure you want to delete this item?'),
       actions: <Widget>[
