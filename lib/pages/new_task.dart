@@ -72,6 +72,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     autofocus: true,
+                    keyboardType: TextInputType.text,
                     maxLines: 3,
                     decoration: InputDecoration(
                       hintText: 'Enter task here',
