@@ -354,12 +354,16 @@ class _TasksPageState extends State<TasksPage> {
                                 if (hasVibration) {
                                   Vibration.vibrate(duration: 200);
                                 }
-                                _db
-                                    .collection('category')
-                                    .document(category.id)
-                                    .collection('tasks')
-                                    .document(taskData.id)
-                                    .delete();
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return DeleteAlert(
+                                        collection: 'category',
+                                        categoryID: category.id,
+                                        isTask: true,
+                                        docID: taskData.id,
+                                      );
+                                    });
                               },
                             ),
                           ],

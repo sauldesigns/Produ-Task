@@ -19,6 +19,8 @@ class DeleteAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: Text('Delete item'),
+      content: Text('Are you sure you want to delete this item?'),
       actions: <Widget>[
         FlatButton(
           child: Text('Delete'),

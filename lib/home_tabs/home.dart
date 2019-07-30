@@ -311,9 +311,10 @@ class _HomeTabState extends State<HomeTab> {
                                                     categoryID: category.id,
                                                     collection: 'category',
                                                   );
-                                                });
-
-                                            Navigator.pop(context);
+                                                }).then(
+                                              (val) =>
+                                                  Navigator.of(context).pop(),
+                                            );
                                           },
                                         ),
                                         SizedBox(
