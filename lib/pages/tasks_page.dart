@@ -28,8 +28,9 @@ class _TasksPageState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    var _user = widget.user;
     var category = widget.category;
+    List<IncompleteTask> _incompleteTask =
+        Provider.of<List<IncompleteTask>>(context);
     _userDb = widget.user;
     List<Task> task = Provider.of<List<Task>>(context);
     bool hasVibration = Provider.of<dynamic>(context);
@@ -37,7 +38,7 @@ class _TasksPageState extends State<TasksPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -99,7 +100,7 @@ class _TasksPageState extends State<TasksPage> {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 15.0, bottom: 0.0),
                 child: Text(
-                  '${task == null ? 0 : task.length} tasks',
+                  '${task == null ? 0 : task.length + _incompleteTask.length} tasks',
                   style: TextStyle(
                     fontSize: 17,
                   ),
@@ -265,74 +266,31 @@ class _TasksPageState extends State<TasksPage> {
                   ],
                 ),
               ),
-              StreamBuilder<List<Task>>(
-                  stream: db.incompleteTasks(_user, category.uid, category),
-                  builder: (context, snapshot) {
-                    List data = snapshot.data;
+              ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 20, top: 10),
+                  itemCount:
+                      _incompleteTask == null ? 0 : _incompleteTask.length,
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    IncompleteTask taskData = _incompleteTask[index];
 
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 20, top: 10),
-                      itemCount: data == null ? 0 : data.length,
-                      physics: ScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        Task taskData = data[index];
-
-                        return Slidable(
-                          actionPane: SlidableDrawerActionPane(),
-                          actionExtentRatio: 0.25,
-                          child: new Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 20.0, left: 20.0),
-                              child: ListTile(
-                                leading: IconButton(
-                                  icon: Icon(
-                                    taskData.complete == true
-                                        ? Icons.check_circle
-                                        : Icons.check_circle_outline,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    if (hasVibration) {
-                                      Vibration.vibrate(duration: 200);
-                                    }
-                                    _db
-                                        .collection('category')
-                                        .document(category.id)
-                                        .collection('tasks')
-                                        .document(taskData.id)
-                                        .updateData(
-                                            {'complete': !taskData.complete});
-                                  },
-                                ),
-                                title: taskData.done == false
-                                    ? TaskTextField(
-                                        doc: taskData,
-                                        type: 'tasks',
-                                        content: taskData.title,
-                                        cat: category,
-                                      )
-                                    : Text(
-                                        taskData.title,
-                                        style: TextStyle(
-                                            decoration: taskData.complete ==
-                                                    false
-                                                ? null
-                                                : TextDecoration.lineThrough),
-                                      ),
-                                subtitle: taskData.done == false
-                                    ? null
-                                    : Text('Created by ${taskData.createdBy}'),
+                    return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      child: new Container(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(right: 20.0, left: 20.0),
+                          child: ListTile(
+                            leading: IconButton(
+                              icon: Icon(
+                                taskData.complete == true
+                                    ? Icons.check_circle
+                                    : Icons.check_circle_outline,
+                                color: Colors.black,
                               ),
-                            ),
-                          ),
-                          actions: <Widget>[
-                            new IconSlideAction(
-                              caption: 'Edit',
-                              color: Colors.blue,
-                              icon: Icons.edit,
-                              onTap: () {
+                              onPressed: () {
                                 if (hasVibration) {
                                   Vibration.vibrate(duration: 200);
                                 }
@@ -341,34 +299,71 @@ class _TasksPageState extends State<TasksPage> {
                                     .document(category.id)
                                     .collection('tasks')
                                     .document(taskData.id)
-                                    .updateData({'done': !taskData.done});
+                                    .updateData(
+                                        {'complete': !taskData.complete});
                               },
                             ),
-                          ],
-                          secondaryActions: <Widget>[
-                            new IconSlideAction(
-                              caption: 'Delete',
-                              color: Colors.red,
-                              icon: Icons.delete,
-                              onTap: () {
-                                if (hasVibration) {
-                                  Vibration.vibrate(duration: 200);
-                                }
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return DeleteAlert(
-                                        collection: 'category',
-                                        categoryID: category.id,
-                                        isTask: true,
-                                        docID: taskData.id,
-                                      );
-                                    });
-                              },
-                            ),
-                          ],
-                        );
-                      },
+                            title: taskData.done == false
+                                ? TaskTextField(
+                                    incomTask: taskData,
+                                    isIncomTask: true,
+                                    type: 'tasks',
+                                    content: taskData.title,
+                                    cat: category,
+                                  )
+                                : Text(
+                                    taskData.title,
+                                    style: TextStyle(
+                                        decoration: taskData.complete == false
+                                            ? null
+                                            : TextDecoration.lineThrough),
+                                  ),
+                            subtitle: taskData.done == false
+                                ? null
+                                : Text('Created by ${taskData.createdBy}'),
+                          ),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        new IconSlideAction(
+                          caption: 'Edit',
+                          color: Colors.blue,
+                          icon: Icons.edit,
+                          onTap: () {
+                            if (hasVibration) {
+                              Vibration.vibrate(duration: 200);
+                            }
+                            _db
+                                .collection('category')
+                                .document(category.id)
+                                .collection('tasks')
+                                .document(taskData.id)
+                                .updateData({'done': !taskData.done});
+                          },
+                        ),
+                      ],
+                      secondaryActions: <Widget>[
+                        new IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () {
+                            if (hasVibration) {
+                              Vibration.vibrate(duration: 200);
+                            }
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DeleteAlert(
+                                    collection: 'category',
+                                    categoryID: category.id,
+                                    isTask: true,
+                                    docID: taskData.id,
+                                  );
+                                });
+                          },
+                        ),
+                      ],
                     );
                   }),
             ],

@@ -34,7 +34,7 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Stream<List<Task>> incompleteTasks(User user, String origuser, Category cat) {
+  Stream<List<IncompleteTask>> incompleteTasks(User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
         .collection('category')
@@ -47,7 +47,7 @@ class DatabaseService {
         .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+        list.documents.map((doc) => IncompleteTask.fromFirestore(doc)).toList());
   }
 
   Stream<List<User>> streamUsers(String query) {

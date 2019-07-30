@@ -189,9 +189,14 @@ class _HomeTabState extends State<HomeTab> {
                                       StreamProvider<List<Task>>.value(
                                     value: db.categoryTasks(
                                         _userDb, category.uid, category),
-                                    child: TasksPage(
-                                      category: category,
-                                      user: _userDb,
+                                    child: StreamProvider<
+                                        List<IncompleteTask>>.value(
+                                      value: db.incompleteTasks(
+                                          _userDb, category.uid, category),
+                                      child: TasksPage(
+                                        category: category,
+                                        user: _userDb,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -4,10 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TaskTextField extends StatefulWidget {
-  TaskTextField({Key key, this.doc, this.cat, this.content = '', this.type})
+  TaskTextField(
+      {Key key,
+      this.doc,
+      this.incomTask,
+      this.cat,
+      this.content = '',
+      this.isIncomTask = false,
+      this.type})
       : super(key: key);
   final String type;
   final Task doc;
+  final IncompleteTask incomTask;
+  final bool isIncomTask;
   final Category cat;
   final String content;
   @override
@@ -47,15 +56,28 @@ class _TaskTextFieldState extends State<TaskTextField> {
           hintText: 'Enter Task Here'),
       onSubmitted: (String value) {
         if (value == '') {
-          db.collection(widget.type).document(widget.doc.id).delete();
+          if (widget.isIncomTask) {
+            db.collection(widget.type).document(widget.incomTask.id).delete();
+          } else {
+            db.collection(widget.type).document(widget.doc.id).delete();
+          }
         } else {
           var data = {'done': true, 'content': value};
-          db
-              .collection('category')
-              .document(widget.cat.id)
-              .collection('tasks')
-              .document(widget.doc.id)
-              .updateData(data);
+          if (widget.isIncomTask) {
+            db
+                .collection('category')
+                .document(widget.cat.id)
+                .collection('tasks')
+                .document(widget.incomTask.id)
+                .updateData(data);
+          } else {
+            db
+                .collection('category')
+                .document(widget.cat.id)
+                .collection('tasks')
+                .document(widget.doc.id)
+                .updateData(data);
+          }
         }
       },
     );
