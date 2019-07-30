@@ -157,9 +157,7 @@ class _NewCategoryState extends State<NewCategory> {
                   padding: EdgeInsets.only(right: 50.0, left: 50.0, top: 30),
                   child: Center(
                     child: RoundedButton(
-                      title: widget.update == false
-                          ? 'Create Category'
-                          : 'Update Category',
+                      title: widget.update == false ? 'Create' : 'Update',
                       onClick: () {
                         _formkey.currentState.save();
                         if (_formkey.currentState.validate()) {

@@ -10,6 +10,7 @@ import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
 // import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
+import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -302,10 +303,16 @@ class _HomeTabState extends State<HomeTab> {
                                             if (hasVibration) {
                                               Vibration.vibrate(duration: 200);
                                             }
-                                            database
-                                                .collection('category')
-                                                .document(category.id)
-                                                .delete();
+
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return DeleteAlert(
+                                                    categoryID: category.id,
+                                                    collection: 'category',
+                                                  );
+                                                });
+
                                             Navigator.pop(context);
                                           },
                                         ),

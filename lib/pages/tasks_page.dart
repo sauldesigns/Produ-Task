@@ -5,6 +5,7 @@ import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:book_read/ui/task_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -174,6 +175,7 @@ class _TasksPageState extends State<TasksPage> {
                               if (hasVibration) {
                                 Vibration.vibrate(duration: 200);
                               }
+
                               _db
                                   .collection('category')
                                   .document(category.id)
@@ -196,9 +198,9 @@ class _TasksPageState extends State<TasksPage> {
                                           ? null
                                           : TextDecoration.lineThrough),
                                 ),
-                          subtitle: taskData.done == false
-                              ? null
-                              : Text('Created by ${taskData.createdBy}'),
+                          // subtitle: taskData.done == false
+                          //     ? null
+                          //     : Text('Created by ${taskData.createdBy}'),
                         ),
                       ),
                     ),
@@ -229,12 +231,16 @@ class _TasksPageState extends State<TasksPage> {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
                           }
-                          _db
-                              .collection('category')
-                              .document(category.id)
-                              .collection('tasks')
-                              .document(taskData.id)
-                              .delete();
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return DeleteAlert(
+                                  collection: 'category',
+                                  categoryID: category.id,
+                                  isTask: true,
+                                  docID: taskData.id,
+                                );
+                              });
                         },
                       ),
                     ],

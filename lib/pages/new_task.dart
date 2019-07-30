@@ -88,7 +88,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     padding: EdgeInsets.only(top: 30),
                     child: Center(
                       child: RoundedButton(
-                        title: 'Create Task',
+                        title: 'Create',
                         onClick: () {
                           _formkey.currentState.save();
                           if (_formkey.currentState.validate()) {
