@@ -39,6 +39,10 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+  Future<void> resetPassword(String email) async {
+    _auth.sendPasswordResetEmail(email: email);
+  }
+
   Future<bool> signInWithGoogle() async {
     try {
       _status = Status.Authenticating;

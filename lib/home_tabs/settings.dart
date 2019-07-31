@@ -17,7 +17,6 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  
 
   final db = DatabaseService();
 
@@ -141,7 +140,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     if (hasVibration) {
                       Vibration.vibrate(duration: 200);
                     }
-                    auth.sendPasswordResetEmail(email: user.email);
+                    userRepo.resetPassword(user.email);
                     Flushbar(
                       flushbarPosition: FlushbarPosition.TOP,
                       margin: EdgeInsets.all(8.0),
