@@ -173,6 +173,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 Divider(
                   color: Colors.black,
                 ),
+                
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: RaisedButton(

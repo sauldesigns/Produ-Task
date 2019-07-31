@@ -11,7 +11,7 @@ class UserRepository with ChangeNotifier {
   FirebaseAuth _auth;
   FirebaseUser _user;
   GoogleSignIn _googleSignIn;
-
+  String _userData;
   Firestore db = Firestore.instance;
   Status _status = Status.Uninitialized;
 
@@ -23,12 +23,15 @@ class UserRepository with ChangeNotifier {
 
   Status get status => _status;
   FirebaseUser get user => _user;
+  String get userUid => _userData;
 
   Future<bool> signIn(String email, String password) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      FirebaseUser result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      _userData = result.uid;
       return true;
     } catch (e) {
       print(e);

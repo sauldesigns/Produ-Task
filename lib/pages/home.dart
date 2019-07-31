@@ -1,14 +1,10 @@
 import 'package:book_read/enums/connectivity_status.dart';
-// import 'package:book_read/home_tabs/search.dart';
 import 'package:book_read/home_tabs/home.dart';
-// import 'package:book_read/home_tabs/profile.dart';
-// import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/offline.dart';
 import 'package:flutter/material.dart';
-// import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

@@ -6,8 +6,23 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Center(
-        child: Text("Splash Screen"),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: Text(
+                'Produ:Task',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
