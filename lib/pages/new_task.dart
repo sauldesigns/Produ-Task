@@ -1,16 +1,30 @@
 import 'dart:math';
 import 'package:book_read/models/category.dart';
+import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NewTaskPage extends StatefulWidget {
-  NewTaskPage({Key key, this.category, this.user}) : super(key: key);
+  NewTaskPage(
+      {Key key,
+      this.category,
+      this.user,
+      this.content = '',
+      this.task,
+      this.isIncomTask = false,
+      this.incomTask,
+      this.isUpdate = false})
+      : super(key: key);
 
   final Category category;
   final User user;
-
+  final String content;
+  final Task task;
+  final bool isUpdate;
+  final bool isIncomTask;
+  final IncompleteTask incomTask;
   _NewTaskPageState createState() => _NewTaskPageState();
 }
 
@@ -53,14 +67,14 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: 'Add a task to ',
+                              text: widget.isUpdate == true ? 'Update ' :'Add a task to ',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
-                            TextSpan(
-                              text: '${widget.category.title}',
+                             TextSpan(
+                              text: widget.isUpdate == true ?  'task': '${widget.category.title}',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
@@ -72,6 +86,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     autofocus: true,
+                    initialValue: widget.content,
                     keyboardType: TextInputType.text,
                     maxLines: 3,
                     decoration: InputDecoration(
@@ -89,25 +104,44 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     padding: EdgeInsets.only(top: 30),
                     child: Center(
                       child: RoundedButton(
-                        title: 'Create',
+                        title: widget.isUpdate == false ? 'Create' : 'Update',
                         onClick: () {
                           _formkey.currentState.save();
                           if (_formkey.currentState.validate()) {
-                            var data = {
-                              'complete': false,
-                              'done': true,
-                              'content': _task,
-                              'createdat': DateTime.now(),
-                              'uid': _userDb.uid,
-                              'cat_uid': widget.category.id,
-                              'createdby': _userDb.fname,
-                              'color': Random().nextInt(7),
-                            };
-                            _db
-                                .collection('category')
-                                .document(widget.category.id)
-                                .collection('tasks')
-                                .add(data);
+                            if (widget.isUpdate) {
+                              var data = {'done': true, 'content': _task};
+                              if (widget.isIncomTask) {
+                                _db
+                                    .collection('category')
+                                    .document(widget.category.id)
+                                    .collection('tasks')
+                                    .document(widget.incomTask.id)
+                                    .updateData(data);
+                              } else {
+                                _db
+                                    .collection('category')
+                                    .document(widget.category.id)
+                                    .collection('tasks')
+                                    .document(widget.task.id)
+                                    .updateData(data);
+                              }
+                            } else {
+                              var data = {
+                                'complete': false,
+                                'done': true,
+                                'content': _task,
+                                'createdat': DateTime.now(),
+                                'uid': _userDb.uid,
+                                'cat_uid': widget.category.id,
+                                'createdby': _userDb.fname,
+                                'color': Random().nextInt(7),
+                              };
+                              _db
+                                  .collection('category')
+                                  .document(widget.category.id)
+                                  .collection('tasks')
+                                  .add(data);
+                            }
                             Navigator.of(context).pop();
                           } else {
                             setState(() {

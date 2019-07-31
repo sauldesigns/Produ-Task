@@ -7,7 +7,6 @@ import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
-import 'package:book_read/ui/task_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -164,44 +163,41 @@ class _TasksPageState extends State<TasksPage> {
                     child: new Container(
                       child: Padding(
                         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-                        child: ListTile(
-                          leading: IconButton(
-                            icon: Icon(
-                              taskData.complete == true
-                                  ? Icons.check_circle
-                                  : Icons.check_circle_outline,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              if (hasVibration) {
-                                Vibration.vibrate(duration: 200);
-                              }
+                        child: Hero(
+                          tag: taskData.id,
+                          child: ListTile(
+                            leading: IconButton(
+                              icon: Icon(
+                                taskData.complete == true
+                                    ? Icons.check_circle
+                                    : Icons.check_circle_outline,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                if (hasVibration) {
+                                  Vibration.vibrate(duration: 200);
+                                }
 
-                              _db
-                                  .collection('category')
-                                  .document(category.id)
-                                  .collection('tasks')
-                                  .document(taskData.id)
-                                  .updateData({'complete': !taskData.complete});
-                            },
+                                _db
+                                    .collection('category')
+                                    .document(category.id)
+                                    .collection('tasks')
+                                    .document(taskData.id)
+                                    .updateData(
+                                        {'complete': !taskData.complete});
+                              },
+                            ),
+                            title: Text(
+                              taskData.title,
+                              style: TextStyle(
+                                  decoration: taskData.complete == false
+                                      ? null
+                                      : TextDecoration.lineThrough),
+                            ),
+                            // subtitle: taskData.done == false
+                            //     ? null
+                            //     : Text('Created by ${taskData.createdBy}'),
                           ),
-                          title: taskData.done == false
-                              ? TaskTextField(
-                                  doc: taskData,
-                                  type: 'tasks',
-                                  content: taskData.title,
-                                  cat: category,
-                                )
-                              : Text(
-                                  taskData.title,
-                                  style: TextStyle(
-                                      decoration: taskData.complete == false
-                                          ? null
-                                          : TextDecoration.lineThrough),
-                                ),
-                          // subtitle: taskData.done == false
-                          //     ? null
-                          //     : Text('Created by ${taskData.createdBy}'),
                         ),
                       ),
                     ),
@@ -214,12 +210,17 @@ class _TasksPageState extends State<TasksPage> {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
                           }
-                          _db
-                              .collection('category')
-                              .document(category.id)
-                              .collection('tasks')
-                              .document(taskData.id)
-                              .updateData({'done': !taskData.done});
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NewTaskPage(
+                                category: category,
+                                task: taskData,
+                                isUpdate: true,
+                                user: _userDb,
+                                content: taskData.title,
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -303,21 +304,13 @@ class _TasksPageState extends State<TasksPage> {
                                         {'complete': !taskData.complete});
                               },
                             ),
-                            title: taskData.done == false
-                                ? TaskTextField(
-                                    incomTask: taskData,
-                                    isIncomTask: true,
-                                    type: 'tasks',
-                                    content: taskData.title,
-                                    cat: category,
-                                  )
-                                : Text(
-                                    taskData.title,
-                                    style: TextStyle(
-                                        decoration: taskData.complete == false
-                                            ? null
-                                            : TextDecoration.lineThrough),
-                                  ),
+                            title: Text(
+                              taskData.title,
+                              style: TextStyle(
+                                  decoration: taskData.complete == false
+                                      ? null
+                                      : TextDecoration.lineThrough),
+                            ),
                             subtitle: taskData.done == false
                                 ? null
                                 : Text('Created by ${taskData.createdBy}'),
@@ -333,12 +326,18 @@ class _TasksPageState extends State<TasksPage> {
                             if (hasVibration) {
                               Vibration.vibrate(duration: 200);
                             }
-                            _db
-                                .collection('category')
-                                .document(category.id)
-                                .collection('tasks')
-                                .document(taskData.id)
-                                .updateData({'done': !taskData.done});
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => NewTaskPage(
+                                  category: category,
+                                  incomTask: taskData,
+                                  isUpdate: true,
+                                  isIncomTask: true,
+                                  user: _userDb,
+                                  content: taskData.title,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ],

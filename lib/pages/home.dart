@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // int _currentIndex = 0;
   final db = DatabaseService();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   // final List<Widget> _tabs = [
   //   HomeTab(),
   //   SearchTab(),
@@ -52,11 +53,12 @@ class _HomePageState extends State<HomePage> {
       //     });
       //   },
       // ),
+      key: _scaffoldKey,
       body: connectionStatus == ConnectivityStatus.Offline
           ? OfflineMessage()
           : StreamProvider<List<Category>>.value(
               value: db.streamWeapons(user),
-              child: HomeTab(),
+              child: HomeTab(scaffoldKey: _scaffoldKey),
             ),
     );
   }

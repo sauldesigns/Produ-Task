@@ -19,8 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class HomeTab extends StatefulWidget {
-  HomeTab({Key key}) : super(key: key);
-
+  HomeTab({Key key, this.scaffoldKey}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
   _HomeTabState createState() => _HomeTabState();
 }
 

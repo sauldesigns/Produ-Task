@@ -9,16 +9,18 @@ class SplashScreen extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
-              child: Text(
-                'Produ:Task',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
+            Text(
+              'Produ:Task',
+              style: TextStyle(
+                fontSize: 45,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
+            ),
+            SizedBox(
+              height: 100.0,
             ),
             CircularProgressIndicator(),
           ],
