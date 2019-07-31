@@ -1,5 +1,1 @@
-enum AuthStatus {
-  NOT_DETERMINED,
-  NOT_LOGGED_IN,
-  LOGGED_IN,
-}
+enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }

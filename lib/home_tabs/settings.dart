@@ -173,7 +173,6 @@ class _SettingsTabState extends State<SettingsTab> {
                 Divider(
                   color: Colors.black,
                 ),
-                
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: RaisedButton(
@@ -204,14 +203,12 @@ class _SettingsTabState extends State<SettingsTab> {
                                     if (hasVibration) {
                                       Vibration.vibrate(duration: 200);
                                     }
-                                    db.deleteUser(user.uid);
-                                    FirebaseUser _user =
-                                        await auth.currentUser();
-                                    _user.delete();
-                                    userRepo.signOut();
+                                    // await db.deleteUser(user.uid);
+                                    // await userRepo.signOut();
                                     // if (_userDb.provider == 'google') {
-                                    //   _googleSignIn.signOut();
+                                    //   await userRepo.signOutGoogle();
                                     // }
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                                 FlatButton(

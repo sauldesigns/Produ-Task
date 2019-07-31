@@ -99,7 +99,7 @@ class DatabaseService {
   // }
 
   Future<void> deleteUser(String uid) async {
-    _db.collection('users').document(uid).delete();
+    await _db.collection('users').document(uid).delete();
   }
 
   Future<void> uploadProfilePicture(String uid) async {

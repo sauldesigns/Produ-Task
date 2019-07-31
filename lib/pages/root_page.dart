@@ -1,3 +1,4 @@
+import 'package:book_read/enums/auth.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';

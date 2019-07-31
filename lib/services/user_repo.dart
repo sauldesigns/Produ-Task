@@ -1,3 +1,5 @@
+import 'package:book_read/enums/auth.dart';
+import 'package:book_read/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
@@ -5,14 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
-
 class UserRepository with ChangeNotifier {
   FirebaseAuth _auth;
   FirebaseUser _user;
   GoogleSignIn _googleSignIn;
   String _userData;
   Firestore db = Firestore.instance;
+  final _db = DatabaseService();
   Status _status = Status.Uninitialized;
 
   UserRepository.instance()
@@ -83,6 +84,14 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+  Future deleteUser() async {
+    print(_user.uid);
+    await _db.deleteUser(_user.uid);
+    await _user.delete();
+    _status = Status.Unauthenticated;
+    notifyListeners();
+  }
+
   Future<String> signUp(String email, String password) async {
     try {
       _status = Status.Authenticating;
@@ -100,6 +109,12 @@ class UserRepository with ChangeNotifier {
 
   Future signOut() async {
     _auth.signOut();
+    _status = Status.Unauthenticated;
+    notifyListeners();
+    return Future.delayed(Duration.zero);
+  }
+
+  Future signOutGoogle() async {
     _googleSignIn.signOut();
     _status = Status.Unauthenticated;
     notifyListeners();

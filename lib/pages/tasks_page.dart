@@ -99,7 +99,7 @@ class _TasksPageState extends State<TasksPage> {
                 padding: const EdgeInsets.only(
                     left: 40.0, right: 40.0, top: 15.0, bottom: 0.0),
                 child: Text(
-                  '${task == null ? 0 : task.length + _incompleteTask.length} tasks',
+                  '${task == null ? _incompleteTask == null ? 0 : _incompleteTask.length : _incompleteTask == null ? task.length : task.length + _incompleteTask.length} tasks',
                   style: TextStyle(
                     fontSize: 17,
                   ),

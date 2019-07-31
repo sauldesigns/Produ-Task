@@ -186,6 +186,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                         .document(userId)
                                         .setData(data);
                                   }
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                 } else {
                                   setState(() {
                                     _autoValidate = true;
