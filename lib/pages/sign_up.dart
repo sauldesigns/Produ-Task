@@ -206,4 +206,11 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _email = '';
+    _password = '';
+    super.dispose();
+  }
 }
