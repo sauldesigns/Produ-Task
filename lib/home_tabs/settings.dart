@@ -1,11 +1,12 @@
 import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vibration/vibration.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -16,7 +17,7 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  
 
   final db = DatabaseService();
 
@@ -24,6 +25,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
     var _userDb = Provider.of<User>(context);
+    var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
     return Scaffold(
       appBar: AppBar(
@@ -161,10 +163,11 @@ class _SettingsTabState extends State<SettingsTab> {
                     if (hasVibration) {
                       Vibration.vibrate(duration: 200);
                     }
-                    auth.signOut();
-                    if (_userDb.provider == 'google') {
-                      _googleSignIn.signOut();
-                    }
+                    userRepo.signOut();
+                    // auth.signOut();
+                    // if (_userDb.provider == 'google') {
+                    //   _googleSignIn.signOut();
+                    // }
                     Navigator.of(context).pop();
                   },
                 ),
@@ -205,9 +208,10 @@ class _SettingsTabState extends State<SettingsTab> {
                                     FirebaseUser _user =
                                         await auth.currentUser();
                                     _user.delete();
-                                    if (_userDb.provider == 'google') {
-                                      _googleSignIn.signOut();
-                                    }
+                                    userRepo.signOut();
+                                    // if (_userDb.provider == 'google') {
+                                    //   _googleSignIn.signOut();
+                                    // }
                                   },
                                 ),
                                 FlatButton(

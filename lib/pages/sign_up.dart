@@ -1,4 +1,5 @@
 import 'package:book_read/services/auth.dart';
+import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
+    var userRepo = Provider.of<UserRepository>(context);
     if (user != null) {
       Navigator.of(context).pop();
     }
@@ -165,23 +167,25 @@ class _SignUpPageState extends State<SignUpPage> {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  var userId = await widget.auth
-                                      .signUp(_email, _password);
-                                  var data = {
-                                    'displayName': _username,
-                                    'email': _email,
-                                    'bio': '',
-                                    'fname': '',
-                                    'lname': '',
-                                    'provider': 'email',
-                                    'profile_pic':
-                                        'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                    'uid': userId
-                                  };
-                                  db
-                                      .collection('users')
-                                      .document(userId)
-                                      .setData(data);
+                                  var userId =
+                                      await userRepo.signUp(_email, _password);
+                                  if (userId != 'error') {
+                                    var data = {
+                                      'displayName': _username,
+                                      'email': _email,
+                                      'bio': '',
+                                      'fname': '',
+                                      'lname': '',
+                                      'provider': 'email',
+                                      'profile_pic':
+                                          'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+                                      'uid': userId
+                                    };
+                                    db
+                                        .collection('users')
+                                        .document(userId)
+                                        .setData(data);
+                                  }
                                 } else {
                                   setState(() {
                                     _autoValidate = true;

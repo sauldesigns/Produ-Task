@@ -12,6 +12,7 @@ import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/services/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +36,10 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<User>>.value(
           value: db.streamUsers(''),
         ),
-        FutureProvider<dynamic>.value(value: Vibration.hasVibrator())
+        FutureProvider<dynamic>.value(value: Vibration.hasVibrator()),
+        ChangeNotifierProvider(
+          builder: (_) => UserRepository.instance(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
