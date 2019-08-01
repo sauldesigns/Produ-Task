@@ -64,7 +64,7 @@ class DatabaseService {
     var ref = _db
         .collection('category')
         .where('uids', arrayContains: user.uid)
-        .orderBy('createdat', descending: false);
+        .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
