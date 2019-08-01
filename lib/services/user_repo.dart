@@ -92,18 +92,20 @@ class UserRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future<bool> signUp(String email, String password) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
       FirebaseUser user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return user.uid;
+      _userData = user.uid;
+      notifyListeners();
+      return true;
     } catch (e) {
       _status = Status.Unauthenticated;
 
       notifyListeners();
-      return 'error';
+      return false;
     }
   }
 

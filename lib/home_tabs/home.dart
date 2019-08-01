@@ -7,6 +7,7 @@ import 'package:book_read/pages/new_category.dart';
 import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
+// import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/add_card.dart';
 // import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
@@ -46,6 +47,8 @@ class _HomeTabState extends State<HomeTab> {
     var _category = Provider.of<List<Category>>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var useMobileLayout = shortestSide < 600;
+    // var userRepo = Provider.of<UserRepository>(context);
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,

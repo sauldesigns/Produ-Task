@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var user = Provider.of<FirebaseUser>(context);
+    
     // _tabs[0] = HomeTab(context: context,);
     return Scaffold(
       // bottomNavigationBar: FancyBottomNavigation(

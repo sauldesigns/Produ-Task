@@ -1,3 +1,4 @@
+import 'package:book_read/enums/auth.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
@@ -157,49 +158,41 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: isLoading == false
-                          ? RoundedButton(
-                              title: 'Sign up',
-                              onClick: () async {
-                                if (_formkey.currentState.validate()) {
-                                  _formkey.currentState.save();
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  var userId =
-                                      await userRepo.signUp(_email, _password);
-                                  if (userId != 'error') {
-                                    var data = {
-                                      'displayName': _username,
-                                      'email': _email,
-                                      'bio': '',
-                                      'fname': '',
-                                      'lname': '',
-                                      'provider': 'email',
-                                      'profile_pic':
-                                          'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                      'uid': userId
-                                    };
-                                    db
-                                        .collection('users')
-                                        .document(userId)
-                                        .setData(data);
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: userRepo.status == Status.Authenticating
+                            ? CircularProgressIndicator()
+                            : RoundedButton(
+                                title: 'Sign up',
+                                onClick: () async {
+                                  if (_formkey.currentState.validate()) {
+                                    _formkey.currentState.save();
+
+                                    bool result = await userRepo.signUp(
+                                        _email, _password);
+                                    if (result) {
+                                      var data = {
+                                        'displayName': _username,
+                                        'email': _email,
+                                        'bio': '',
+                                        'fname': '',
+                                        'lname': '',
+                                        'provider': 'email',
+                                        'profile_pic':
+                                            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+                                        'uid': userRepo.userUid
+                                      };
+                                      db
+                                          .collection('users')
+                                          .document(userRepo.userUid)
+                                          .setData(data);
+                                    }
+                                  } else {
+                                    setState(() {
+                                      _autoValidate = true;
+                                    });
                                   }
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    _autoValidate = true;
-                                  });
-                                }
-                              },
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    )
+                                },
+                              ))
                   ],
                 ),
               ),
