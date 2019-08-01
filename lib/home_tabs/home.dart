@@ -161,7 +161,7 @@ class _HomeTabState extends State<HomeTab> {
                   itemBuilder: (context, index) {
                     if (index == 0) {
                       return ControlledAnimation(
-                          duration: Duration(milliseconds: 600),
+                          duration: Duration(milliseconds: 1000),
                           tween: Tween<double>(begin: 0, end: 1),
                           curve: Curves.easeOutQuint,
                           builder: (context, animation) {
@@ -196,7 +196,7 @@ class _HomeTabState extends State<HomeTab> {
                         child: Material(
                           color: Colors.transparent,
                           child: ControlledAnimation(
-                              duration: Duration(milliseconds: 600),
+                              duration: Duration(milliseconds: 1000),
                               tween: Tween<double>(begin: 0, end: 1),
                               curve: Curves.easeOutQuint,
                               builder: (context, animation) {
