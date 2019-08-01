@@ -76,7 +76,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: Material(
                         color: Colors.transparent,
                         child: ControlledAnimation(
-                            duration: Duration(milliseconds: 1000),
+                            duration: Duration(milliseconds: 500),
                             tween: Tween<double>(begin: 0, end: 1),
                             curve: Curves.elasticOut,
                             builder: (context, animation) {
@@ -109,7 +109,7 @@ class _HomeTabState extends State<HomeTab> {
                 padding: const EdgeInsets.all(40.0),
                 child: ControlledAnimation(
                     duration: Duration(milliseconds: 600),
-                    delay: Duration(milliseconds: 500),
+                    delay: Duration(milliseconds: 300),
                     tween: Tween<double>(begin: 0, end: 1),
                     curve: Curves.easeOutQuint,
                     builder: (context, animation) {
