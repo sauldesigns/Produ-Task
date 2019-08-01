@@ -57,6 +57,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       Hero(
                         tag: 'hero',
                         child: Material(
+                          color: Colors.transparent,
                           child: ProfilePicture(
                             imgUrl: _userDb.profilePic,
                             size: 60,

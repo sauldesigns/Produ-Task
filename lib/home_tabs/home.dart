@@ -74,10 +74,10 @@ class _HomeTabState extends State<HomeTab> {
                     Hero(
                       tag: 'hero',
                       child: Material(
+                        color: Colors.transparent,
                         child: ControlledAnimation(
                             duration: Duration(milliseconds: 1000),
                             tween: Tween<double>(begin: 0, end: 1),
-                            delay: Duration(milliseconds: 400),
                             curve: Curves.elasticOut,
                             builder: (context, animation) {
                               return Transform.scale(
@@ -194,6 +194,7 @@ class _HomeTabState extends State<HomeTab> {
                       return Hero(
                         tag: category.id,
                         child: Material(
+                          color: Colors.transparent,
                           child: ControlledAnimation(
                               duration: Duration(milliseconds: 600),
                               tween: Tween<double>(begin: 0, end: 1),

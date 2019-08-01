@@ -63,6 +63,7 @@ class _TasksPageState extends State<TasksPage> {
                     Hero(
                       tag: 'hero',
                       child: Material(
+                        color: Colors.transparent,
                         child: ProfilePicture(
                           size: 25,
                           imgUrl: _userDb == null ? null : _userDb.profilePic,
@@ -165,38 +166,41 @@ class _TasksPageState extends State<TasksPage> {
                         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
                         child: Hero(
                           tag: taskData.id,
-                          child: ListTile(
-                            leading: IconButton(
-                              icon: Icon(
-                                taskData.complete == true
-                                    ? Icons.check_circle
-                                    : Icons.check_circle_outline,
-                                color: Colors.black,
-                              ),
-                              onPressed: () {
-                                if (hasVibration) {
-                                  Vibration.vibrate(duration: 200);
-                                }
+                          child: Material(
+                            color: Colors.transparent,
+                            child: ListTile(
+                              leading: IconButton(
+                                icon: Icon(
+                                  taskData.complete == true
+                                      ? Icons.check_circle
+                                      : Icons.check_circle_outline,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  if (hasVibration) {
+                                    Vibration.vibrate(duration: 200);
+                                  }
 
-                                _db
-                                    .collection('category')
-                                    .document(category.id)
-                                    .collection('tasks')
-                                    .document(taskData.id)
-                                    .updateData(
-                                        {'complete': !taskData.complete});
-                              },
+                                  _db
+                                      .collection('category')
+                                      .document(category.id)
+                                      .collection('tasks')
+                                      .document(taskData.id)
+                                      .updateData(
+                                          {'complete': !taskData.complete});
+                                },
+                              ),
+                              title: Text(
+                                taskData.title,
+                                style: TextStyle(
+                                    decoration: taskData.complete == false
+                                        ? null
+                                        : TextDecoration.lineThrough),
+                              ),
+                              // subtitle: taskData.done == false
+                              //     ? null
+                              //     : Text('Created by ${taskData.createdBy}'),
                             ),
-                            title: Text(
-                              taskData.title,
-                              style: TextStyle(
-                                  decoration: taskData.complete == false
-                                      ? null
-                                      : TextDecoration.lineThrough),
-                            ),
-                            // subtitle: taskData.done == false
-                            //     ? null
-                            //     : Text('Created by ${taskData.createdBy}'),
                           ),
                         ),
                       ),
