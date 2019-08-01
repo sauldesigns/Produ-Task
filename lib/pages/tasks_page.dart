@@ -315,9 +315,6 @@ class _TasksPageState extends State<TasksPage> {
                                       ? null
                                       : TextDecoration.lineThrough),
                             ),
-                            subtitle: taskData.done == false
-                                ? null
-                                : Text('Created by ${taskData.createdBy}'),
                           ),
                         ),
                       ),
