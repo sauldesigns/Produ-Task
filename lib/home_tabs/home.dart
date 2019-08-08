@@ -7,14 +7,11 @@ import 'package:book_read/pages/new_category.dart';
 import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
-// import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/add_card.dart';
-// import 'package:book_read/ui/category_textfield.dart';
 import 'package:book_read/ui/custom_card.dart';
 import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,9 +46,7 @@ class _HomeTabState extends State<HomeTab> {
     var _category = Provider.of<List<Category>>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var useMobileLayout = shortestSide < 600;
-    // var userRepo = Provider.of<UserRepository>(context);
-    var user = Provider.of<FirebaseUser>(context);
-    
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -86,7 +81,7 @@ class _HomeTabState extends State<HomeTab> {
                                 scale: animation,
                                 child: ProfilePicture(
                                   size: 25,
-                                  imgUrl: user.photoUrl,
+                                  imgUrl: _userDb.profilePic,
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
