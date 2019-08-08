@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:book_read/enums/connectivity_status.dart';
 import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
@@ -44,6 +45,7 @@ class _HomeTabState extends State<HomeTab> {
     hasVibration = Provider.of<dynamic>(context);
     var _userDb = Provider.of<User>(context);
     var _category = Provider.of<List<Category>>(context);
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var useMobileLayout = shortestSide < 600;
 
@@ -65,6 +67,18 @@ class _HomeTabState extends State<HomeTab> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    connectionStatus == ConnectivityStatus.Offline
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              'Offline Mode',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          )
+                        : Container(),
                     Expanded(
                       child: Container(),
                     ),
@@ -142,6 +156,18 @@ class _HomeTabState extends State<HomeTab> {
                 //   ),
                 // ),
               ),
+              connectionStatus == ConnectivityStatus.Offline
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 40.0, bottom: 15.0),
+                      child: Text(
+                        'Device is offline, data may not be up-to-date.',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                        ),
+                      ),
+                    )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
                 child: GridView.builder(

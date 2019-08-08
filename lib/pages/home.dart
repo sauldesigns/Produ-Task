@@ -1,9 +1,9 @@
-import 'package:book_read/enums/connectivity_status.dart';
+// import 'package:book_read/enums/connectivity_status.dart';
 import 'package:book_read/home_tabs/home.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/database.dart';
-import 'package:book_read/ui/offline.dart';
+// import 'package:book_read/ui/offline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,9 +33,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    // var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var user = Provider.of<FirebaseUser>(context);
-    
+
     // _tabs[0] = HomeTab(context: context,);
     return Scaffold(
       // bottomNavigationBar: FancyBottomNavigation(
@@ -55,12 +55,10 @@ class _HomePageState extends State<HomePage> {
       //   },
       // ),
       key: _scaffoldKey,
-      body: connectionStatus == ConnectivityStatus.Offline
-          ? OfflineMessage()
-          : StreamProvider<List<Category>>.value(
-              value: db.streamWeapons(user),
-              child: HomeTab(scaffoldKey: _scaffoldKey),
-            ),
+      body: StreamProvider<List<Category>>.value(
+        value: db.streamWeapons(user),
+        child: HomeTab(scaffoldKey: _scaffoldKey),
+      ),
     );
   }
 }
