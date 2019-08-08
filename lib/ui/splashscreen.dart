@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:simple_animations/simple_animations/controlled_animation.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -32,16 +33,10 @@ class SplashScreen extends StatelessWidget {
             SizedBox(
               height: 100.0,
             ),
-            ControlledAnimation(
-                duration: Duration(milliseconds: 1000),
-                tween: Tween<double>(begin: 0, end: 1),
-                curve: Curves.elasticInOut,
-                builder: (context, animation) {
-                  return Transform.scale(
-                    scale: animation,
-                    child: CircularProgressIndicator(),
-                  );
-                }),
+            SpinKitChasingDots(
+              color: Colors.black,
+              size: 50,
+            ),
           ],
         ),
       ),

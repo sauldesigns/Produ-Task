@@ -1,4 +1,3 @@
-import 'package:book_read/enums/auth.dart';
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
@@ -6,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -159,11 +159,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Padding(
                         padding: const EdgeInsets.only(top: 30.0),
-                        child: userRepo.status == Status.Authenticating
-                            ? CircularProgressIndicator()
+                        child: isLoading == true
+                            ? SpinKitChasingDots(
+                                color: Colors.black,
+                                size: 30,
+                              )
                             : RoundedButton(
                                 title: 'Sign up',
                                 onClick: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
                                   if (_formkey.currentState.validate()) {
                                     _formkey.currentState.save();
 
@@ -185,10 +191,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                           .collection('users')
                                           .document(userRepo.userUid)
                                           .setData(data);
+                                    } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
                                     }
                                   } else {
                                     setState(() {
                                       _autoValidate = true;
+                                      isLoading = false;
                                     });
                                   }
                                 },

@@ -3,6 +3,7 @@ import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,8 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   bool isLoading = false;
-
-  // void _validateAndSubmit(UserRepository userRepo) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -92,24 +91,41 @@ class _LoginPageState extends State<LoginPage> {
                       onSaved: (value) => _password = value,
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: RoundedButton(
-                          title: 'Login',
-                          onClick: () async {
-                            if (_formkey.currentState.validate()) {
-                              _formkey.currentState.save();
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: isLoading == false
+                          ? RoundedButton(
+                              title: 'Login',
+                              onClick: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                if (_formkey.currentState.validate()) {
+                                  _formkey.currentState.save();
 
-                              await userRepo.signIn(_email, _password);
-
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/', (Route<dynamic> route) => false);
-                            } else {
-                              setState(() {
-                                _autoValidate = true;
-                              });
-                            }
-                          },
-                        ))
+                                  bool result =
+                                      await userRepo.signIn(_email, _password);
+                                  if (result == true) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil('/',
+                                            (Route<dynamic> route) => false);
+                                  } else {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                    _autoValidate = true;
+                                  });
+                                }
+                              },
+                            )
+                          : SpinKitChasingDots(
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                    ),
                   ],
                 ),
               ),
