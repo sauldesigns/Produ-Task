@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:book_read/enums/auth.dart';
 import 'package:book_read/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,7 +21,7 @@ class UserRepository with ChangeNotifier {
   UserRepository.instance()
       : _auth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn() {
-    _auth.onAuthStateChanged.listen(_onAuthStateChanged);
+     Timer(Duration(seconds: 3), () =>  _auth.onAuthStateChanged.listen(_onAuthStateChanged));
   }
 
   Status get status => _status;

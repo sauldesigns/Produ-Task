@@ -13,6 +13,7 @@ import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/services/user_repo.dart';
+import 'package:book_read/ui/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => RootPage(),
+          '/splash': (context) => SplashScreen(),
           '/landingpage': (context) => LandingPage(
                 auth: new Auth(),
               ),
