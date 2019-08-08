@@ -9,7 +9,6 @@ import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/pages/root_page.dart';
 import 'package:book_read/pages/sign_up.dart';
 import 'package:book_read/pages/tasks_page.dart';
-import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/services/user_repo.dart';
@@ -23,7 +22,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final db = DatabaseService();
- 
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Book Read',
+        title: 'Produ:Task',
         theme: ThemeData(
           brightness: Brightness.light,
         ),
@@ -52,16 +51,10 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => RootPage(),
           '/splash': (context) => SplashScreen(),
-          '/landingpage': (context) => LandingPage(
-                auth: new Auth(),
-              ),
-          '/login': (context) => LoginPage(
-                auth: new Auth(),
-              ),
-          '/signup': (context) => SignUpPage(auth: new Auth()),
-          '/home': (context) => HomePage(
-                auth: new Auth(),
-              ),
+          '/landingpage': (context) => LandingPage(),
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/home': (context) => HomePage(),
           '/editprofile': (context) => EditProfilePage(),
           '/new_task': (context) => NewTaskPage(),
           '/tasks_page': (context) => TasksPage(),
