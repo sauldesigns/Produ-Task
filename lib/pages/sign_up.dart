@@ -1,9 +1,11 @@
 import 'package:book_read/services/auth.dart';
+import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -22,6 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _showPassword = false;
   bool _showConfirmPassword = false;
   bool isLoading = false;
+  UserUpdateInfo updateData = new UserUpdateInfo();
   Firestore db = Firestore.instance;
   @override
   void initState() {
@@ -32,6 +35,8 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
+    var userRepo = Provider.of<UserRepository>(context);
+
     if (user != null) {
       Navigator.of(context).pop();
     }
@@ -155,44 +160,57 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: isLoading == false
-                          ? RoundedButton(
-                              title: 'Sign up',
-                              onClick: () async {
-                                if (_formkey.currentState.validate()) {
-                                  _formkey.currentState.save();
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: isLoading == true
+                            ? SpinKitChasingDots(
+                                color: Colors.black,
+                                size: 30,
+                              )
+                            : RoundedButton(
+                                title: 'Sign up',
+                                onClick: () async {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  var userId = await widget.auth
-                                      .signUp(_email, _password);
-                                  var data = {
-                                    'displayName': _username,
-                                    'email': _email,
-                                    'bio': '',
-                                    'fname': '',
-                                    'lname': '',
-                                    'provider': 'email',
-                                    'profile_pic':
-                                        'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                    'uid': userId
-                                  };
-                                  db
-                                      .collection('users')
-                                      .document(userId)
-                                      .setData(data);
-                                } else {
-                                  setState(() {
-                                    _autoValidate = true;
-                                  });
-                                }
-                              },
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    )
+                                  if (_formkey.currentState.validate()) {
+                                    _formkey.currentState.save();
+
+                                    bool result = await userRepo.signUp(
+                                        _email, _password);
+                                    if (result) {
+                                      var data = {
+                                        'displayName': _username,
+                                        'email': _email,
+                                        'bio': '',
+                                        'fname': '',
+                                        'lname': '',
+                                        'provider': 'email',
+                                        'profile_pic':
+                                            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+                                        'uid': userRepo.userUid
+                                      };
+
+                                      updateData.displayName = _username;
+                                      updateData.photoUrl =
+                                          'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25';
+                                      user.updateProfile(updateData);
+                                      db
+                                          .collection('users')
+                                          .document(userRepo.userUid)
+                                          .setData(data);
+                                    } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                  } else {
+                                    setState(() {
+                                      _autoValidate = true;
+                                      isLoading = false;
+                                    });
+                                  }
+                                },
+                              ))
                   ],
                 ),
               ),
@@ -201,5 +219,12 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _email = '';
+    _password = '';
+    super.dispose();
   }
 }

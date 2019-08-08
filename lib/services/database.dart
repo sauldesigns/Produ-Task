@@ -34,7 +34,7 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Stream<List<Task>> incompleteTasks(User user, String origuser, Category cat) {
+  Stream<List<IncompleteTask>> incompleteTasks(User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
         .collection('category')
@@ -47,7 +47,7 @@ class DatabaseService {
         .orderBy('createdat', descending: true);
 
     return ref.snapshots().map((list) =>
-        list.documents.map((doc) => Task.fromFirestore(doc)).toList());
+        list.documents.map((doc) => IncompleteTask.fromFirestore(doc)).toList());
   }
 
   Stream<List<User>> streamUsers(String query) {
@@ -68,6 +68,10 @@ class DatabaseService {
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
+  }
+
+  void updateDocument({String collection, String docID, Map<String, dynamic> data}) {
+    _db.collection(collection).document(docID).updateData(data);
   }
 
   // Future getBookData(String query) async {
@@ -95,12 +99,14 @@ class DatabaseService {
   // }
 
   Future<void> deleteUser(String uid) async {
-    _db.collection('users').document(uid).delete();
+    await _db.collection('users').document(uid).delete();
   }
 
-  Future<void> uploadProfilePicture(String uid) async {
+  Future<void> uploadProfilePicture(FirebaseUser user) async {
+    UserUpdateInfo userUpdateData = new UserUpdateInfo();
+  
     File _image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
+        source: ImageSource.gallery);
 
     if (_image != null) {
       var imagePath = _image.path;
@@ -108,18 +114,20 @@ class DatabaseService {
       String fileName = imagePath.split('/').last;
 
       StorageReference reference =
-          _storage.ref().child('users/$uid/images/$fileName');
+          _storage.ref().child('users/${user.uid}/images/$fileName');
 
       StorageUploadTask uploadTask = reference.putFile(_image);
-
+      
       String location =
           await (await uploadTask.onComplete).ref.getDownloadURL();
-
+      userUpdateData.photoUrl = location;
+      userUpdateData.displayName = user.displayName;
+      user.updateProfile(userUpdateData);
       var now = DateTime.now();
-      var data = {'imgUrl': location, 'uid': uid, 'createdAt': now};
+      var data = {'imgUrl': location, 'uid': user.uid, 'createdAt': now};
       _db
           .collection('users')
-          .document(uid)
+          .document(user.uid)
           .updateData({'profile_pic': location});
       _db.collection('photo_content').add(data);
     }

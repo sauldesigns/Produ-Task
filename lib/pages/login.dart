@@ -1,11 +1,15 @@
 import 'package:book_read/services/auth.dart';
+import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.auth}) : super(key: key);
+  LoginPage({Key key, this.auth, this.scaffoldKey}) : super(key: key);
   final BaseAuth auth;
+  final GlobalKey<ScaffoldState> scaffoldKey;
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -16,20 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   String _password;
   bool isLoading = false;
 
-  void _validateAndSubmit() async {
-    setState(() {
-      isLoading = true;
-    });
-    await widget.auth.signIn(_email, _password);
-    setState(() {
-      isLoading = false;
-    });
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
+    var userRepo = Provider.of<UserRepository>(context);
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -102,21 +95,37 @@ class _LoginPageState extends State<LoginPage> {
                       child: isLoading == false
                           ? RoundedButton(
                               title: 'Login',
-                              onClick: () {
+                              onClick: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 if (_formkey.currentState.validate()) {
                                   _formkey.currentState.save();
-                                  _validateAndSubmit();
+
+                                  bool result =
+                                      await userRepo.signIn(_email, _password);
+                                  if (result == true) {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil('/',
+                                            (Route<dynamic> route) => false);
+                                  } else {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
                                 } else {
                                   setState(() {
+                                    isLoading = false;
                                     _autoValidate = true;
                                   });
                                 }
                               },
                             )
-                          : Center(
-                              child: CircularProgressIndicator(),
+                          : SpinKitChasingDots(
+                              color: Colors.black,
+                              size: 30,
                             ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -125,5 +134,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _email = '';
+    _password = '';
+    super.dispose();
   }
 }

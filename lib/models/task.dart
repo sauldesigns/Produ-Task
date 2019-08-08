@@ -37,3 +37,41 @@ class Task {
         color: data['color']);
   }
 }
+
+class IncompleteTask {
+  final String id;
+  final String title;
+  final Timestamp createdAt;
+  final String coverImg;
+  final String catUid;
+  final bool complete;
+  final bool done;
+  final int color;
+  final String createdBy;
+
+  IncompleteTask(
+      {this.id,
+      this.title,
+      this.catUid,
+      this.complete,
+      this.color,
+      this.createdAt,
+      this.coverImg,
+      this.createdBy,
+      this.done});
+
+  factory IncompleteTask.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data;
+
+    return IncompleteTask(
+        id: doc.documentID,
+        title: data['content'] ?? '...',
+        createdAt: data['createdat'],
+        coverImg: data['cover_img'] ?? '',
+        done: data['done'],
+        createdBy: data['createdby'] ?? '...',
+        complete: data['complete'] ?? false,
+        catUid: data['cat_uid'],
+        color: data['color']);
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -26,9 +27,8 @@ class ProfilePicture extends StatelessWidget {
         child: CircleAvatar(
           radius: size,
           backgroundColor: Colors.white,
-          backgroundImage: imgUrl == null
-              ? null
-              : NetworkImage(imgUrl),
+          backgroundImage:
+              imgUrl == null ? null : CachedNetworkImageProvider(imgUrl),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: isSettings == true

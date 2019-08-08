@@ -39,13 +39,12 @@ class User {
   factory User.initialData() {
     return User(
         uid: null,
-        username: '',
-        fname: '',
-        lname: '',
-        email: '',
-        provider: '',
-        profilePic:
-            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-        bio: '');
+        username: 'Loading..',
+        fname: 'Loading..',
+        lname: 'Loading...',
+        email: 'Loading..',
+        provider: 'Loading..',
+        profilePic: null,
+        bio: 'Loading..');
   }
 }

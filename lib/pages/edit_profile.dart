@@ -25,6 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isLoading = false;
   Firestore db = Firestore.instance;
   final _dbServ = DatabaseService();
+  UserUpdateInfo userUpdateData = new UserUpdateInfo();
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
@@ -131,7 +132,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             initialValue: userData.lname,
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               Pattern pattern =
                                   r'^(?=.{1,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$';
@@ -162,7 +163,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             textCapitalization: TextCapitalization.sentences,
                             maxLength: 160,
                             textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               return null;
                             },
@@ -189,11 +190,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           'fname': _fname,
                                           'lname': _lname,
                                         };
+                                        userUpdateData.photoUrl = user.photoUrl;
+                                        userUpdateData.displayName = _username;
+                                        user.updateProfile(userUpdateData);
+
                                         db
                                             .collection('users')
                                             .document(user.uid)
                                             .updateData(data);
+                                        
                                         setState(() {
+                                         
                                           isLoading = false;
                                         });
 
@@ -203,7 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                            aroundPadding: EdgeInsets.all(8),
+                                            margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             backgroundColor: Colors.red,
                                             duration: Duration(seconds: 3),
@@ -217,7 +224,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Flushbar(
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
-                                            aroundPadding: EdgeInsets.all(8),
+                                            margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             duration: Duration(seconds: 3),
                                             message:

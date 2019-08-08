@@ -1,4 +1,5 @@
 import 'package:book_read/enums/connectivity_status.dart';
+import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/edit_profile.dart';
 import 'package:book_read/pages/home.dart';
@@ -8,24 +9,22 @@ import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/pages/root_page.dart';
 import 'package:book_read/pages/sign_up.dart';
 import 'package:book_read/pages/tasks_page.dart';
-import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/connectivity.dart';
 import 'package:book_read/services/database.dart';
+import 'package:book_read/services/user_repo.dart';
+import 'package:book_read/ui/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vibration/vibration.dart';
-// import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final db = DatabaseService();
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //     SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return MultiProvider(
       providers: [
         StreamProvider<FirebaseUser>.value(
@@ -37,33 +36,29 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<User>>.value(
           value: db.streamUsers(''),
         ),
-        FutureProvider<dynamic>.value(
-          value: Vibration.hasVibrator()
-         
+        FutureProvider<dynamic>.value(value: Vibration.hasVibrator()),
+        ChangeNotifierProvider(
+          builder: (_) => UserRepository.instance(),
         )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Book Read',
+        title: 'Produ:Task',
         theme: ThemeData(
           brightness: Brightness.light,
         ),
         initialRoute: '/',
         routes: {
           '/': (context) => RootPage(),
-          '/landingpage': (context) => LandingPage(
-                auth: new Auth(),
-              ),
-          '/login': (context) => LoginPage(
-                auth: new Auth(),
-              ),
-          '/signup': (context) => SignUpPage(auth: new Auth()),
-          '/home': (context) => HomePage(
-                auth: new Auth(),
-              ),
+          '/splash': (context) => SplashScreen(),
+          '/landingpage': (context) => LandingPage(),
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/home': (context) => HomePage(),
           '/editprofile': (context) => EditProfilePage(),
           '/new_task': (context) => NewTaskPage(),
           '/tasks_page': (context) => TasksPage(),
+          '/settings': (context) => SettingsTab(),
         },
       ),
     );
