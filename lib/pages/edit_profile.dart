@@ -25,6 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isLoading = false;
   Firestore db = Firestore.instance;
   final _dbServ = DatabaseService();
+  UserUpdateInfo userUpdateData = new UserUpdateInfo();
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
@@ -189,11 +190,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           'fname': _fname,
                                           'lname': _lname,
                                         };
+                                        userUpdateData.photoUrl = user.photoUrl;
+                                        userUpdateData.displayName = _username;
+                                        user.updateProfile(userUpdateData);
+
                                         db
                                             .collection('users')
                                             .document(user.uid)
                                             .updateData(data);
+                                        
                                         setState(() {
+                                         
                                           isLoading = false;
                                         });
 

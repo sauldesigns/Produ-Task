@@ -24,6 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _showPassword = false;
   bool _showConfirmPassword = false;
   bool isLoading = false;
+  UserUpdateInfo updateData = new UserUpdateInfo();
   Firestore db = Firestore.instance;
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     var userRepo = Provider.of<UserRepository>(context);
+
     if (user != null) {
       Navigator.of(context).pop();
     }
@@ -187,6 +189,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                             'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
                                         'uid': userRepo.userUid
                                       };
+
+                                      updateData.displayName = _username;
+                                      updateData.photoUrl =
+                                          'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25';
+                                      user.updateProfile(updateData);
                                       db
                                           .collection('users')
                                           .document(userRepo.userUid)

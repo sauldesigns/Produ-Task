@@ -4,6 +4,7 @@ import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
@@ -17,7 +18,7 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  UserUpdateInfo userUpdateData;
   final db = DatabaseService();
 
   @override
@@ -26,6 +27,7 @@ class _SettingsTabState extends State<SettingsTab> {
     var _userDb = Provider.of<User>(context);
     var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
+    user.reload();
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -63,14 +65,14 @@ class _SettingsTabState extends State<SettingsTab> {
                             size: 60,
                             onTap: () async {
                               showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                        content: Text(
-                                          'Uploading...',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ));
-                              await db.uploadProfilePicture(user.uid);
+                                context: context,
+                                builder: (_) => SpinKitChasingDots(
+                                  color: Colors.white,
+                                  size: 50.0,
+                                ),
+                              );
+                              await db.uploadProfilePicture(user);
+                       
                               Navigator.of(context).pop();
                             },
                             isSettings: true,
@@ -83,7 +85,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              _userDb.username,
+                            _userDb.username,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
@@ -124,11 +126,13 @@ class _SettingsTabState extends State<SettingsTab> {
                 ListTile(
                   title: Text('Edit profile'),
                   leading: Icon(Icons.person_pin),
-                  onTap: () {
+                  onTap: () async {
                     // if (hasVibration) {
                     //   Vibration.vibrate(duration: 200);
                     // }
-                    Navigator.of(context).pushNamed('/editprofile');
+                    Navigator.of(context)
+                        .pushNamed('/editprofile');
+                        
                   },
                 ),
                 Divider(

@@ -102,7 +102,9 @@ class DatabaseService {
     await _db.collection('users').document(uid).delete();
   }
 
-  Future<void> uploadProfilePicture(String uid) async {
+  Future<void> uploadProfilePicture(FirebaseUser user) async {
+    UserUpdateInfo userUpdateData = new UserUpdateInfo();
+  
     File _image = await ImagePicker.pickImage(
         source: ImageSource.gallery);
 
@@ -112,18 +114,20 @@ class DatabaseService {
       String fileName = imagePath.split('/').last;
 
       StorageReference reference =
-          _storage.ref().child('users/$uid/images/$fileName');
+          _storage.ref().child('users/${user.uid}/images/$fileName');
 
       StorageUploadTask uploadTask = reference.putFile(_image);
-
+      
       String location =
           await (await uploadTask.onComplete).ref.getDownloadURL();
-
+      userUpdateData.photoUrl = location;
+      userUpdateData.displayName = user.displayName;
+      user.updateProfile(userUpdateData);
       var now = DateTime.now();
-      var data = {'imgUrl': location, 'uid': uid, 'createdAt': now};
+      var data = {'imgUrl': location, 'uid': user.uid, 'createdAt': now};
       _db
           .collection('users')
-          .document(uid)
+          .document(user.uid)
           .updateData({'profile_pic': location});
       _db.collection('photo_content').add(data);
     }
