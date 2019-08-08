@@ -1,4 +1,5 @@
 // import 'package:book_read/models/category.dart';
+import 'package:book_read/enums/connectivity_status.dart';
 import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
@@ -11,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations/controlled_animation.dart';
 import 'package:vibration/vibration.dart';
 
 class TasksPage extends StatefulWidget {
@@ -33,6 +35,8 @@ class _TasksPageState extends State<TasksPage> {
     _userDb = widget.user;
     List<Task> task = Provider.of<List<Task>>(context);
     bool hasVibration = Provider.of<dynamic>(context);
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -57,6 +61,27 @@ class _TasksPageState extends State<TasksPage> {
                         Navigator.of(context).pop();
                       },
                     ),
+                    connectionStatus == ConnectivityStatus.Offline
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: ControlledAnimation(
+                                duration: Duration(milliseconds: 1000),
+                                tween: Tween<double>(begin: 0, end: 1),
+                                curve: Curves.elasticInOut,
+                                builder: (context, animation) {
+                                  return Transform.scale(
+                                    scale: animation,
+                                    child: Text(
+                                      'Offline Mode',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          )
+                        : Container(),
                     Expanded(
                       child: Container(),
                     ),
