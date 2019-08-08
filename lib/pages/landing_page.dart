@@ -1,4 +1,4 @@
-import 'package:book_read/pages/login.dart';
+
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
@@ -55,10 +55,8 @@ class _LandingPageState extends State<LandingPage> {
                   icon: Icons.mail,
                   title: 'Continue with email',
                   onClick: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
+                    Navigator.of(context).pushNamed(
+                      '/login'
                     );
                   },
                 ),

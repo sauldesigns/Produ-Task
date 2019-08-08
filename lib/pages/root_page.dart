@@ -4,7 +4,6 @@ import 'package:book_read/pages/home.dart';
 import 'package:book_read/pages/landing_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/services/user_repo.dart';
-import 'package:book_read/ui/auth_screen.dart';
 import 'package:book_read/ui/splashscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class _RootPageState extends State<RootPage> {
       case Status.Unauthenticated:
         return LandingPage();
       case Status.Authenticating:
-        return LoadingScreeen();
+        return SplashScreen();
       case Status.Authenticated:
         return StreamProvider<User>.value(
             value: _db.streamHero(_user.uid),
