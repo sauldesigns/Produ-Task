@@ -27,7 +27,6 @@ class _SettingsTabState extends State<SettingsTab> {
     var _userDb = Provider.of<User>(context);
     var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
-    user.reload();
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -72,7 +71,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                 ),
                               );
                               await db.uploadProfilePicture(user);
-                       
+
                               Navigator.of(context).pop();
                             },
                             isSettings: true,
@@ -85,7 +84,7 @@ class _SettingsTabState extends State<SettingsTab> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                            _userDb.username,
+                              _userDb.username,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
@@ -130,9 +129,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     // if (hasVibration) {
                     //   Vibration.vibrate(duration: 200);
                     // }
-                    Navigator.of(context)
-                        .pushNamed('/editprofile');
-                        
+                    Navigator.of(context).pushNamed('/editprofile');
                   },
                 ),
                 Divider(
@@ -169,9 +166,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     }
                     userRepo.signOut();
                     // auth.signOut();
-                    // if (_userDb.provider == 'google') {
-                    //   _googleSignIn.signOut();
-                    // }
+                    if (_userDb.provider == 'google') {
+                      userRepo.signOutGoogle();
+                    }
                     Navigator.of(context).pop();
                   },
                 ),

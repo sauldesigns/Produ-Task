@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
   String _email;
+  bool showError = false;
   String _password;
   bool isLoading = false;
 
@@ -110,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                                             (Route<dynamic> route) => false);
                                   } else {
                                     setState(() {
+                                      showError = true;
                                       isLoading = false;
                                     });
                                   }
@@ -126,6 +128,17 @@ class _LoginPageState extends State<LoginPage> {
                               size: 30,
                             ),
                     ),
+                    showError == false
+                        ? Container()
+                        : Padding(
+                            padding: EdgeInsets.only(top: 30.0),
+                            child: Text(
+                              'Error signing in. Please try again.',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                          )
                   ],
                 ),
               ),

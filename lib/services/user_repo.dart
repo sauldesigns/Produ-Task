@@ -38,6 +38,7 @@ class UserRepository with ChangeNotifier {
       return true;
     } catch (e) {
       print(e);
+      
       _status = Status.Unauthenticated;
       notifyListeners();
 
