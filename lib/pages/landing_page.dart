@@ -1,4 +1,3 @@
-
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
@@ -55,20 +54,18 @@ class _LandingPageState extends State<LandingPage> {
                   icon: Icons.mail,
                   title: 'Continue with email',
                   onClick: () {
-                    Navigator.of(context).pushNamed(
-                      '/login'
-                    );
+                    Navigator.of(context).pushNamed('/login');
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: RoundedButton(
-                  icon: Icons.alternate_email,
-                  title: 'Continue with Facebook',
-                  onClick: () {},
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 15.0),
+              //   child: RoundedButton(
+              //     icon: Icons.alternate_email,
+              //     title: 'Continue with Facebook',
+              //     onClick: () {},
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 15.0),
                 child: RoundedButton(
