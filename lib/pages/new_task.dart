@@ -11,11 +11,13 @@ class NewTaskPage extends StatefulWidget {
       {Key key,
       this.category,
       this.user,
+      this.allTasks,
       this.content = '',
       this.task,
       this.isIncomTask = false,
       this.incomTask,
-      this.isUpdate = false})
+      this.isUpdate = false
+      , this.isAllTasks = false})
       : super(key: key);
 
   final Category category;
@@ -24,7 +26,9 @@ class NewTaskPage extends StatefulWidget {
   final Task task;
   final bool isUpdate;
   final bool isIncomTask;
+  final bool isAllTasks;
   final IncompleteTask incomTask;
+  final AllTasks allTasks;
   _NewTaskPageState createState() => _NewTaskPageState();
 }
 
@@ -117,7 +121,10 @@ class _NewTaskPageState extends State<NewTaskPage> {
                                     .collection('tasks')
                                     .document(widget.incomTask.id)
                                     .updateData(data);
-                              } else {
+                              } else if (widget.isAllTasks) {
+
+                              } 
+                              else {
                                 _db
                                     .collection('category')
                                     .document(widget.category.id)

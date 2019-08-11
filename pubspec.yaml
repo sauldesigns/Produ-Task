@@ -37,6 +37,8 @@ dependencies:
   cached_network_image: ^1.1.1
   simple_animations: ^1.3.3
   flutter_spinkit: ^3.1.0
+  font_awesome_flutter: ^8.5.0
+  bubbled_navigation_bar: ^0.0.4
 
   # flutter_advanced_networkimage: ^0.4.15
 

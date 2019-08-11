@@ -5,7 +5,6 @@ import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
 import 'package:book_read/models/user.dart';
 import 'package:book_read/pages/new_category.dart';
-import 'package:book_read/pages/share.dart';
 import 'package:book_read/pages/tasks_page.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/add_card.dart';
@@ -48,7 +47,8 @@ class _HomeTabState extends State<HomeTab> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var useMobileLayout = shortestSide < 600;
-
+    // var userRepo = Provider.of<UserRepository>(context);
+    // userRepo.signOut();
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -260,9 +260,14 @@ class _HomeTabState extends State<HomeTab> {
                                                 List<IncompleteTask>>.value(
                                               value: db.incompleteTasks(_userDb,
                                                   category.uid, category),
-                                              child: TasksPage(
-                                                category: category,
-                                                user: _userDb,
+                                              child: StreamProvider<
+                                                  List<AllTasks>>.value(
+                                                value: db.allTasks(_userDb,
+                                                    category.uid, category),
+                                                child: TasksPage(
+                                                  category: category,
+                                                  user: _userDb,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -322,6 +327,9 @@ class _HomeTabState extends State<HomeTab> {
                                                                 data: {
                                                                   'color': index
                                                                 });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
                                                           child: Padding(
                                                             padding:
@@ -338,24 +346,24 @@ class _HomeTabState extends State<HomeTab> {
                                                     ),
                                                   ),
                                                 ),
-                                                ListTile(
-                                                  leading: Icon(Icons.share),
-                                                  title: Text('Share'),
-                                                  onTap: () {
-                                                    // if (hasVibration) {
-                                                    //   Vibration.vibrate(duration: 200);
-                                                    // }
-                                                    Navigator.of(context).pop();
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SharePage(
-                                                          category: category,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
+                                                // ListTile(
+                                                //   leading: Icon(Icons.share),
+                                                //   title: Text('Share'),
+                                                //   onTap: () {
+                                                //     // if (hasVibration) {
+                                                //     //   Vibration.vibrate(duration: 200);
+                                                //     // }
+                                                //     Navigator.of(context).pop();
+                                                //     Navigator.of(context).push(
+                                                //       MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             SharePage(
+                                                //           category: category,
+                                                //         ),
+                                                //       ),
+                                                //     );
+                                                //   },
+                                                // ),
                                                 ListTile(
                                                   leading: Icon(Icons.create),
                                                   title: Text('Edit'),

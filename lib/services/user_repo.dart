@@ -21,7 +21,8 @@ class UserRepository with ChangeNotifier {
   UserRepository.instance()
       : _auth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn() {
-     Timer(Duration(seconds: 4), () =>  _auth.onAuthStateChanged.listen(_onAuthStateChanged));
+    Timer(Duration(seconds: 4),
+        () => _auth.onAuthStateChanged.listen(_onAuthStateChanged));
   }
 
   Status get status => _status;
@@ -38,6 +39,7 @@ class UserRepository with ChangeNotifier {
       return true;
     } catch (e) {
       print(e);
+
       _status = Status.Unauthenticated;
       notifyListeners();
 
@@ -54,6 +56,7 @@ class UserRepository with ChangeNotifier {
       _status = Status.Authenticating;
       notifyListeners();
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -76,6 +79,7 @@ class UserRepository with ChangeNotifier {
         };
         db.collection('users').document(user.uid).setData(data);
       }
+
       return true;
     } catch (e) {
       print(e);
@@ -115,14 +119,12 @@ class UserRepository with ChangeNotifier {
     _auth.signOut();
     _status = Status.Unauthenticated;
     notifyListeners();
-    return Future.delayed(Duration.zero);
   }
 
   Future signOutGoogle() async {
     _googleSignIn.signOut();
     _status = Status.Unauthenticated;
     notifyListeners();
-    return Future.delayed(Duration.zero);
   }
 
   Future<void> _onAuthStateChanged(FirebaseUser firebaseUser) async {

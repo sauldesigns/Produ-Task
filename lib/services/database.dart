@@ -34,7 +34,8 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
-  Stream<List<IncompleteTask>> incompleteTasks(User user, String origuser, Category cat) {
+  Stream<List<IncompleteTask>> incompleteTasks(
+      User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
         .collection('category')
@@ -46,8 +47,21 @@ class DatabaseService {
             isLessThan: DateTime(date.year, date.month, date.day))
         .orderBy('createdat', descending: true);
 
+    return ref.snapshots().map((list) => list.documents
+        .map((doc) => IncompleteTask.fromFirestore(doc))
+        .toList());
+  }
+
+  Stream<List<AllTasks>> allTasks(User user, String origuser, Category cat) {
+    var ref = _db
+        .collection('category')
+        .document(cat.id)
+        .collection('tasks')
+        .where('cat_uid', isEqualTo: cat.id)
+        .orderBy('createdat', descending: true);
+
     return ref.snapshots().map((list) =>
-        list.documents.map((doc) => IncompleteTask.fromFirestore(doc)).toList());
+        list.documents.map((doc) => AllTasks.fromFirestore(doc)).toList());
   }
 
   Stream<List<User>> streamUsers(String query) {
@@ -70,7 +84,8 @@ class DatabaseService {
         list.documents.map((doc) => Category.fromFirestore(doc)).toList());
   }
 
-  void updateDocument({String collection, String docID, Map<String, dynamic> data}) {
+  void updateDocument(
+      {String collection, String docID, Map<String, dynamic> data}) {
     _db.collection(collection).document(docID).updateData(data);
   }
 
@@ -98,15 +113,14 @@ class DatabaseService {
   //   return bookData;
   // }
 
-  Future<void> deleteUser(String uid) async {
-    await _db.collection('users').document(uid).delete();
+  Future<void> deleteUser(String uid) {
+    return _db.collection('users').document(uid).delete();
   }
 
   Future<void> uploadProfilePicture(FirebaseUser user) async {
     UserUpdateInfo userUpdateData = new UserUpdateInfo();
-  
-    File _image = await ImagePicker.pickImage(
-        source: ImageSource.gallery);
+
+    File _image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     if (_image != null) {
       var imagePath = _image.path;
@@ -117,7 +131,7 @@ class DatabaseService {
           _storage.ref().child('users/${user.uid}/images/$fileName');
 
       StorageUploadTask uploadTask = reference.putFile(_image);
-      
+
       String location =
           await (await uploadTask.onComplete).ref.getDownloadURL();
       userUpdateData.photoUrl = location;

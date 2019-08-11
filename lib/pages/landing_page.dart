@@ -1,10 +1,10 @@
-
 import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
@@ -44,7 +44,7 @@ class _LandingPageState extends State<LandingPage> {
                           padding: const EdgeInsets.only(
                               top: 15.0, left: 50, right: 50),
                           child: Text(
-                              'Create personal tasks, or share them with others.')),
+                              'Your personal task organizer.')),
                     ],
                   ),
                 ),
@@ -52,27 +52,25 @@ class _LandingPageState extends State<LandingPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 15.0),
                 child: RoundedButton(
-                  icon: Icons.mail,
+                  icon: FontAwesomeIcons.solidEnvelope,
                   title: 'Continue with email',
                   onClick: () {
-                    Navigator.of(context).pushNamed(
-                      '/login'
-                    );
+                    Navigator.of(context).pushNamed('/login');
                   },
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 15.0),
+              //   child: RoundedButton(
+              //     icon: Icons.alternate_email,
+              //     title: 'Continue with Facebook',
+              //     onClick: () {},
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 15.0),
                 child: RoundedButton(
-                  icon: Icons.alternate_email,
-                  title: 'Continue with Facebook',
-                  onClick: () {},
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: RoundedButton(
-                  icon: Icons.account_box,
+                  icon: FontAwesomeIcons.google,
                   title: 'Continue with Google',
                   onClick: () async {
                     await userRepo.signInWithGoogle();

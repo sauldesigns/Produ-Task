@@ -198,9 +198,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             .collection('users')
                                             .document(user.uid)
                                             .updateData(data);
-                                        
+
                                         setState(() {
-                                         
                                           isLoading = false;
                                         });
 
