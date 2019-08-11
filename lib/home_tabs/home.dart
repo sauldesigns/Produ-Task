@@ -47,7 +47,8 @@ class _HomeTabState extends State<HomeTab> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     var useMobileLayout = shortestSide < 600;
-
+    // var userRepo = Provider.of<UserRepository>(context);
+    // userRepo.signOut();
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,

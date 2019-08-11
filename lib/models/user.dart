@@ -24,18 +24,22 @@ class User {
   factory User.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
 
-    return User(
-      uid: doc.documentID,
-      username: data['displayName'] ?? 'loading...',
-      fname: data['fname'] ?? '...',
-      lname: data['lname'] ?? '...',
-      email: data['email'] ?? '...',
-      provider: data['provider'] ?? 'email',
-      profilePic: data['profile_pic'] ??
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png',
-      bio: data['bio'] ?? 'loading...',
-    );
+    if (data == null) {
+      return User.initialData();
+    } else {
+      return User(
+        uid: doc.documentID,
+        username: data['displayName'] ?? '...',
+        fname: data['fname'] ?? '...',
+        lname: data['lname'] ?? '...',
+        email: data['email'] ?? '...',
+        provider: data['provider'] ?? 'email',
+        profilePic: data['profile_pic'] ?? null,
+        bio: data['bio'] ?? '...',
+      );
+    }
   }
+
   factory User.initialData() {
     return User(
         uid: null,

@@ -62,6 +62,8 @@ class _SignUpPageState extends State<SignUpPage> {
         };
 
         db.collection('users').document(userRepo.userUid).setData(data);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
       } else {
         setState(() {
           isLoading = false;
@@ -80,9 +82,9 @@ class _SignUpPageState extends State<SignUpPage> {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     var userRepo = Provider.of<UserRepository>(context);
 
-    if (user != null) {
-      Navigator.of(context).pop();
-    }
+    // if (user != null) {
+    //   Navigator.of(context).pop();
+    // }
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -202,15 +204,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       textInputAction: TextInputAction.done,
                       focusNode: _confirmPassFocus,
                       onFieldSubmitted: (_) {
-                        setState(() {
-                          isLoading = true;
-                        });
+                        isLoading = true;
                         _confirmPassFocus.unfocus();
                         doSignUp(userRepo, user);
-                        updateData.displayName = _username;
-                        updateData.photoUrl =
-                            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25';
-                        user.updateProfile(updateData);
                       },
                       validator: (value) {
                         if (value.isEmpty) {
