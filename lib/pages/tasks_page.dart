@@ -8,10 +8,11 @@ import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
+import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:navigation_dot_bar/navigation_dot_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
@@ -46,31 +47,70 @@ class _TasksPageState extends State<TasksPage> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 15.0, right: 15.0, left: 15.0),
-        child: BottomNavigationDotBar(
-          items: <BottomNavigationDotBarItem>[
-            BottomNavigationDotBarItem(
-                icon: Icons.today,
-                onTap: () {
-                  pageController.animateToPage(
-                    0,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.easeInOutQuart,
-                  );
-                }),
-            BottomNavigationDotBarItem(
-                icon: Icons.library_books,
-                onTap: () {
-                  pageController.animateToPage(
-                    1,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.easeInOutQuart,
-                  );
-                }),
-          ],
-        ),
-      ),
+      bottomNavigationBar: BubbledNavigationBar(
+          initialIndex: 0,
+          itemMargin: EdgeInsets.symmetric(horizontal: 45),
+          backgroundColor: Colors.white,
+          defaultBubbleColor: Colors.blue,
+          onTap: (index) {
+            pageController.animateToPage(
+              index,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOutQuart,
+            );
+          },
+          items: [
+            BubbledNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.calendarDay),
+              activeIcon: Icon(
+                FontAwesomeIcons.calendarDay,
+                color: Colors.white,
+              ),
+              bubbleColor: Colors.blue,
+              title: Text(
+                'Today',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            BubbledNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.tasks),
+                activeIcon: Icon(
+                  FontAwesomeIcons.tasks,
+                  color: Colors.white,
+                ),
+                bubbleColor: Colors.orange,
+                title: Text(
+                  'All Tasks',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                )),
+          ]),
+      // BottomNavigationDotBar(
+      //   items: <BottomNavigationDotBarItem>[
+      //     BottomNavigationDotBarItem(
+      //         icon: FontAwesomeIcons.calendarDay,
+      //         onTap: () {
+      //           pageController.animateToPage(
+      //             0,
+      //             duration: Duration(milliseconds: 500),
+      //             curve: Curves.easeInOutQuart,
+      //           );
+      //         }),
+      //     BottomNavigationDotBarItem(
+      //         icon: FontAwesomeIcons.tasks,
+      //         onTap: () {
+      //           pageController.animateToPage(
+      //             1,
+      //             duration: Duration(milliseconds: 500),
+      //             curve: Curves.easeInOutQuart,
+      //           );
+      //         }),
+      //   ],
+      // ),
+
       body: PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: pageController,
@@ -93,7 +133,7 @@ class _TasksPageState extends State<TasksPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.arrow_back),
+                            icon: Icon(FontAwesomeIcons.chevronLeft),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -447,7 +487,7 @@ class _TasksPageState extends State<TasksPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.arrow_back),
+                            icon: Icon(FontAwesomeIcons.chevronLeft),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
