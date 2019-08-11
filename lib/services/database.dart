@@ -113,8 +113,8 @@ class DatabaseService {
   //   return bookData;
   // }
 
-  Future<void> deleteUser(String uid) async {
-    await _db.collection('users').document(uid).delete();
+  Future<void> deleteUser(String uid) {
+    return _db.collection('users').document(uid).delete();
   }
 
   Future<void> uploadProfilePicture(FirebaseUser user) async {

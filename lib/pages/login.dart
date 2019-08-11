@@ -20,6 +20,36 @@ class _LoginPageState extends State<LoginPage> {
   bool showError = false;
   String _password;
   bool isLoading = false;
+  final FocusNode _emailFocus = new FocusNode();
+  final FocusNode _passwordFocus = new FocusNode();
+
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  doSignIn(var userRepo, BuildContext context) async {
+    if (_formkey.currentState.validate()) {
+      _formkey.currentState.save();
+
+      bool result = await userRepo.signIn(_email, _password);
+      if (result == true) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+      } else {
+        setState(() {
+          showError = true;
+          isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        isLoading = false;
+        _autoValidate = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
+                      focusNode: _emailFocus,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter email';
@@ -67,6 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       onSaved: (value) => _email = value,
+                      onFieldSubmitted: (term) => _fieldFocusChange(
+                          context, _emailFocus, _passwordFocus),
                     ),
                     SizedBox(
                       height: 30,
@@ -80,7 +113,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       obscureText: true,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _passwordFocus,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter password';
@@ -90,6 +124,13 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       onSaved: (value) => _password = value,
+                      onFieldSubmitted: (term) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        _passwordFocus.unfocus();
+                        doSignIn(userRepo, context);
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
@@ -100,27 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                if (_formkey.currentState.validate()) {
-                                  _formkey.currentState.save();
-
-                                  bool result =
-                                      await userRepo.signIn(_email, _password);
-                                  if (result == true) {
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/',
-                                            (Route<dynamic> route) => false);
-                                  } else {
-                                    setState(() {
-                                      showError = true;
-                                      isLoading = false;
-                                    });
-                                  }
-                                } else {
-                                  setState(() {
-                                    isLoading = false;
-                                    _autoValidate = true;
-                                  });
-                                }
+                                doSignIn(userRepo, context);
                               },
                             )
                           : SpinKitChasingDots(

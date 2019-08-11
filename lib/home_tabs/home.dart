@@ -326,7 +326,9 @@ class _HomeTabState extends State<HomeTab> {
                                                                 data: {
                                                                   'color': index
                                                                 });
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
                                                           child: Padding(
                                                             padding:

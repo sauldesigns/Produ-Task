@@ -43,7 +43,7 @@ class _LandingPageState extends State<LandingPage> {
                           padding: const EdgeInsets.only(
                               top: 15.0, left: 50, right: 50),
                           child: Text(
-                              'Create personal tasks, or share them with others.')),
+                              'Your personal task organizer.')),
                     ],
                   ),
                 ),

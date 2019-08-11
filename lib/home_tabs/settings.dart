@@ -2,6 +2,7 @@ import 'package:book_read/models/user.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/profile_picture.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,6 +20,7 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
   UserUpdateInfo userUpdateData;
+  Firestore _db = Firestore.instance;
   final db = DatabaseService();
 
   @override
@@ -169,7 +171,9 @@ class _SettingsTabState extends State<SettingsTab> {
                     if (_userDb.provider == 'google') {
                       userRepo.signOutGoogle();
                     }
-                    Navigator.of(context).pop();
+                    Navigator.of(context).popUntil(
+                      ModalRoute.withName('/'),
+                    );
                   },
                 ),
                 Divider(
@@ -205,12 +209,15 @@ class _SettingsTabState extends State<SettingsTab> {
                                     if (hasVibration) {
                                       Vibration.vibrate(duration: 200);
                                     }
-                                    // await db.deleteUser(user.uid);
+                                    // String tempUid = _userDb.uid;
+                                    // await _db.collection('users').document(tempUid).delete();
+                                    // await user.delete();
                                     // await userRepo.signOut();
                                     // if (_userDb.provider == 'google') {
                                     //   await userRepo.signOutGoogle();
                                     // }
-                                    Navigator.of(context).pop();
+                                    // Navigator.of(context)
+                                    //     .popUntil(ModalRoute.withName('/'));
                                   },
                                 ),
                                 FlatButton(

@@ -26,10 +26,53 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isLoading = false;
   UserUpdateInfo updateData = new UserUpdateInfo();
   Firestore db = Firestore.instance;
+  final FocusNode _emailFocus = new FocusNode();
+  final FocusNode _usernameFocus = new FocusNode();
+  final FocusNode _passwordFocus = new FocusNode();
+  final FocusNode _confirmPassFocus = new FocusNode();
+
   @override
   void initState() {
     super.initState();
     isLoading = false;
+  }
+
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  void doSignUp(var userRepo, FirebaseUser user) async {
+    if (_formkey.currentState.validate()) {
+      _formkey.currentState.save();
+
+      bool result = await userRepo.signUp(_email, _password);
+      if (result) {
+        var data = {
+          'displayName': _username,
+          'email': _email,
+          'bio': '',
+          'fname': '',
+          'lname': '',
+          'provider': 'email',
+          'profile_pic':
+              'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
+          'uid': userRepo.userUid
+        };
+
+        db.collection('users').document(userRepo.userUid).setData(data);
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        _autoValidate = true;
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -73,7 +116,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     TextFormField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _usernameFocus,
+                      onFieldSubmitted: (_) => _fieldFocusChange(
+                          context, _usernameFocus, _emailFocus),
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         Pattern pattern =
@@ -98,7 +144,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     TextFormField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _emailFocus,
+                      onFieldSubmitted: (_) => _fieldFocusChange(
+                          context, _emailFocus, _passwordFocus),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -122,7 +171,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     TextFormField(
                       obscureText: !_showPassword,
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _passwordFocus,
+                      onFieldSubmitted: (_) => _fieldFocusChange(
+                          context, _passwordFocus, _confirmPassFocus),
                       validator: (value) {
                         _password = value;
 
@@ -148,6 +200,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     TextFormField(
                       obscureText: !_showConfirmPassword,
                       textInputAction: TextInputAction.done,
+                      focusNode: _confirmPassFocus,
+                      onFieldSubmitted: (_) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        _confirmPassFocus.unfocus();
+                        doSignUp(userRepo, user);
+                        updateData.displayName = _username;
+                        updateData.photoUrl =
+                            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25';
+                        user.updateProfile(updateData);
+                      },
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter password';
@@ -172,43 +236,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  if (_formkey.currentState.validate()) {
-                                    _formkey.currentState.save();
-
-                                    bool result = await userRepo.signUp(
-                                        _email, _password);
-                                    if (result) {
-                                      var data = {
-                                        'displayName': _username,
-                                        'email': _email,
-                                        'bio': '',
-                                        'fname': '',
-                                        'lname': '',
-                                        'provider': 'email',
-                                        'profile_pic':
-                                            'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25',
-                                        'uid': userRepo.userUid
-                                      };
-
-                                      updateData.displayName = _username;
-                                      updateData.photoUrl =
-                                          'https://firebasestorage.googleapis.com/v0/b/ifunny-66ef2.appspot.com/o/bg_placeholder.jpeg?alt=media&token=1f6da019-f9ed-4635-a040-33b8a0f80d25';
-                                      user.updateProfile(updateData);
-                                      db
-                                          .collection('users')
-                                          .document(userRepo.userUid)
-                                          .setData(data);
-                                    } else {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    }
-                                  } else {
-                                    setState(() {
-                                      _autoValidate = true;
-                                      isLoading = false;
-                                    });
-                                  }
+                                  doSignUp(userRepo, user);
                                 },
                               ))
                   ],
