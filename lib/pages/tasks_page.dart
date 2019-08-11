@@ -50,7 +50,7 @@ class _TasksPageState extends State<TasksPage> {
       bottomNavigationBar: BubbledNavigationBar(
           initialIndex: 0,
           itemMargin: EdgeInsets.symmetric(horizontal: 45),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           defaultBubbleColor: Colors.blue,
           onTap: (index) {
             pageController.animateToPage(
