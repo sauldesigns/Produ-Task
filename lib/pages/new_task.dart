@@ -16,8 +16,8 @@ class NewTaskPage extends StatefulWidget {
       this.task,
       this.isIncomTask = false,
       this.incomTask,
-      this.isUpdate = false
-      , this.isAllTasks = false})
+      this.isUpdate = false,
+      this.isAllTasks = false})
       : super(key: key);
 
   final Category category;
@@ -71,14 +71,18 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: widget.isUpdate == true ? 'Update ' :'Add a task to ',
+                              text: widget.isUpdate == true
+                                  ? 'Update '
+                                  : 'Add a task to ',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
-                             TextSpan(
-                              text: widget.isUpdate == true ?  'task': '${widget.category.title}',
+                            TextSpan(
+                              text: widget.isUpdate == true
+                                  ? 'task'
+                                  : '${widget.category.title}',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
@@ -122,9 +126,13 @@ class _NewTaskPageState extends State<NewTaskPage> {
                                     .document(widget.incomTask.id)
                                     .updateData(data);
                               } else if (widget.isAllTasks) {
-
-                              } 
-                              else {
+                                _db
+                                    .collection('category')
+                                    .document(widget.category.id)
+                                    .collection('tasks')
+                                    .document(widget.allTasks.id)
+                                    .updateData(data);
+                              } else {
                                 _db
                                     .collection('category')
                                     .document(widget.category.id)
