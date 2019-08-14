@@ -16,6 +16,9 @@ class RootPage extends StatefulWidget {
   _RootPageState createState() => _RootPageState();
 }
 
+// this helps define the state the app should be in depending if
+// user was previously logged in, if no user is logged in, or if
+// user is being authenthicated. 
 class _RootPageState extends State<RootPage> {
   Firestore db = Firestore.instance;
   final _db = DatabaseService();
