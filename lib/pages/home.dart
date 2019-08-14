@@ -14,46 +14,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+// this gets the database data such as data of user logged in,
+// as well as returning data from database of what categories that user has created.
 class _HomePageState extends State<HomePage> {
-  // int _currentIndex = 0;
   final db = DatabaseService();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  // final List<Widget> _tabs = [
-  //   HomeTab(),
-  //   SearchTab(),
-  //   ProfileTab(),
-  //   SettingsTab(),
-  // ];
-
-  // void onTabTapped(int index) {
-  //   setState(() {
-  //     _currentIndex = index;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // var connectionStatus = Provider.of<ConnectivityStatus>(context);
     var user = Provider.of<FirebaseUser>(context);
-    
-    // _tabs[0] = HomeTab(context: context,);
+
     return Scaffold(
-      // bottomNavigationBar: FancyBottomNavigation(
-      //   circleColor: Colors.black,
-      //   textColor: Colors.black,
-      //   inactiveIconColor: Colors.grey,
-      //   tabs: [
-      //     TabData(iconData: Icons.home, title: "Home"),
-      //     TabData(iconData: Icons.search, title: "Search"),
-      //     TabData(iconData: Icons.person, title: "Profile"),
-      //     TabData(iconData: Icons.settings, title: "Settings")
-      //   ],
-      //   onTabChangedListener: (position) {
-      //     setState(() {
-      //       _currentIndex = position;
-      //     });
-      //   },
-      // ),
       key: _scaffoldKey,
       body: StreamProvider<List<Category>>.value(
         value: db.streamWeapons(user),

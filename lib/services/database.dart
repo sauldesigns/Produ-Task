@@ -13,12 +13,13 @@ class DatabaseService {
   final Firestore _db = Firestore.instance;
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Get a stream of a single document
+  /// Get's user data passed in by uid of user logged in
   Stream<User> streamHero(String uid) {
     var ref = _db.collection('users').document(uid);
     return ref.snapshots().map((doc) => User.fromFirestore(doc));
   }
 
+  // This gets the tasks created by user logged in and category they are in
   Stream<List<Task>> categoryTasks(User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
     var ref = _db
@@ -34,6 +35,7 @@ class DatabaseService {
         list.documents.map((doc) => Task.fromFirestore(doc)).toList());
   }
 
+  // This gets the incomplete tasks  created by user logged in and category they are in
   Stream<List<IncompleteTask>> incompleteTasks(
       User user, String origuser, Category cat) {
     DateTime date = new DateTime.now();
@@ -52,6 +54,7 @@ class DatabaseService {
         .toList());
   }
 
+  // this gets all the tasks created by user in a specific category
   Stream<List<AllTasks>> allTasks(User user, String origuser, Category cat) {
     var ref = _db
         .collection('category')
@@ -64,6 +67,7 @@ class DatabaseService {
         list.documents.map((doc) => AllTasks.fromFirestore(doc)).toList());
   }
 
+  // this gets all users data in data base 
   Stream<List<User>> streamUsers(String query) {
     var ref = _db
         .collection('users')
@@ -73,7 +77,8 @@ class DatabaseService {
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => User.fromFirestore(doc)).toList());
   }
-
+  
+  //  this gets categories created by the user logged in
   Stream<List<Category>> streamWeapons(FirebaseUser user) {
     var ref = _db
         .collection('category')
@@ -113,9 +118,14 @@ class DatabaseService {
   //   return bookData;
   // }
 
+  // this deletes the database document of user
   Future<void> deleteUser(String uid) {
     return _db.collection('users').document(uid).delete();
   }
+  
+
+  // this opens up image picker on device, and allows user to 
+  // upload to the firebase database. 
 
   Future<void> uploadProfilePicture(FirebaseUser user) async {
     UserUpdateInfo userUpdateData = new UserUpdateInfo();

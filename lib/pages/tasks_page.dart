@@ -29,11 +29,9 @@ class _TasksPageState extends State<TasksPage> {
   User _userDb;
   PageController pageController = new PageController();
   double currentPage = 0;
+  int navIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -47,47 +45,10 @@ class _TasksPageState extends State<TasksPage> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Scaffold(
-      bottomNavigationBar: BubbledNavigationBar(
-          initialIndex: 0,
-          itemMargin: EdgeInsets.symmetric(horizontal: 45),
-          backgroundColor: Colors.transparent,
-          defaultBubbleColor: Colors.blue,
-          onTap: (index) {
-            pageController.animateToPage(
-              index,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOutQuart,
-            );
-          },
-          items: [
-            BubbledNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.calendarDay),
-              activeIcon: Icon(
-                FontAwesomeIcons.calendarDay,
-                color: Colors.white,
-              ),
-              bubbleColor: Colors.blue,
-              title: Text(
-                'Today',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            BubbledNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.tasks),
-                activeIcon: Icon(
-                  FontAwesomeIcons.tasks,
-                  color: Colors.white,
-                ),
-                bubbleColor: Colors.orange,
-                title: Text(
-                  'All Tasks',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                )),
-          ]),
+      bottomNavigationBar: BottomNav(
+        pageController: pageController,
+        index: currentPage.toInt(),
+      ),
       // BottomNavigationDotBar(
       //   items: <BottomNavigationDotBarItem>[
       //     BottomNavigationDotBarItem(
@@ -708,5 +669,59 @@ class _TasksPageState extends State<TasksPage> {
             )
           ]),
     );
+  }
+}
+
+class BottomNav extends StatefulWidget {
+  BottomNav({Key key, this.pageController, this.index}) : super(key: key);
+  final PageController pageController;
+  final int index;
+  _BottomNavState createState() => _BottomNavState();
+}
+
+class _BottomNavState extends State<BottomNav> {
+  @override
+  Widget build(BuildContext context) {
+    return BubbledNavigationBar(
+        initialIndex: widget.index,
+        itemMargin: EdgeInsets.symmetric(horizontal: 45),
+        backgroundColor: Colors.transparent,
+        defaultBubbleColor: Colors.blue,
+        onTap: (index) {
+          widget.pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOutQuart,
+          );
+        },
+        items: [
+          BubbledNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.calendarDay),
+            activeIcon: Icon(
+              FontAwesomeIcons.calendarDay,
+              color: Colors.white,
+            ),
+            bubbleColor: Colors.blue,
+            title: Text(
+              'Today',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          BubbledNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.tasks),
+              activeIcon: Icon(
+                FontAwesomeIcons.tasks,
+                color: Colors.white,
+              ),
+              bubbleColor: Colors.orange,
+              title: Text(
+                'All Tasks',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )),
+        ]);
   }
 }

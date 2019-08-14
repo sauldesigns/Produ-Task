@@ -20,6 +20,10 @@ import 'package:vibration/vibration.dart';
 
 void main() => runApp(MyApp());
 
+
+// This initilized the application
+// with database data, as well checking if user was previously logged in
+
 class MyApp extends StatelessWidget {
   final db = DatabaseService();
 
