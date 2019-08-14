@@ -50,9 +50,15 @@ class _HomeTabState extends State<HomeTab> {
     // var userRepo = Provider.of<UserRepository>(context);
     // userRepo.signOut();
     return Scaffold(
+      // this sets the height to maximum, based on
+      // device
       body: Container(
         height: MediaQuery.of(context).size.height,
+        // creates a scroll view to make sure data is not cut off
+        // when dynamically growing.
         child: SingleChildScrollView(
+          // makes it so that the scroll view can always be scrolled, even if data
+          // does not go past height of device.
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +73,8 @@ class _HomeTabState extends State<HomeTab> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    // this will display offline mode, if connectivity is offline,
+                    // to let user know if data is current, or outdated.
                     connectionStatus == ConnectivityStatus.Offline
                         ? Padding(
                             padding: const EdgeInsets.only(left: 20.0),
@@ -82,10 +90,14 @@ class _HomeTabState extends State<HomeTab> {
                     Expanded(
                       child: Container(),
                     ),
+                    // this is user's profile picture located at the
+                    // top right, which functions as the way to go to settings page.
                     Hero(
                       tag: 'hero',
                       child: Material(
                         color: Colors.transparent,
+                        // this adds the bounce animation, when page is first loaded, or restored
+                        // from previous page.
                         child: ControlledAnimation(
                             duration: Duration(milliseconds: 500),
                             tween: Tween<double>(begin: 0, end: 1),
@@ -97,6 +109,8 @@ class _HomeTabState extends State<HomeTab> {
                                   size: 25,
                                   imgUrl: _userDb.profilePic,
                                   onTap: () {
+                                    // navigates to settings page, and puses the user data
+                                    // stream over to the new page.
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -116,6 +130,8 @@ class _HomeTabState extends State<HomeTab> {
                   ],
                 ),
               ),
+              // this is used to display the greeting message,
+
               Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: ControlledAnimation(
@@ -131,7 +147,8 @@ class _HomeTabState extends State<HomeTab> {
                               style: DefaultTextStyle.of(context).style,
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: 'Hello ${_userDb.fname},',
+                                  text:
+                                      'Hello ${_userDb.fname == null ? 'user' : _userDb.fname},',
                                   style: TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.w500,
@@ -148,14 +165,8 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                       );
                     }),
-                // child: Text(
-                //   'Hey ${_userDb.fname},\nthis is your to-do list.',
-                //   style: TextStyle(
-                //     fontSize: 25,
-                //     fontWeight: FontWeight.w500,
-                //   ),
-                // ),
               ),
+              // lets the user know that device is offline, and data may not be up-to-date
               connectionStatus == ConnectivityStatus.Offline
                   ? Padding(
                       padding: const EdgeInsets.only(left: 40.0, bottom: 15.0),
@@ -168,6 +179,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     )
                   : Container(),
+              // this displays the categories in a girdview in a card format.
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
                 child: GridView.builder(
@@ -182,6 +194,7 @@ class _HomeTabState extends State<HomeTab> {
                       crossAxisSpacing: 20,
                       childAspectRatio: 1),
                   itemBuilder: (context, index) {
+                    // this is used to create the add button by default.
                     if (index == 0) {
                       return ControlledAnimation(
                           duration: Duration(milliseconds: 1000),
@@ -194,10 +207,16 @@ class _HomeTabState extends State<HomeTab> {
                                 blurRadius: 10,
                                 color: Colors.blue,
                                 onTap: () {
+                                  // this checks to see if device can vibrate,
                                   if (hasVibration) {
                                     Vibration.vibrate(duration: 200);
                                   }
+                                  // generates a random number that defines the color of the category
+                                  // the data is then pushed to the New Category page which is what navigates over
+                                  // to new page to create a category.
+                                  //
                                   int index = Random().nextInt(7);
+
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => NewCategory(
@@ -213,11 +232,15 @@ class _HomeTabState extends State<HomeTab> {
                             );
                           });
                     } else {
+                      // this creates the category cards.
+                      // this grows dynamically based on user input.
+
                       Category category = _category[index - 1];
                       return Hero(
                         tag: category.id,
                         child: Material(
                           color: Colors.transparent,
+                          // handles the animation showed when app is first loaded.
                           child: ControlledAnimation(
                               duration: Duration(milliseconds: 1000),
                               tween: Tween<double>(begin: 0, end: 1),
@@ -227,19 +250,12 @@ class _HomeTabState extends State<HomeTab> {
                                   scale: animation,
                                   child: CustomCard(
                                     blurRadius: 10,
-
                                     color: listColors[category.color],
                                     date: DateFormat('dd MMMM, yyyy').format(
                                         _category[index - 1]
                                             .createdAt
                                             .toDate()),
                                     numPages: 2,
-                                    // title: category.done == false
-                                    //     ? CategoryTextField(
-                                    //         doc: category,
-                                    //         type: 'category',
-                                    //         content: category.title,
-                                    //       )
                                     title: Text(
                                       _category[index - 1].title,
                                       textAlign: TextAlign.center,
@@ -249,7 +265,9 @@ class _HomeTabState extends State<HomeTab> {
                                       ),
                                     ),
                                     onTap: () {
-                                      // Navigator.of(context).pushNamed('/tasks_page');
+                                      // this navigates to the task page, so that user can see
+                                      // what tasks have been created under that category.
+
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
