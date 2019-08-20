@@ -31,7 +31,7 @@ class GreetingHomeScreen extends StatelessWidget {
                           children: <TextSpan>[
                             TextSpan(
                               text:
-                                  'Hello ${userDb.fname == null ? userDb.username : userDb.fname},',
+                                  'Hello ${userDb.fname == '' ? userDb.username : userDb.fname},',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
