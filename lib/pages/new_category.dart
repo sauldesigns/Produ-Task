@@ -129,27 +129,31 @@ class _NewCategoryState extends State<NewCategory> {
                   padding: EdgeInsets.only(top: 40, bottom: 10),
                   child: Container(
                     height: 40,
-                    child: ListView.builder(
-                      itemCount: widget.listColors.length,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(left: 10),
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () {
-                            setState(() {
-                              _colorIndex = index;
-                            });
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: CircleAvatar(
-                              backgroundColor: widget.listColors[index],
+                    child: Center(
+                      child: ListView.builder(
+                        itemCount: widget.listColors.length,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(left: 10),
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () {
+                              setState(() {
+                                _colorIndex = index;
+                              });
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: CircleAvatar(
+                                backgroundColor: widget.listColors[index],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

@@ -362,6 +362,9 @@ class _HomeTabState extends State<HomeTab> {
                                                             padding:
                                                                 EdgeInsets.only(
                                                                     left: 10),
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                ScrollPhysics(),
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
