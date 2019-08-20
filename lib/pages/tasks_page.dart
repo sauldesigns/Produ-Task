@@ -8,7 +8,6 @@ import 'package:book_read/pages/new_task.dart';
 import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
-import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -663,59 +662,5 @@ class _TasksPageState extends State<TasksPage> {
             )
           ]),
     );
-  }
-}
-
-class BottomNav extends StatefulWidget {
-  BottomNav({Key key, this.pageController, this.index}) : super(key: key);
-  final PageController pageController;
-  final int index;
-  _BottomNavState createState() => _BottomNavState();
-}
-
-class _BottomNavState extends State<BottomNav> {
-  @override
-  Widget build(BuildContext context) {
-    return BubbledNavigationBar(
-        initialIndex: widget.index,
-        itemMargin: EdgeInsets.symmetric(horizontal: 45),
-        backgroundColor: Colors.transparent,
-        defaultBubbleColor: Colors.blue,
-        onTap: (index) {
-          widget.pageController.animateToPage(
-            index,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOutQuart,
-          );
-        },
-        items: [
-          BubbledNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.calendarDay),
-            activeIcon: Icon(
-              FontAwesomeIcons.calendarDay,
-              color: Colors.white,
-            ),
-            bubbleColor: Colors.blue,
-            title: Text(
-              'Today',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-          BubbledNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.tasks),
-              activeIcon: Icon(
-                FontAwesomeIcons.tasks,
-                color: Colors.white,
-              ),
-              bubbleColor: Colors.orange,
-              title: Text(
-                'All Tasks',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              )),
-        ]);
   }
 }
