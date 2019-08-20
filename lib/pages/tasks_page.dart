@@ -9,11 +9,13 @@ import 'package:book_read/services/database.dart';
 import 'package:book_read/ui/delete_alert.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:vibration/vibration.dart';
 
 class TasksPage extends StatefulWidget {
@@ -30,8 +32,12 @@ class _TasksPageState extends State<TasksPage> {
   PageController pageController = new PageController();
   double currentPage = 0;
   int navIndex = 0;
-
-  
+  List<TabItem> tabItems = List.of([
+    new TabItem(FontAwesomeIcons.calendarDay, 'Today', Colors.blue),
+    new TabItem(FontAwesomeIcons.tasks, 'All Tasks', Colors.orange),
+  ]);
+  CircularBottomNavigationController _navigationController =
+      new CircularBottomNavigationController(0);
 
   @override
   Widget build(BuildContext context) {
@@ -45,33 +51,21 @@ class _TasksPageState extends State<TasksPage> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     return Scaffold(
-      bottomNavigationBar: BottomNav(
-        pageController: pageController,
-        index: currentPage.toInt(),
+      bottomNavigationBar: CircularBottomNavigation(
+        tabItems,
+        iconsSize: 25,
+        animationDuration: Duration(milliseconds: 500),
+        barHeight: 80,
+        controller: _navigationController,
+        selectedCallback: (int index) {
+          // _navigationController.value = index;
+          pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOutQuart,
+          );
+        },
       ),
-      // BottomNavigationDotBar(
-      //   items: <BottomNavigationDotBarItem>[
-      //     BottomNavigationDotBarItem(
-      //         icon: FontAwesomeIcons.calendarDay,
-      //         onTap: () {
-      //           pageController.animateToPage(
-      //             0,
-      //             duration: Duration(milliseconds: 500),
-      //             curve: Curves.easeInOutQuart,
-      //           );
-      //         }),
-      //     BottomNavigationDotBarItem(
-      //         icon: FontAwesomeIcons.tasks,
-      //         onTap: () {
-      //           pageController.animateToPage(
-      //             1,
-      //             duration: Duration(milliseconds: 500),
-      //             curve: Curves.easeInOutQuart,
-      //           );
-      //         }),
-      //   ],
-      // ),
-
       body: PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: pageController,
@@ -128,7 +122,7 @@ class _TasksPageState extends State<TasksPage> {
                                       builder: (context) =>
                                           StreamProvider<User>.value(
                                         value: db.streamHero(_userDb.uid),
-                                        initialData: User.initialData(),
+                                        initialData: _userDb,
                                         child: SettingsTab(),
                                       ),
                                     ),
@@ -482,7 +476,7 @@ class _TasksPageState extends State<TasksPage> {
                                       builder: (context) =>
                                           StreamProvider<User>.value(
                                         value: db.streamHero(_userDb.uid),
-                                        initialData: User.initialData(),
+                                        initialData: _userDb,
                                         child: SettingsTab(),
                                       ),
                                     ),

@@ -169,6 +169,7 @@ class _NewCategoryState extends State<NewCategory> {
                               'done': true,
                               'uid': widget.user.uid,
                               'uids': [widget.user.uid],
+                              'badge': 0,
                               'users': []
                             };
                             _db.collection('category').add(data);

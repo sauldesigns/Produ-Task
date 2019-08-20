@@ -27,7 +27,7 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
-    var _userDb = Provider.of<User>(context);
+    User _userDb = Provider.of<User>(context); 
     var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
     return Scaffold(

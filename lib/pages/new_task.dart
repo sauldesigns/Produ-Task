@@ -115,27 +115,24 @@ class _NewTaskPageState extends State<NewTaskPage> {
                         title: widget.isUpdate == false ? 'Create' : 'Update',
                         onClick: () {
                           _formkey.currentState.save();
+                          var storyRef = _db
+                              .collection('category')
+                              .document(widget.category.id);
                           if (_formkey.currentState.validate()) {
                             if (widget.isUpdate) {
                               var data = {'done': true, 'content': _task};
                               if (widget.isIncomTask) {
-                                _db
-                                    .collection('category')
-                                    .document(widget.category.id)
+                                storyRef
                                     .collection('tasks')
                                     .document(widget.incomTask.id)
                                     .updateData(data);
                               } else if (widget.isAllTasks) {
-                                _db
-                                    .collection('category')
-                                    .document(widget.category.id)
+                                storyRef
                                     .collection('tasks')
                                     .document(widget.allTasks.id)
                                     .updateData(data);
                               } else {
-                                _db
-                                    .collection('category')
-                                    .document(widget.category.id)
+                                storyRef
                                     .collection('tasks')
                                     .document(widget.task.id)
                                     .updateData(data);
@@ -151,11 +148,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                                 'createdby': _userDb.fname,
                                 'color': Random().nextInt(7),
                               };
-                              _db
-                                  .collection('category')
-                                  .document(widget.category.id)
-                                  .collection('tasks')
-                                  .add(data);
+                              storyRef.collection('tasks').add(data);
                             }
                             Navigator.of(context).pop();
                           } else {

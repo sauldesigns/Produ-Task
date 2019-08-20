@@ -67,7 +67,21 @@ class DatabaseService {
         list.documents.map((doc) => AllTasks.fromFirestore(doc)).toList());
   }
 
-  // this gets all users data in data base 
+  Stream<List<IncompleteTaskCounter>> incompleteTaskCounter(
+      User user, String origuser, Category cat) {
+    var ref = _db
+        .collection('category')
+        .document(cat.id)
+        .collection('tasks')
+        .where('cat_uid', isEqualTo: cat.id)
+        .where('complete', isEqualTo: false);
+
+    return ref.snapshots().map((list) => list.documents
+        .map((doc) => IncompleteTaskCounter.fromFirestore(doc))
+        .toList());
+  }
+
+  // this gets all users data in data base
   Stream<List<User>> streamUsers(String query) {
     var ref = _db
         .collection('users')
@@ -77,7 +91,7 @@ class DatabaseService {
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => User.fromFirestore(doc)).toList());
   }
-  
+
   //  this gets categories created by the user logged in
   Stream<List<Category>> streamWeapons(FirebaseUser user) {
     var ref = _db
@@ -122,10 +136,9 @@ class DatabaseService {
   Future<void> deleteUser(String uid) {
     return _db.collection('users').document(uid).delete();
   }
-  
 
-  // this opens up image picker on device, and allows user to 
-  // upload to the firebase database. 
+  // this opens up image picker on device, and allows user to
+  // upload to the firebase database.
 
   Future<void> uploadProfilePicture(FirebaseUser user) async {
     UserUpdateInfo userUpdateData = new UserUpdateInfo();

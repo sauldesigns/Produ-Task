@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:badges/badges.dart';
 import 'package:book_read/enums/connectivity_status.dart';
 import 'package:book_read/home_tabs/settings.dart';
 import 'package:book_read/models/category.dart';
@@ -116,7 +117,7 @@ class _HomeTabState extends State<HomeTab> {
                                         builder: (context) =>
                                             StreamProvider<User>.value(
                                           value: db.streamHero(_userDb.uid),
-                                          initialData: User.initialData(),
+                                          initialData: _userDb,
                                           child: SettingsTab(),
                                         ),
                                       ),
@@ -248,202 +249,252 @@ class _HomeTabState extends State<HomeTab> {
                               builder: (context, animation) {
                                 return Transform.scale(
                                   scale: animation,
-                                  child: CustomCard(
-                                    blurRadius: 10,
-                                    color: listColors[category.color],
-                                    date: DateFormat('dd MMMM, yyyy').format(
-                                        _category[index - 1]
-                                            .createdAt
-                                            .toDate()),
-                                    numPages: 2,
-                                    title: Text(
-                                      _category[index - 1].title,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      // this navigates to the task page, so that user can see
-                                      // what tasks have been created under that category.
-
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              StreamProvider<List<Task>>.value(
-                                            value: db.categoryTasks(_userDb,
-                                                category.uid, category),
-                                            child: StreamProvider<
-                                                List<IncompleteTask>>.value(
-                                              value: db.incompleteTasks(_userDb,
-                                                  category.uid, category),
-                                              child: StreamProvider<
-                                                  List<AllTasks>>.value(
-                                                value: db.allTasks(_userDb,
-                                                    category.uid, category),
-                                                child: TasksPage(
-                                                  category: category,
-                                                  user: _userDb,
-                                                ),
-                                              ),
+                                  child: StreamProvider<
+                                      List<IncompleteTaskCounter>>.value(
+                                    value: db.incompleteTaskCounter(
+                                        _userDb, _userDb.uid, category),
+                                    child:
+                                        Consumer<List<IncompleteTaskCounter>>(
+                                            builder:
+                                                (context, badge, badgechild) {
+                                      return Badge(
+                                        showBadge: badge == null
+                                            ? false
+                                            : badge.length == 0 ? false : true,
+                                        badgeContent: Text(
+                                          badge == null
+                                              ? '0'
+                                              : badge.length.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        child: CustomCard(
+                                          blurRadius: 10,
+                                          color: listColors[category.color],
+                                          date: DateFormat('dd MMMM, yyyy')
+                                              .format(_category[index - 1]
+                                                  .createdAt
+                                                  .toDate()),
+                                          numPages: 2,
+                                          title: Text(
+                                            _category[index - 1].title,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onLongPress: () {
-                                      if (hasVibration) {
-                                        Vibration.vibrate(duration: 200);
-                                      }
-                                      showBottomSheet(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 10.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 15, bottom: 5),
-                                                  child: Text('Change Color'),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 15, bottom: 15),
-                                                  child: Container(
-                                                    height: 40,
-                                                    child: ListView.builder(
-                                                      itemCount:
-                                                          listColors.length,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      padding: EdgeInsets.only(
-                                                          left: 10),
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return InkWell(
-                                                          splashColor: Colors
-                                                              .transparent,
-                                                          highlightColor: Colors
-                                                              .transparent,
-                                                          onTap: () {
-                                                            // if (hasVibration) {
-                                                            //   Vibration.vibrate(
-                                                            //       duration: 200);
-                                                            // }
-                                                            db.updateDocument(
-                                                                collection:
-                                                                    'category',
-                                                                docID:
-                                                                    category.id,
-                                                                data: {
-                                                                  'color': index
-                                                                });
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right: 15),
-                                                            child: CircleAvatar(
-                                                              backgroundColor:
-                                                                  listColors[
-                                                                      index],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
+                                          onTap: () {
+                                            // this navigates to the task page, so that user can see
+                                            // what tasks have been created under that category.
+
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StreamProvider<
+                                                        List<Task>>.value(
+                                                  value: db.categoryTasks(
+                                                      _userDb,
+                                                      category.uid,
+                                                      category),
+                                                  child: StreamProvider<
+                                                      List<
+                                                          IncompleteTask>>.value(
+                                                    value: db.incompleteTasks(
+                                                        _userDb,
+                                                        category.uid,
+                                                        category),
+                                                    child: StreamProvider<
+                                                        List<AllTasks>>.value(
+                                                      value: db.allTasks(
+                                                          _userDb,
+                                                          category.uid,
+                                                          category),
+                                                      child: TasksPage(
+                                                        category: category,
+                                                        user: _userDb,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                                // ListTile(
-                                                //   leading: Icon(Icons.share),
-                                                //   title: Text('Share'),
-                                                //   onTap: () {
-                                                //     // if (hasVibration) {
-                                                //     //   Vibration.vibrate(duration: 200);
-                                                //     // }
-                                                //     Navigator.of(context).pop();
-                                                //     Navigator.of(context).push(
-                                                //       MaterialPageRoute(
-                                                //         builder: (context) =>
-                                                //             SharePage(
-                                                //           category: category,
-                                                //         ),
-                                                //       ),
-                                                //     );
-                                                //   },
-                                                // ),
-                                                ListTile(
-                                                  leading: Icon(Icons.create),
-                                                  title: Text('Edit'),
-                                                  onTap: () {
-                                                    // if (hasVibration) {
-                                                    //   Vibration.vibrate(duration: 200);
-                                                    // }
-                                                    Navigator.pop(context);
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            NewCategory(
-                                                                catID:
-                                                                    category.id,
-                                                                initialText:
-                                                                    category
-                                                                        .title,
-                                                                user: _userDb,
-                                                                update: true,
-                                                                listColors:
-                                                                    listColors,
-                                                                colorIndex:
-                                                                    category
-                                                                        .color),
+                                              ),
+                                            );
+                                          },
+                                          onLongPress: () {
+                                            if (hasVibration) {
+                                              Vibration.vibrate(duration: 200);
+                                            }
+                                            showBottomSheet(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              context: context,
+                                              builder: (context) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 10.0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 15,
+                                                                bottom: 5),
+                                                        child: Text(
+                                                            'Change Color'),
                                                       ),
-                                                    );
-                                                  },
-                                                ),
-                                                ListTile(
-                                                  leading: Icon(Icons.delete),
-                                                  title: Text('Delete'),
-                                                  onTap: () {
-                                                    if (hasVibration) {
-                                                      Vibration.vibrate(
-                                                          duration: 200);
-                                                    }
-
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return DeleteAlert(
-                                                            categoryID:
-                                                                category.id,
-                                                            collection:
-                                                                'category',
-                                                          );
-                                                        }).then(
-                                                      (val) =>
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 15,
+                                                                bottom: 15),
+                                                        child: Container(
+                                                          height: 40,
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount:
+                                                                listColors
+                                                                    .length,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10),
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return InkWell(
+                                                                splashColor: Colors
+                                                                    .transparent,
+                                                                highlightColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                onTap: () {
+                                                                  // if (hasVibration) {
+                                                                  //   Vibration.vibrate(
+                                                                  //       duration: 200);
+                                                                  // }
+                                                                  db.updateDocument(
+                                                                      collection:
+                                                                          'category',
+                                                                      docID: category.id,
+                                                                      data: {
+                                                                        'color':
+                                                                            index
+                                                                      });
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              15),
+                                                                  child:
+                                                                      CircleAvatar(
+                                                                    backgroundColor:
+                                                                        listColors[
+                                                                            index],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      // ListTile(
+                                                      //   leading: Icon(Icons.share),
+                                                      //   title: Text('Share'),
+                                                      //   onTap: () {
+                                                      //     // if (hasVibration) {
+                                                      //     //   Vibration.vibrate(duration: 200);
+                                                      //     // }
+                                                      //     Navigator.of(context).pop();
+                                                      //     Navigator.of(context).push(
+                                                      //       MaterialPageRoute(
+                                                      //         builder: (context) =>
+                                                      //             SharePage(
+                                                      //           category: category,
+                                                      //         ),
+                                                      //       ),
+                                                      //     );
+                                                      //   },
+                                                      // ),
+                                                      ListTile(
+                                                        leading:
+                                                            Icon(Icons.create),
+                                                        title: Text('Edit'),
+                                                        onTap: () {
+                                                          // if (hasVibration) {
+                                                          //   Vibration.vibrate(duration: 200);
+                                                          // }
+                                                          Navigator.pop(
+                                                              context);
                                                           Navigator.of(context)
-                                                              .pop(),
-                                                    );
-                                                  },
-                                                ),
-                                                SizedBox(
-                                                  height: 15,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
+                                                              .push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => NewCategory(
+                                                                  catID:
+                                                                      category
+                                                                          .id,
+                                                                  initialText:
+                                                                      category
+                                                                          .title,
+                                                                  user: _userDb,
+                                                                  update: true,
+                                                                  listColors:
+                                                                      listColors,
+                                                                  colorIndex:
+                                                                      category
+                                                                          .color),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                      ListTile(
+                                                        leading:
+                                                            Icon(Icons.delete),
+                                                        title: Text('Delete'),
+                                                        onTap: () {
+                                                          if (hasVibration) {
+                                                            Vibration.vibrate(
+                                                                duration: 200);
+                                                          }
+
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return DeleteAlert(
+                                                                  categoryID:
+                                                                      category
+                                                                          .id,
+                                                                  collection:
+                                                                      'category',
+                                                                );
+                                                              }).then(
+                                                            (val) =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(),
+                                                          );
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
                                       );
-                                    },
+                                    }),
                                   ),
                                 );
                               }),
