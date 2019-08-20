@@ -208,7 +208,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Navigator.of(context).pop();
                                           Flushbar(
                                             flushbarPosition:
-                                                FlushbarPosition.TOP,
+                                                FlushbarPosition.BOTTOM,
                                             margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             backgroundColor: Colors.red,
@@ -222,7 +222,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                           Navigator.of(context).pop();
                                           Flushbar(
                                             flushbarPosition:
-                                                FlushbarPosition.TOP,
+                                                FlushbarPosition.BOTTOM,
                                             margin: EdgeInsets.all(8.0),
                                             borderRadius: 10,
                                             duration: Duration(seconds: 3),

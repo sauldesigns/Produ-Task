@@ -3,6 +3,7 @@ import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -65,6 +66,17 @@ class _SignUpPageState extends State<SignUpPage> {
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
       } else {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          margin: EdgeInsets.all(8.0),
+          borderRadius: 10,
+          duration: Duration(seconds: 5),
+          message: 'An error occured during sign up. Please try again.',
+          icon: Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+        )..show(context);
         setState(() {
           isLoading = false;
         });

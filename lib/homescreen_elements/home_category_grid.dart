@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:book_read/models/category.dart';
 import 'package:book_read/models/task.dart';
@@ -27,7 +28,8 @@ class HomeCategoryGrid extends StatelessWidget {
       this.useMobileLayout,
       this.db,
       this.userDb,
-      this.listColors, this.hasVibration})
+      this.listColors,
+      this.hasVibration})
       : super(key: key);
 
   @override
@@ -85,7 +87,6 @@ class HomeCategoryGrid extends StatelessWidget {
           } else {
             // this creates the category cards.
             // this grows dynamically based on user input.
-
             Category category = categoryList[index - 1];
             return Hero(
               tag: category.id,
@@ -116,9 +117,10 @@ class HomeCategoryGrid extends StatelessWidget {
                               child: CustomCard(
                                 blurRadius: 10,
                                 color: listColors[category.color],
-                                title: Text(
+                                title: AutoSizeText(
                                   categoryList[index - 1].title,
                                   textAlign: TextAlign.center,
+                                  wrapWords: false,
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -127,7 +129,6 @@ class HomeCategoryGrid extends StatelessWidget {
                                 onTap: () {
                                   // this navigates to the task page, so that user can see
                                   // what tasks have been created under that category.
-
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
@@ -140,8 +141,8 @@ class HomeCategoryGrid extends StatelessWidget {
                                               userDb, category.uid, category),
                                           child: StreamProvider<
                                               List<AllTasks>>.value(
-                                            value: db.allTasks(userDb,
-                                                category.uid, category),
+                                            value: db.allTasks(
+                                                userDb, category.uid, category),
                                             child: TasksPage(
                                               category: category,
                                               user: userDb,

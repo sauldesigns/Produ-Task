@@ -57,7 +57,6 @@ class _TasksPageState extends State<TasksPage> {
         barHeight: 80,
         controller: _navigationController,
         selectedCallback: (int index) {
-          // _navigationController.value = index;
           pageController.animateToPage(
             index,
             duration: Duration(milliseconds: 500),

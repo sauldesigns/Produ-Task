@@ -2,6 +2,7 @@ import 'package:book_read/services/auth.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/rounded_button.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,17 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
       } else {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.BOTTOM,
+          margin: EdgeInsets.all(8.0),
+          borderRadius: 10,
+          duration: Duration(seconds: 5),
+          message: 'Error! Either password or e-mail are incorrect.',
+          icon: Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+        )..show(context);
         setState(() {
           showError = true;
           isLoading = false;
