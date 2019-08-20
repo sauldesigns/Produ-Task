@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vibration/vibration.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -30,6 +29,7 @@ class _SettingsTabState extends State<SettingsTab> {
     User _userDb = Provider.of<User>(context);
     var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
+
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
