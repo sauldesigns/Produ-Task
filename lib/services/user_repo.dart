@@ -21,9 +21,8 @@ class UserRepository with ChangeNotifier {
   UserRepository.instance()
       : _auth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn() {
-    // Timer(Duration(seconds: 3),
-    //     () => _auth.onAuthStateChanged.listen(_onAuthStateChanged));
-    _auth.onAuthStateChanged.listen(_onAuthStateChanged);
+    Timer(Duration(seconds: 3),
+        () => _auth.onAuthStateChanged.listen(_onAuthStateChanged));
   }
 
   Status get status => _status;
