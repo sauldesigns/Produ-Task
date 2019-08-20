@@ -113,3 +113,42 @@ class AllTasks {
         color: data['color']);
   }
 }
+
+class IncompleteTaskCounter {
+  final String id;
+  final String title;
+  final String catUid;
+  final bool complete;
+  final int badge;
+
+  IncompleteTaskCounter({
+    this.id,
+    this.title,
+    this.catUid,
+    this.badge,
+    this.complete,
+  });
+
+  factory IncompleteTaskCounter.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data;
+
+    return IncompleteTaskCounter(
+      id: doc.documentID,
+      title: data['content'] ?? '...',
+      complete: data['complete'] ?? false,
+      badge: data['badge'] ?? 0,
+      catUid: data['cat_uid'],
+    );
+  }
+
+  factory IncompleteTaskCounter.initialData() {
+    return IncompleteTaskCounter(
+      id: '',
+      title: '...',
+      complete: false,
+      badge: 0,
+      catUid: '',
+    );
+   
+  }
+}
