@@ -7,9 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vibration/vibration.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -27,9 +27,10 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<FirebaseUser>(context);
-    User _userDb = Provider.of<User>(context); 
+    User _userDb = Provider.of<User>(context);
     var userRepo = Provider.of<UserRepository>(context);
     bool hasVibration = Provider.of<dynamic>(context);
+
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.light,
@@ -105,18 +106,18 @@ class _SettingsTabState extends State<SettingsTab> {
                           ],
                         ),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 50.0),
+                      //   child: Divider(
+                      //     color: Colors.black,
+                      //   ),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(top: 50.0),
-                        child: Divider(
-                          color: Colors.black,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0.0),
                         child: ListTile(
                           title: Text('My e-mail'),
                           subtitle: Text(_userDb.email),
-                          leading: Icon(Icons.mail),
+                          leading: Icon(FontAwesomeIcons.solidEnvelope),
                           onTap: () {
                             // if (hasVibration) {
                             //   Vibration.vibrate(duration: 200);
@@ -124,12 +125,12 @@ class _SettingsTabState extends State<SettingsTab> {
                           },
                         ),
                       ),
-                      Divider(
-                        color: Colors.black,
-                      ),
+                      // Divider(
+                      //   color: Colors.black,
+                      // ),
                       ListTile(
                         title: Text('Edit profile'),
-                        leading: Icon(Icons.person_pin),
+                        leading: Icon(FontAwesomeIcons.solidUserCircle),
                         onTap: () async {
                           // if (hasVibration) {
                           //   Vibration.vibrate(duration: 200);
@@ -137,19 +138,19 @@ class _SettingsTabState extends State<SettingsTab> {
                           Navigator.of(context).pushNamed('/editprofile');
                         },
                       ),
-                      Divider(
-                        color: Colors.black,
-                      ),
+                      // Divider(
+                      //   color: Colors.black,
+                      // ),
                       ListTile(
                         title: Text('Reset password'),
-                        leading: Icon(Icons.lock),
+                        leading: Icon(FontAwesomeIcons.lock),
                         onTap: () {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
                           }
                           userRepo.resetPassword(user.email);
                           Flushbar(
-                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarPosition: FlushbarPosition.BOTTOM,
                             margin: EdgeInsets.all(8.0),
                             borderRadius: 10,
                             duration: Duration(seconds: 3),
@@ -159,29 +160,31 @@ class _SettingsTabState extends State<SettingsTab> {
                           )..show(context);
                         },
                       ),
-                      Divider(
-                        color: Colors.black,
-                      ),
+                      // Divider(
+                      //   color: Colors.black,
+                      // ),
                       ListTile(
                         title: Text('Sign Out'),
-                        leading: Icon(Icons.exit_to_app),
+                        leading: Icon(FontAwesomeIcons.signOutAlt),
                         onTap: () {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
                           }
-                          userRepo.signOut();
+
                           // auth.signOut();
                           if (_userDb.provider == 'google') {
                             userRepo.signOutGoogle();
+                          } else {
+                            userRepo.signOut();
                           }
                           Navigator.of(context).popUntil(
                             ModalRoute.withName('/'),
                           );
                         },
                       ),
-                      Divider(
-                        color: Colors.black,
-                      ),
+                      // Divider(
+                      //   color: Colors.black,
+                      // ),
                       Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: RaisedButton(

@@ -18,7 +18,7 @@ class RootPage extends StatefulWidget {
 
 // this helps define the state the app should be in depending if
 // user was previously logged in, if no user is logged in, or if
-// user is being authenthicated. 
+// user is being authenthicated.
 class _RootPageState extends State<RootPage> {
   Firestore db = Firestore.instance;
   final _db = DatabaseService();
@@ -42,19 +42,5 @@ class _RootPageState extends State<RootPage> {
     }
 
     return Container();
-
-    //   bool loggedIn = user != null;
-    //   if (loggedIn) {
-    // return StreamProvider<User>.value(
-    //     value: _db.streamHero(user.uid),
-    //     initialData: User.initialData(),
-    //     child: HomePage(
-    //       auth: new Auth(),
-    //     ));
-    //   } else {
-    //     return LandingPage(
-    //       auth: new Auth(),
-    //     );
-    //   }
   }
 }
