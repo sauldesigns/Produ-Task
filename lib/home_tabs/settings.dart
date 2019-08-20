@@ -51,7 +51,9 @@ class _SettingsTabState extends State<SettingsTab> {
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.only(
+                  top: 10.0,
+                ),
                 child: Center(
                   child: Column(
                     children: <Widget>[
@@ -113,11 +115,11 @@ class _SettingsTabState extends State<SettingsTab> {
                       //   ),
                       // ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 50.0),
+                        padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
                         child: ListTile(
                           title: Text('My e-mail'),
                           subtitle: Text(_userDb.email),
-                          leading: Icon(FontAwesomeIcons.solidEnvelope),
+                          leading: Icon(Icons.mail),
                           onTap: () {
                             // if (hasVibration) {
                             //   Vibration.vibrate(duration: 200);
@@ -128,44 +130,51 @@ class _SettingsTabState extends State<SettingsTab> {
                       // Divider(
                       //   color: Colors.black,
                       // ),
-                      ListTile(
-                        title: Text('Edit profile'),
-                        leading: Icon(FontAwesomeIcons.solidUserCircle),
-                        onTap: () async {
-                          // if (hasVibration) {
-                          //   Vibration.vibrate(duration: 200);
-                          // }
-                          Navigator.of(context).pushNamed('/editprofile');
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: ListTile(
+                          title: Text('Edit profile'),
+                          leading: Icon(Icons.person_pin),
+                          onTap: () async {
+                            // if (hasVibration) {
+                            //   Vibration.vibrate(duration: 200);
+                            // }
+                            Navigator.of(context).pushNamed('/editprofile');
+                          },
+                        ),
                       ),
                       // Divider(
                       //   color: Colors.black,
                       // ),
-                      ListTile(
-                        title: Text('Reset password'),
-                        leading: Icon(FontAwesomeIcons.lock),
-                        onTap: () {
-                          if (hasVibration) {
-                            Vibration.vibrate(duration: 200);
-                          }
-                          userRepo.resetPassword(user.email);
-                          Flushbar(
-                            flushbarPosition: FlushbarPosition.BOTTOM,
-                            margin: EdgeInsets.all(8.0),
-                            borderRadius: 10,
-                            duration: Duration(seconds: 3),
-                            icon: Icon(Icons.check_circle, color: Colors.green),
-                            message:
-                                'Password reset email will be sent. Check inbox or spam mail.',
-                          )..show(context);
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: ListTile(
+                          title: Text('Reset password'),
+                          leading: Icon(Icons.lock),
+                          onTap: () {
+                            if (hasVibration) {
+                              Vibration.vibrate(duration: 200);
+                            }
+                            userRepo.resetPassword(user.email);
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.BOTTOM,
+                              margin: EdgeInsets.all(8.0),
+                              borderRadius: 10,
+                              duration: Duration(seconds: 3),
+                              icon:
+                                  Icon(Icons.check_circle, color: Colors.green),
+                              message:
+                                  'Password reset email will be sent. Check inbox or spam mail.',
+                            )..show(context);
+                          },
+                        ),
                       ),
                       // Divider(
                       //   color: Colors.black,
                       // ),
                       ListTile(
                         title: Text('Sign Out'),
-                        leading: Icon(FontAwesomeIcons.signOutAlt),
+                        leading: Icon(Icons.exit_to_app),
                         onTap: () {
                           if (hasVibration) {
                             Vibration.vibrate(duration: 200);
