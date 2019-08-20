@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:simple_animations/simple_animations/controlled_animation.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key key}) : super(key: key);
+class AuthenticatingScreen extends StatelessWidget {
+  const AuthenticatingScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SplashScreen extends StatelessWidget {
                   return Transform.scale(
                     scale: animation,
                     child: AutoSizeText(
-                      'Produ:Task',
+                      'Authenticating',
                       wrapWords: false,
                       style: TextStyle(
                         fontSize: 45,
