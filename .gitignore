@@ -71,3 +71,4 @@
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 ios/Podfile.lock
+ios/Flutter/flutter_export_environment.sh
