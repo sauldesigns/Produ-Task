@@ -3,7 +3,7 @@ import 'package:book_read/services/database.dart';
 import 'package:book_read/services/user_repo.dart';
 import 'package:book_read/ui/profile_picture.dart';
 import 'package:book_read/ui/splashscreen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,7 +20,7 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   FirebaseAuth auth = FirebaseAuth.instance;
   UserUpdateInfo userUpdateData;
-  Firestore _db = Firestore.instance;
+  // Firestore _db = Firestore.instance;
   final db = DatabaseService();
   bool isDeleting = false;
   @override
@@ -229,12 +229,8 @@ class _SettingsTabState extends State<SettingsTab> {
 
                                           Navigator.of(context).popUntil(
                                               ModalRoute.withName('/'));
-                                          await _db
-                                              .collection('users')
-                                              .document(user.uid)
-                                              .delete()
-                                              .then((_) async =>
-                                                  await user.delete());
+
+                                          await user.delete();
                                         },
                                       ),
                                       FlatButton(
