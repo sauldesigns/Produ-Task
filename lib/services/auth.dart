@@ -30,12 +30,13 @@ class Auth implements BaseAuth {
     // var user = Provider.of<FirebaseUser>(context);
     var user = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user.uid;
+    return user.user.uid;
   }
 
   Future<String> signUp(String email, String password) async {
-    FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
+    AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
+    FirebaseUser user = result.user;
     return user.uid;
   }
 
@@ -57,10 +58,11 @@ class Auth implements BaseAuth {
     GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
     GoogleSignInAuthentication auth = await googleSignInAccount.authentication;
 
-    FirebaseUser user = await _firebaseAuth.signInWithCredential(
+    AuthResult result = await _firebaseAuth.signInWithCredential(
       GoogleAuthProvider.getCredential(
           accessToken: auth.accessToken, idToken: auth.idToken),
     );
+    FirebaseUser user = result.user;
 
     return user;
   }

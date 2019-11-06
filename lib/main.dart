@@ -18,8 +18,10 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vibration/vibration.dart';
 
-void main() => runApp(MyApp());
-
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 // This initilized the application
 // with database data, as well checking if user was previously logged in

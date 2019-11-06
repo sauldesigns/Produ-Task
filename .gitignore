@@ -72,3 +72,5 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 ios/Podfile.lock
 ios/Flutter/flutter_export_environment.sh
+ios/Flutter/flutter_export_environment.sh
+ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
